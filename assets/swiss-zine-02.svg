@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <rect width="600" height="800" fill="#111214"/>
+  <!-- Outer frame -->
+  <rect x="44" y="44" width="512" height="712" fill="none" stroke="#2D2F34" stroke-width="1"/>
+  <!-- Header -->
+  <text x="72" y="92" font-family="monospace" font-size="12" letter-spacing="2" fill="#8C9099">MONOGRAPH / ISSUE 02</text>
+  <text x="528" y="92" text-anchor="end" font-family="monospace" font-size="12" fill="#8C9099">XXI</text>
+  <line x1="72" y1="112" x2="528" y2="112" stroke="#2D2F34" stroke-width="1"/>
+
+  <!-- Minimal geometric print spread -->
+  <rect x="72" y="156" width="456" height="310" fill="#EAE9E4"/>
+  <line x1="300" y1="156" x2="300" y2="466" stroke="#C7C5BE" stroke-width="1"/>
+  <!-- Left page typography abstraction -->
+  <text x="98" y="216" font-family="Helvetica Neue, Arial, sans-serif" font-weight="600" font-size="34" fill="#111214">01</text>
+  <rect x="98" y="240" width="142" height="6" fill="#111214"/>
+  <rect x="98" y="258" width="174" height="3" fill="#666666"/>
+  <rect x="98" y="272" width="160" height="3" fill="#666666"/>
+  <rect x="98" y="286" width="130" height="3" fill="#666666"/>
+  <rect x="98" y="340" width="174" height="96" fill="#111214"/>
+  <!-- Right page graphic -->
+  <circle cx="414" cy="311" r="76" fill="none" stroke="#111214" stroke-width="18"/>
+  <line x1="338" y1="311" x2="490" y2="311" stroke="#EAE9E4" stroke-width="6"/>
+
+  <!-- Bottom monumental title -->
+  <text x="72" y="566" font-family="Helvetica Neue, Arial, sans-serif" font-weight="300" font-size="54" letter-spacing="4" fill="#F2F2F0">SILENT</text>
+  <text x="72" y="624" font-family="Helvetica Neue, Arial, sans-serif" font-weight="600" font-size="54" letter-spacing="4" fill="#F2F2F0">ARCHIVE</text>
+  <line x1="72" y1="664" x2="528" y2="664" stroke="#2D2F34" stroke-width="1"/>
+  <text x="72" y="704" font-family="monospace" font-size="11" letter-spacing="1.5" fill="#8C9099">INDEPENDENT ZINE · 24 PAGES · RISOPRINT</text>
+</svg>

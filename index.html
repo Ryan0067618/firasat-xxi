@@ -1,0 +1,4136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIRASAT XXI / 先觉纪 — 个人技能、社区与数字空间</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f7f7;
+      --surface-hover: #f2f2f2;
+      --ink: #000000;
+      --ink-2: #333333;
+      --ink-muted: #767676;
+      --ink-faint: #a3a3a3;
+      --hairline: #eaeaea;
+      --hairline-strong: #d4d4d4;
+      --font-sans: "Inter", "Helvetica Neue", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      --header-h: 52px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      font-size: 16px;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    button, input, textarea, select {
+      font-family: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      outline: none;
+    }
+
+    button { cursor: pointer; }
+    img { display: block; max-width: 100%; }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ================= HEADER ================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: var(--header-h);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 32px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    .site-header.scrolled { border-bottom-color: var(--hairline); }
+
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-right { justify-content: flex-end; }
+
+    .nav-link {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--ink-2);
+      padding: 4px 0;
+      position: relative;
+      transition: color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover, .nav-link.active { color: var(--ink); }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 1px;
+      background: var(--ink);
+    }
+
+    .brand-mark {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--ink);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ================= SEARCH BAR ================= */
+    .search-bar {
+      position: sticky;
+      top: var(--header-h);
+      z-index: 35;
+      background: var(--bg);
+      border-bottom: 1px solid var(--hairline);
+      padding: 0 32px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.28s var(--ease), opacity 0.2s ease, padding 0.28s var(--ease);
+    }
+
+    .search-bar.open {
+      max-height: 76px;
+      padding: 16px 32px;
+      opacity: 1;
+    }
+
+    .search-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 8px;
+    }
+
+    .search-input { flex: 1; font-size: 12px; letter-spacing: 0.03em; color: var(--ink); }
+    .search-input::placeholder { color: var(--ink-faint); }
+
+    .search-close { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.06em; }
+    .search-close:hover { color: var(--ink); }
+
+    /* ================= MAIN ================= */
+    .app-main {
+      max-width: 1520px;
+      margin: 0 auto;
+      padding: 36px 32px 112px;
+    }
+
+    .view { display: none; animation: fadeIn 0.24s var(--ease); }
+    .view.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ================= SHARED 3-COLUMN SSENSE LAYOUT ================= */
+    .catalog-layout {
+      display: grid;
+      grid-template-columns: 184px minmax(0, 1fr) 176px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .rail {
+      position: sticky;
+      top: calc(var(--header-h) + 36px);
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    .rail-group { display: flex; flex-direction: column; gap: 7px; }
+
+    .rail-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .rail-btn {
+      text-align: left;
+      font-size: 11.5px;
+      color: var(--ink-muted);
+      padding: 2px 0;
+      line-height: 1.6;
+      transition: color 0.15s ease;
+    }
+
+    .rail-btn:hover { color: var(--ink); }
+
+    .rail-btn.active {
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1px;
+    }
+
+    .rail-faint { font-size: 10.5px; color: var(--ink-faint); line-height: 1.65; }
+
+    .mobile-controls {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      padding: 10px 0;
+      margin-bottom: 24px;
+      gap: 12px;
+      overflow-x: auto;
+    }
+
+    .mobile-chips { display: flex; align-items: center; gap: 16px; white-space: nowrap; }
+
+    .gallery-meta-bar {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .gallery-heading { font-size: 11.5px; color: var(--ink-muted); letter-spacing: 0.04em; }
+    .gallery-heading strong { color: var(--ink); font-weight: 500; margin-right: 10px; }
+    .gallery-count { font-size: 11px; color: var(--ink-faint); white-space: nowrap; }
+
+    /* ================= BORDERLESS SSENSE GALLERY GRID ================= */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 24px;
+      row-gap: 52px;
+    }
+
+    .item-card { cursor: pointer; display: flex; flex-direction: column; }
+
+    .item-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .item-media img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.65s var(--ease), opacity 0.35s ease;
+    }
+
+    .item-media .img-alt { position: absolute; inset: 0; opacity: 0; }
+    .item-card:hover .item-media img.img-primary { transform: scale(1.018); }
+    .item-card:hover .item-media .img-alt { opacity: 1; transform: scale(1.018); }
+
+    .item-info { margin-top: 12px; display: flex; flex-direction: column; gap: 3px; }
+    .item-creator { font-size: 11px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink); }
+    .item-title { font-size: 11.5px; color: var(--ink-2); line-height: 1.45; }
+    .item-foot { margin-top: 2px; display: flex; align-items: baseline; justify-content: space-between; font-size: 11.5px; gap: 8px; }
+    .item-price { color: var(--ink); }
+    .item-avail { font-size: 10.5px; color: var(--ink-muted); }
+
+    /* ================= CREATOR INDEX LIST ================= */
+    .creator-index-list { display: flex; flex-direction: column; border-top: 1px solid var(--hairline); }
+
+    .creator-index-row {
+      display: grid;
+      grid-template-columns: 44px 180px minmax(0, 1fr) 100px 96px;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 8px;
+      border-bottom: 1px solid var(--hairline);
+      cursor: pointer;
+      transition: background 0.15s ease;
+      font-size: 12px;
+    }
+
+    .creator-index-row:hover { background: var(--surface); }
+    .creator-index-thumb { width: 36px; height: 46px; object-fit: cover; background: var(--surface); }
+
+    .creator-index-hover-preview {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .creator-index-hover-preview img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: var(--surface); }
+
+    /* ================= COMMUNITY: GITHUB × BLOG × TIEBA × DOUBAN IN SSENSE SKIN ================= */
+    .community-featured {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 36px;
+      padding-bottom: 36px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--hairline);
+      cursor: pointer;
+      align-items: center;
+    }
+
+    .community-featured-img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .community-featured-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s var(--ease);
+    }
+
+    .community-featured:hover .community-featured-img img { transform: scale(1.018); }
+
+    .post-type-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .post-circle-tag {
+      font-size: 10.5px;
+      color: var(--ink-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .featured-title {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--ink);
+      margin: 10px 0 12px;
+    }
+
+    .featured-excerpt {
+      font-size: 12.5px;
+      color: var(--ink-2);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .post-feed { display: flex; flex-direction: column; }
+
+    .post-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 128px;
+      gap: 28px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--hairline);
+      cursor: pointer;
+      align-items: start;
+      transition: opacity 0.15s ease;
+    }
+
+    .post-row.no-thumb { grid-template-columns: 1fr; }
+    .post-row:hover .post-row-title { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+    .post-meta-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .post-row-title {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .post-row-excerpt {
+      font-size: 12px;
+      color: var(--ink-2);
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+
+    .post-meta-foot {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+
+    .post-row-thumb {
+      width: 128px;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      background: var(--surface);
+    }
+
+    .active-member-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--hairline);
+      font-size: 11.5px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .active-member-item:hover { color: var(--ink); }
+
+    .school-column-banner {
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--hairline);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .school-column-title {
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--ink);
+      margin: 6px 0 6px;
+    }
+
+    .school-column-sub {
+      font-size: 12px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    .school-column-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .school-tag {
+      font-size: 10.5px;
+      color: var(--ink);
+      border-bottom: 1px solid var(--hairline-strong);
+      padding-bottom: 1px;
+    }
+
+    /* ================= POST DETAIL (BLOG + GITHUB SPEC + TIEBA THREAD) ================= */
+    .post-detail-layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr) 220px;
+      gap: 52px;
+      align-items: start;
+    }
+
+    .github-spec-box {
+      padding: 16px 0;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .post-article-head {
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 28px;
+    }
+
+    .post-article-title {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.4;
+      margin: 12px 0 14px;
+    }
+
+    .post-article-img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      background: var(--surface);
+      margin-bottom: 28px;
+    }
+
+    .post-article-body {
+      font-size: 13.5px;
+      color: var(--ink-2);
+      line-height: 1.95;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .post-param-code {
+      background: var(--surface);
+      padding: 16px 18px;
+      border-left: 2px solid var(--ink);
+      font-size: 11.5px;
+      line-height: 1.85;
+      color: var(--ink);
+      white-space: pre-wrap;
+    }
+
+    .post-actions-bar {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 0;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    /* Tieba / GitHub Floor Comments */
+    .comments-section { display: flex; flex-direction: column; gap: 20px; }
+
+    .comment-floor {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .comment-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      font-size: 11px;
+      gap: 12px;
+    }
+
+    .comment-author { font-weight: 500; color: var(--ink); }
+    .comment-author:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .comment-role { color: var(--ink-muted); margin-left: 8px; font-weight: 400; font-size: 10.5px; }
+    .comment-body { font-size: 12.5px; color: var(--ink-2); line-height: 1.8; }
+
+    .comment-composer {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .field-input, .field-select, .field-textarea {
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      font-size: 12px;
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    .field-input:focus, .field-select:focus, .field-textarea:focus {
+      border-color: var(--ink);
+      background: var(--bg);
+    }
+
+    .field-textarea { min-height: 110px; resize: vertical; }
+
+    .field-label {
+      display: block;
+      font-size: 10.5px;
+      color: var(--ink-muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    /* ================= BUTTONS & COMMON ================= */
+    .btn-primary {
+      width: 100%;
+      height: 42px;
+      background: var(--ink);
+      color: var(--bg);
+      font-size: 11.5px;
+      letter-spacing: 0.08em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.18s ease;
+      padding: 0 18px;
+    }
+
+    .btn-primary:hover { opacity: 0.84; }
+
+    .btn-outline {
+      width: 100%;
+      height: 40px;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--hairline-strong);
+      font-size: 11.5px;
+      letter-spacing: 0.06em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.18s ease;
+      padding: 0 16px;
+    }
+
+    .btn-outline:hover { border-color: var(--ink); }
+
+    .text-action {
+      font-size: 11px;
+      color: var(--ink-muted);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .text-action:hover, .text-action.strong { color: var(--ink); }
+
+    .empty-state {
+      padding: 96px 0;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .empty-state p { font-size: 12px; color: var(--ink-muted); }
+
+    .qr-mini-box {
+      margin-top: 16px;
+      padding-top: 18px;
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .qr-mini-box svg { width: 96px; height: 96px; display: block; border: 1px solid var(--hairline); }
+    .qr-mini-label { font-size: 10.5px; color: var(--ink-muted); line-height: 1.5; }
+    .qr-mini-box:hover .qr-mini-label { color: var(--ink); }
+
+    /* ================= PDP ================= */
+    .breadcrumb-row {
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .back-link { font-size: 11px; letter-spacing: 0.05em; color: var(--ink-muted); }
+    .back-link:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+
+    .pdp-layout {
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr) 270px;
+      gap: 52px;
+      align-items: start;
+    }
+
+    .pdp-col-sticky {
+      position: sticky;
+      top: calc(var(--header-h) + 36px);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .pdp-creator-link { text-align: left; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--ink); }
+    .pdp-creator-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+    .pdp-title { font-size: 14px; font-weight: 400; color: var(--ink); line-height: 1.5; margin-top: -10px; }
+    .pdp-desc { font-size: 12px; color: var(--ink-2); line-height: 1.75; }
+
+    .spec-list { display: flex; flex-direction: column; gap: 12px; padding-top: 16px; border-top: 1px solid var(--hairline); }
+    .spec-row { display: flex; flex-direction: column; gap: 2px; }
+    .spec-label { font-size: 10.5px; color: var(--ink-muted); letter-spacing: 0.05em; }
+    .spec-val { font-size: 11.5px; color: var(--ink); line-height: 1.5; }
+
+    .pdp-images { display: flex; flex-direction: column; gap: 28px; }
+    .pdp-figure { width: 100%; background: var(--surface); }
+    .pdp-figure img { width: 100%; height: auto; object-fit: cover; }
+    .pdp-caption { margin-top: 10px; font-size: 10.5px; color: var(--ink-faint); letter-spacing: 0.04em; }
+
+    .pdp-price-block { display: flex; flex-direction: column; gap: 4px; }
+    .pdp-price { font-size: 16px; font-weight: 500; color: var(--ink); }
+    .pdp-slot { font-size: 11.5px; color: var(--ink-muted); }
+
+    .pdp-policy {
+      font-size: 11px;
+      color: var(--ink-muted);
+      line-height: 1.75;
+      padding-top: 14px;
+      border-top: 1px solid var(--hairline);
+    }
+
+    /* ================= UNIFIED PERSONAL PROFILE ================= */
+    .mode-switch { display: inline-flex; align-items: center; gap: 14px; font-size: 11px; }
+    .mode-switch button { color: var(--ink-muted); padding-bottom: 2px; }
+    .mode-switch button.active { color: var(--ink); border-bottom: 1px solid var(--ink); }
+
+    .editorial-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: 64px;
+      align-items: end;
+      margin-bottom: 44px;
+    }
+
+    .editorial-bio-col { display: flex; flex-direction: column; gap: 16px; padding-bottom: 8px; }
+    .editorial-kicker { font-size: 10.5px; letter-spacing: 0.1em; color: var(--ink-muted); text-transform: uppercase; }
+    .editorial-name { font-size: 28px; font-weight: 400; letter-spacing: 0.03em; line-height: 1.25; color: var(--ink); }
+    .editorial-statement { font-size: 13px; color: var(--ink-2); line-height: 1.85; max-width: 480px; }
+    .editorial-tags { display: flex; flex-wrap: wrap; gap: 12px; font-size: 11px; color: var(--ink-muted); padding-top: 4px; }
+
+    .editorial-hero-img { width: 100%; aspect-ratio: 4 / 3; background: var(--surface); overflow: hidden; }
+    .editorial-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .owner-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+      padding: 18px 0;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 30px;
+    }
+
+    .stat-cell { display: flex; flex-direction: column; gap: 4px; }
+    .stat-label { font-size: 10.5px; color: var(--ink-muted); letter-spacing: 0.05em; }
+    .stat-value { font-size: 13.5px; font-weight: 400; color: var(--ink); }
+
+    .sub-tabs {
+      display: flex;
+      gap: 30px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 34px;
+      overflow-x: auto;
+    }
+
+    .sub-tab {
+      font-size: 11.5px;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      padding: 12px 0;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .sub-tab.active { color: var(--ink); }
+    .sub-tab.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--ink); }
+
+    .profile-works-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 24px; }
+    .profile-work-item { cursor: pointer; display: flex; flex-direction: column; }
+    .profile-work-item.featured { grid-column: span 2; }
+    .profile-work-frame { width: 100%; aspect-ratio: 4 / 3; background: var(--surface); overflow: hidden; }
+    .profile-work-item.featured .profile-work-frame { aspect-ratio: 16 / 10; }
+    .profile-work-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+    .profile-work-item:hover img { transform: scale(1.018); }
+    .profile-work-cap { margin-top: 10px; font-size: 11px; color: var(--ink-muted); display: flex; justify-content: space-between; gap: 12px; }
+    .work-bw { filter: grayscale(100%) contrast(1.12); }
+
+    /* DISTINCT CREATOR DOSSIER GRID (COMPLETELY DIFFERENT FROM 3-COL SERVICE CARDS) */
+    .creators-dossier-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 44px;
+      row-gap: 44px;
+    }
+
+    .creator-dossier {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--hairline);
+      transition: border-color 0.2s ease;
+    }
+
+    .creator-dossier:hover { border-bottom-color: var(--ink); }
+
+    .dossier-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .dossier-name {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--ink);
+    }
+
+    .dossier-en {
+      font-size: 11px;
+      color: var(--ink-muted);
+      letter-spacing: 0.08em;
+      margin-left: 8px;
+    }
+
+    .dossier-meta {
+      font-size: 10.5px;
+      color: var(--ink-muted);
+      white-space: nowrap;
+    }
+
+    .dossier-bio {
+      font-size: 12px;
+      color: var(--ink-2);
+      line-height: 1.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .dossier-strip {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .dossier-strip.cols-2 {
+      grid-template-columns: 1.3fr 1fr;
+    }
+
+    .dossier-strip-frame {
+      aspect-ratio: 4 / 3;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .dossier-strip-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease);
+    }
+
+    .creator-dossier:hover .dossier-strip-frame img { transform: scale(1.02); }
+
+    .dossier-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+
+    /* CLEAN SSENSE LIGHTBOX */
+    .lightbox-box {
+      max-width: min(960px, 92vw);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .lightbox-box img {
+      max-width: 100%;
+      max-height: 76vh;
+      object-fit: contain;
+      background: var(--surface);
+    }
+
+    .lightbox-meta {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      color: var(--ink-2);
+    }
+
+    .profile-services-list { display: flex; flex-direction: column; border-top: 1px solid var(--hairline); }
+
+    .profile-service-row {
+      display: grid;
+      grid-template-columns: 64px minmax(0, 1.5fr) minmax(0, 1.1fr) 115px 195px;
+      gap: 20px;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--hairline);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .profile-service-row:hover {
+      background: var(--surface);
+      padding-left: 12px; padding-right: 12px;
+      margin-left: -12px; margin-right: -12px;
+    }
+
+    .profile-service-thumb { width: 56px; height: 72px; object-fit: cover; background: var(--surface); }
+    .manage-actions { display: flex; gap: 14px; justify-content: flex-end; flex-wrap: wrap; }
+
+    /* Inline Form Panel (Profile Edit / Upload Work / Publish Post) */
+    .inline-panel {
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      padding: 24px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .inline-panel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    /* Integrated AI Service Builder */
+    .ai-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 52px; align-items: start; }
+    .ai-presets { display: flex; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+
+    .ai-result-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 186px;
+      gap: 32px;
+      align-items: start;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .ai-edit-row {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .ai-edit-row:first-child { border-top: 1px solid var(--hairline); }
+    .ai-edit-key { font-size: 11px; color: var(--ink-muted); }
+    .ai-edit-input { font-size: 12px; color: var(--ink); width: 100%; padding: 4px 0; }
+    .ai-edit-input:focus { background: var(--surface); padding-left: 6px; }
+
+    .benchmark-block { margin-top: 28px; }
+    .benchmark-title { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .benchmark-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+    .benchmark-table th, .benchmark-table td { text-align: left; padding: 10px 0; border-bottom: 1px solid var(--hairline); font-weight: 400; }
+    .benchmark-table th { font-size: 10.5px; color: var(--ink-muted); }
+
+    /* ================= MESSAGES & CHAT DRAWER ================= */
+    .messages-layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); min-height: 620px; border-top: 1px solid var(--hairline); }
+    .thread-list { border-right: 1px solid var(--hairline); padding-top: 8px; padding-right: 24px; display: flex; flex-direction: column; }
+
+    .thread-item {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 14px;
+      padding: 16px 12px;
+      border-bottom: 1px solid var(--hairline);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s ease;
+    }
+
+    .thread-item:hover, .thread-item.active { background: var(--surface); }
+    .thread-thumb { width: 48px; height: 60px; object-fit: cover; background: var(--surface); }
+    .thread-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 11.5px; margin-bottom: 3px; }
+    .thread-name { font-weight: 500; color: var(--ink); }
+    .thread-time { font-size: 10.5px; color: var(--ink-faint); }
+    .thread-service { font-size: 11px; color: var(--ink-muted); margin-bottom: 4px; }
+    .thread-snippet { font-size: 11.5px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .unread-mark { display: inline-block; width: 5px; height: 5px; background: var(--ink); margin-left: 6px; vertical-align: middle; }
+    .chat-stage { padding-left: 36px; display: flex; flex-direction: column; min-height: 620px; }
+
+    .drawer-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.18); z-index: 60;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+    }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    .chat-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 450px; max-width: 100vw;
+      background: var(--bg); border-left: 1px solid var(--hairline); z-index: 70;
+      display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform 0.34s var(--ease);
+    }
+    .chat-drawer.open { transform: translateX(0); }
+
+    .chat-header { padding: 18px 24px; border-bottom: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; }
+
+    .chat-context-bar {
+      padding: 14px 24px; background: var(--surface); border-bottom: 1px solid var(--hairline);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .chat-context-bar img { width: 36px; height: 46px; object-fit: cover; }
+    .chat-context-text { flex: 1; min-width: 0; }
+    .chat-context-title { font-size: 11.5px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chat-context-meta { font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
+
+    .chat-status-strip {
+      padding: 9px 24px;
+      border-bottom: 1px solid var(--hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: var(--ink-muted);
+      gap: 10px;
+    }
+
+    .status-steps { display: flex; gap: 12px; }
+    .status-step { font-size: 10.5px; color: var(--ink-faint); }
+    .status-step.active { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+    .chat-messages { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+    .msg-row { display: flex; flex-direction: column; max-width: 84%; gap: 5px; }
+    .msg-row.mine { align-self: flex-end; align-items: flex-end; }
+    .msg-row.theirs { align-self: flex-start; align-items: flex-start; }
+    .msg-meta { font-size: 10px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .msg-body { padding: 11px 14px; font-size: 12px; line-height: 1.65; }
+    .msg-row.theirs .msg-body { background: var(--surface); color: var(--ink); }
+    .msg-row.mine .msg-body { background: var(--ink); color: var(--bg); }
+    .msg-img { width: 180px; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid var(--hairline); }
+
+    .wechat-strip { padding: 12px 24px; border-top: 1px solid var(--hairline); background: var(--bg); display: flex; flex-direction: column; gap: 10px; }
+    .wechat-toggle-row { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--ink-2); }
+
+    .switch-btn {
+      width: 34px; height: 18px; border: 1px solid var(--hairline-strong); background: var(--bg);
+      position: relative; transition: background 0.18s ease, border-color 0.18s ease;
+    }
+    .switch-btn::after {
+      content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px;
+      background: var(--ink-muted); transition: transform 0.18s var(--ease), background 0.18s ease;
+    }
+    .switch-btn.on { background: var(--ink); border-color: var(--ink); }
+    .switch-btn.on::after { background: var(--bg); transform: translateX(16px); }
+
+    .wechat-card { padding: 10px 12px; background: var(--surface); display: flex; align-items: center; justify-content: space-between; font-size: 11px; }
+    .copy-btn { font-size: 10.5px; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+    .chat-composer { padding: 14px 24px 18px; border-top: 1px solid var(--hairline); display: flex; align-items: center; gap: 10px; }
+    .chat-input { flex: 1; font-size: 12px; padding: 8px 0; border-bottom: 1px solid var(--hairline-strong); }
+    .chat-input:focus { border-bottom-color: var(--ink); }
+    .chat-action-btn { font-size: 11px; color: var(--ink-muted); padding: 6px 2px; white-space: nowrap; }
+    .chat-action-btn:hover { color: var(--ink); }
+    .chat-send-btn { height: 32px; padding: 0 16px; background: var(--ink); color: var(--bg); font-size: 11px; letter-spacing: 0.06em; }
+
+    /* ================= MODALS & TOAST ================= */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(6px);
+      z-index: 80; display: none; align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .qr-modal {
+      width: 400px; max-width: 100%; background: var(--bg); border: 1px solid var(--ink);
+      padding: 36px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px;
+    }
+    .qr-modal svg { width: 216px; height: 216px; display: block; }
+    .qr-modal-title { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; }
+    .qr-modal-url {
+      width: 100%; padding: 8px 10px; border: 1px solid var(--hairline);
+      font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-secondary);
+      word-break: break-all; user-select: all;
+    }
+    .qr-modal-sub { font-size: 11.5px; color: var(--ink-muted); line-height: 1.7; }
+    .qr-modal-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .compose-modal {
+      width: 620px; max-width: 100%; max-height: 90vh; overflow-y: auto;
+      background: var(--bg); border: 1px solid var(--ink);
+      padding: 32px; display: flex; flex-direction: column; gap: 18px;
+    }
+
+    .toast-banner {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px);
+      background: var(--ink); color: var(--bg); padding: 11px 22px; font-size: 11.5px; letter-spacing: 0.05em;
+      z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.22s ease, transform 0.22s var(--ease);
+    }
+    .toast-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ================= FOOTER ================= */
+    .site-footer {
+      border-top: 1px solid var(--hairline);
+      padding: 28px 32px;
+      max-width: 1520px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 10.5px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+      flex-wrap: wrap;
+    }
+
+    /* ================= MOBILE PREVIEW FRAME ================= */
+    body.mobile-sim { background: #f3f3f3; padding: 24px 0; }
+    body.mobile-sim .sim-shell {
+      width: 390px; margin: 0 auto; background: var(--bg); min-height: 844px;
+      border: 1px solid var(--hairline-strong); position: relative; overflow-x: hidden;
+    }
+    .sim-exit-bar {
+      display: none; position: fixed; bottom: 20px; right: 24px; z-index: 95;
+      background: var(--ink); color: var(--bg); padding: 10px 18px; font-size: 11px; letter-spacing: 0.06em;
+    }
+    body.mobile-sim .sim-exit-bar { display: inline-flex; }
+
+    @media (max-width: 1100px) {
+      .catalog-layout { grid-template-columns: 160px minmax(0, 1fr); }
+      .rail-right { display: none; }
+      .pdp-layout { grid-template-columns: 220px minmax(0, 1fr) 220px; gap: 32px; }
+      .post-detail-layout { grid-template-columns: 220px minmax(0, 1fr); }
+      .post-detail-right { display: none; }
+    }
+
+    @media (max-width: 860px) {
+      .site-header { padding: 0 16px; }
+      .nav-left, .nav-right { gap: 11px; }
+      .brand-mark { font-size: 13px; letter-spacing: 0.14em; }
+      .hide-sm { display: none; }
+      .app-main { padding: 20px 16px 88px; }
+      .catalog-layout { grid-template-columns: 1fr; gap: 0; }
+      .rail { display: none; }
+      .mobile-controls { display: flex; }
+      .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 14px; row-gap: 34px; }
+      .creator-index-row { grid-template-columns: 40px 1fr auto; }
+      .creator-index-hide-sm { display: none; }
+      .community-featured { grid-template-columns: 1fr; gap: 18px; }
+      .post-row { grid-template-columns: 1fr; gap: 14px; }
+      .post-row-thumb { width: 100%; aspect-ratio: 16 / 9; }
+      .post-detail-layout { grid-template-columns: 1fr; gap: 28px; }
+      .pdp-layout { grid-template-columns: 1fr; gap: 28px; }
+      .pdp-col-sticky { position: static; }
+      .pdp-images { order: -1; }
+      .editorial-hero { grid-template-columns: 1fr; gap: 28px; }
+      .owner-strip { grid-template-columns: repeat(2, 1fr); }
+      .profile-works-grid { grid-template-columns: 1fr; }
+      .profile-work-item.featured { grid-column: span 1; }
+      .creators-dossier-grid { grid-template-columns: 1fr; }
+      .profile-service-row { grid-template-columns: 56px 1fr; gap: 12px; }
+      .manage-actions { justify-content: flex-start; }
+      .inline-panel-grid { grid-template-columns: 1fr; }
+      .messages-layout { grid-template-columns: 1fr; }
+      .thread-list { border-right: none; padding-right: 0; margin-bottom: 24px; }
+      .chat-stage { padding-left: 0; }
+      .ai-grid, .ai-result-wrap { grid-template-columns: 1fr; gap: 28px; }
+      .site-footer { flex-direction: column; align-items: flex-start; padding: 24px 16px; }
+    }
+
+    body.mobile-sim .site-header { padding: 0 16px; }
+    body.mobile-sim .nav-left, body.mobile-sim .nav-right { gap: 10px; }
+    body.mobile-sim .brand-mark { font-size: 12px; letter-spacing: 0.13em; }
+    body.mobile-sim .hide-sm { display: none; }
+    body.mobile-sim .app-main { padding: 18px 16px 80px; }
+    body.mobile-sim .catalog-layout { grid-template-columns: 1fr; gap: 0; }
+    body.mobile-sim .rail { display: none; }
+    body.mobile-sim .mobile-controls { display: flex; }
+    body.mobile-sim .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 14px; row-gap: 32px; }
+    body.mobile-sim .creator-index-row { grid-template-columns: 40px 1fr auto; }
+    body.mobile-sim .creator-index-hide-sm { display: none; }
+    body.mobile-sim .community-featured { grid-template-columns: 1fr; gap: 16px; }
+    body.mobile-sim .post-row { grid-template-columns: 1fr; gap: 12px; }
+    body.mobile-sim .post-row-thumb { width: 100%; aspect-ratio: 16 / 9; }
+    body.mobile-sim .post-detail-layout { grid-template-columns: 1fr; gap: 24px; }
+    body.mobile-sim .pdp-layout { grid-template-columns: 1fr; gap: 24px; }
+    body.mobile-sim .pdp-col-sticky { position: static; }
+    body.mobile-sim .pdp-images { order: -1; }
+    body.mobile-sim .editorial-hero { grid-template-columns: 1fr; gap: 24px; }
+    body.mobile-sim .owner-strip { grid-template-columns: repeat(2, 1fr); }
+    body.mobile-sim .profile-works-grid { grid-template-columns: 1fr; }
+    body.mobile-sim .profile-work-item.featured { grid-column: span 1; }
+    body.mobile-sim .creators-dossier-grid { grid-template-columns: 1fr; }
+    body.mobile-sim .profile-service-row { grid-template-columns: 56px 1fr; gap: 12px; }
+    body.mobile-sim .inline-panel-grid { grid-template-columns: 1fr; }
+    body.mobile-sim .ai-grid, body.mobile-sim .ai-result-wrap { grid-template-columns: 1fr; gap: 24px; }
+    body.mobile-sim .messages-layout { grid-template-columns: 1fr; }
+    body.mobile-sim .thread-list { border-right: none; padding-right: 0; }
+    body.mobile-sim .chat-stage { padding-left: 0; }
+    body.mobile-sim .chat-drawer { width: 390px; }
+    body.mobile-sim .site-footer { flex-direction: column; align-items: flex-start; padding: 20px 16px; }
+  </style>
+</head>
+<body>
+  <div class="sim-shell">
+    <!-- TOP HEADER: 3 PUBLIC PILLARS (发现 · 创作者 · 社区) + UNIFIED PERSONAL PROFILE -->
+    <header class="site-header" id="siteHeader">
+      <nav class="nav-left">
+        <button class="nav-link active" data-nav="catalog" onclick="switchView('catalog')">发现</button>
+        <button class="nav-link" data-nav="creators" onclick="switchView('creators')">创作者</button>
+        <button class="nav-link" data-nav="community" onclick="switchView('community')">社区</button>
+        <button class="nav-link hide-sm" id="searchToggleBtn" onclick="toggleSearch()">搜索</button>
+      </nav>
+
+      <button class="brand-mark" onclick="switchView('catalog')">FIRASAT XXI</button>
+
+      <div class="nav-right">
+        <button class="nav-link" data-nav="my-profile" onclick="openMyProfile()">个人主页</button>
+        <button class="nav-link" data-nav="messages" onclick="switchView('messages')" id="navMessagesBtn">消息 (1)</button>
+        <button class="nav-link hide-sm" onclick="openQrModal()">扫码</button>
+      </div>
+    </header>
+
+    <!-- UNIVERSAL SLIDE-DOWN SEARCH -->
+    <div class="search-bar" id="searchBar">
+      <div class="search-inner">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="搜索技能、创作者、社区帖子、方法参数或区域（如：美甲、布光、排版、同好）..."
+          oninput="handleSearch(this.value)"
+        />
+        <button class="search-close" onclick="toggleSearch(false)">关闭 [ESC]</button>
+      </div>
+    </div>
+
+    <main class="app-main">
+      <!-- ==================== VIEW 1: SERVICE DISCOVERY ==================== -->
+      <section class="view active" id="view-catalog">
+        <div class="mobile-controls" id="mobileCatalogControls"></div>
+
+        <div class="catalog-layout">
+          <aside class="rail">
+            <div class="rail-group" id="categoryRail"></div>
+            <div class="rail-group" id="regionRail"></div>
+            <div class="rail-group" id="budgetRail"></div>
+
+            <div class="rail-group">
+              <div class="rail-title">档期状态</div>
+              <button class="rail-btn active" id="availAllBtn" onclick="setAvailFilter('all')">全部状态</button>
+              <button class="rail-btn" id="availWeekBtn" onclick="setAvailFilter('week')">仅看本周可约</button>
+            </div>
+
+            <div class="rail-group">
+              <div class="rail-faint">概念交互原型 · 示例数据<br />浏览免登录 · 会话内自愿换微信</div>
+            </div>
+          </aside>
+
+          <div>
+            <div class="gallery-meta-bar">
+              <div class="gallery-heading" id="galleryHeading"><strong>全部服务</strong> 全部区域</div>
+              <div class="gallery-count mono" id="galleryCount">6 项服务</div>
+            </div>
+            <div class="catalog-grid" id="catalogGrid"></div>
+          </div>
+
+          <aside class="rail rail-right">
+            <div class="rail-group" id="sortRail">
+              <div class="rail-title">排序方式</div>
+              <button class="rail-btn active" data-sort="default" onclick="setSort('default')">最新确认</button>
+              <button class="rail-btn" data-sort="week" onclick="setSort('week')">本周可约优先</button>
+              <button class="rail-btn" data-sort="price-asc" onclick="setSort('price-asc')">价格由低到高</button>
+              <button class="rail-btn" data-sort="price-desc" onclick="setSort('price-desc')">价格由高到低</button>
+            </div>
+
+            <div class="qr-mini-box" onclick="openQrModal()">
+              <div id="miniQrContainer"></div>
+              <div class="qr-mini-label">手机扫码体验 H5<br />或点击切换竖屏预览</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 2: SCALABLE CREATORS / USERS DIRECTORY ==================== -->
+      <section class="view" id="view-creators">
+        <div class="mobile-controls" id="mobileCreatorsControls"></div>
+
+        <div class="catalog-layout">
+          <aside class="rail">
+            <div class="rail-group" id="creatorSkillRail"></div>
+            <div class="rail-group" id="creatorRegionRail"></div>
+
+            <div class="rail-group">
+              <div class="rail-title">主页状态</div>
+              <button class="rail-btn active" id="creatorAvailAll" onclick="setCreatorAvail('all')">全部用户</button>
+              <button class="rail-btn" id="creatorAvailWeek" onclick="setCreatorAvail('week')">当前开启可约服务</button>
+              <button class="rail-btn" id="creatorAvailLearner" onclick="setCreatorAvail('community')">同好 / 记录者（未开服务）</button>
+            </div>
+
+            <div class="rail-group">
+              <div class="rail-faint">每位用户均拥有独立个人主页，不限定供需身份；可只沉淀习作与讨论，也可按需开启服务。</div>
+            </div>
+          </aside>
+
+          <div>
+            <div class="gallery-meta-bar">
+              <div class="gallery-heading" id="creatorsHeading"><strong>创作者与同好目录</strong> 全部方向</div>
+              <div class="gallery-count mono" id="creatorsCount">8 位用户</div>
+            </div>
+            <div id="creatorsMainContainer"></div>
+          </div>
+
+          <aside class="rail rail-right">
+            <div class="rail-group">
+              <div class="rail-title">浏览视图</div>
+              <button class="rail-btn active" id="creatorModeGallery" onclick="setCreatorViewMode('gallery')">人物画册（多图展带）</button>
+              <button class="rail-btn" id="creatorModeIndex" onclick="setCreatorViewMode('index')">名录索引（适合多人）</button>
+            </div>
+
+            <div class="rail-group">
+              <div class="rail-title">排序</div>
+              <button class="rail-btn active" id="creatorSortDefault" onclick="setCreatorSort('default')">近期活跃</button>
+              <button class="rail-btn" id="creatorSortAz" onclick="setCreatorSort('az')">按字母 A–Z</button>
+              <button class="rail-btn" id="creatorSortServices" onclick="setCreatorSort('services')">可约服务数优先</button>
+            </div>
+
+            <div id="creatorHoverPreviewBox"></div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 3: COMMUNITY (UNIFIED COLUMNS: TIEBA × GITHUB × BLOG × DOUBAN) ==================== -->
+      <section class="view" id="view-community">
+        <div class="mobile-controls" id="mobileCommunityControls"></div>
+
+        <div class="catalog-layout">
+          <aside class="rail">
+            <div class="rail-group" id="communityColumnsRail"></div>
+            <div class="rail-group" id="communityTypeRail"></div>
+
+            <div class="rail-group" style="gap:8px;">
+              <button class="btn-primary" style="height:38px;" onclick="openPostModal()">+ 写博客 / 发起讨论</button>
+              <button class="btn-outline" style="height:36px;" onclick="openColumnModal()">+ 创建新专栏</button>
+            </div>
+
+            <div class="rail-group">
+              <div class="rail-faint">统一专栏节点架构：兴趣技能、高校认证与地域社团均以专栏平等承载，一篇内容可跨专栏同步沉淀。</div>
+            </div>
+          </aside>
+
+          <div>
+            <div id="activeColumnHeader"></div>
+            <div class="gallery-meta-bar">
+              <div class="gallery-heading" id="communityHeading"><strong>社区</strong> 全部专栏</div>
+              <div class="gallery-count mono" id="communityCount">7 篇内容</div>
+            </div>
+            <div id="communityFeedContainer"></div>
+          </div>
+
+          <aside class="rail rail-right">
+            <div class="rail-group">
+              <div class="rail-title">排序方式</div>
+              <button class="rail-btn active" id="commSortRecent" onclick="setCommunitySort('recent')">最新回复</button>
+              <button class="rail-btn" id="commSortStars" onclick="setCommunitySort('stars')">最多收藏 / 启发</button>
+              <button class="rail-btn" id="commSortBlog" onclick="setCommunitySort('blog')">方法博客优先</button>
+            </div>
+
+            <div class="rail-group">
+              <div class="rail-title">近期活跃同好</div>
+              <div id="communityActiveMembers"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 4: COMMUNITY POST DETAIL ==================== -->
+      <section class="view" id="view-post"></section>
+
+      <!-- ==================== VIEW 5: SERVICE DETAIL (SSENSE 3-COL PDP) ==================== -->
+      <section class="view" id="view-detail"></section>
+
+      <!-- ==================== VIEW 6: UNIFIED PERSONAL PROFILE ==================== -->
+      <section class="view" id="view-profile"></section>
+
+      <!-- ==================== VIEW 7: MESSAGES INBOX ==================== -->
+      <section class="view" id="view-messages"></section>
+    </main>
+
+    <footer class="site-footer">
+      <div>FIRASAT XXI / 先觉纪 · 面向个人多元技能发展与自由商业化的数字空间</div>
+      <div style="display:flex; align-items:center; gap:20px;">
+        <span class="mono">LOCAL INTERACTIVE PROTOTYPE</span>
+        <button class="text-action" onclick="resetAllDemoData()">重置演示数据</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- SLIDE-OVER CHAT DRAWER -->
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeChatDrawer()"></div>
+  <aside class="chat-drawer" id="chatDrawer" aria-label="服务对话"></aside>
+
+  <!-- QR PRESENTATION MODAL -->
+  <div class="modal-backdrop" id="qrModal" onclick="if(event.target===this) closeQrModal()">
+    <div class="qr-modal">
+      <div class="qr-modal-title">FIRASAT XXI · 手机扫码体验</div>
+      <div id="largeQrContainer"></div>
+      <div class="qr-modal-url" id="qrDemoUrlText">https://ryan0067618.github.io/firasat-xxi/</div>
+      <div class="qr-modal-sub">
+        微信或手机浏览器扫描上方二维码即可直接进入移动交互原型；亦可在桌面端一键切换 390px 竖屏预览。
+      </div>
+      <div class="qr-modal-actions">
+        <button class="btn-outline" onclick="copyDemoUrl()">复制访问链接</button>
+        <button class="btn-outline" onclick="downloadQrPng()">下载高清 PNG</button>
+      </div>
+      <button class="btn-primary" onclick="toggleMobileSim()">切换手机竖屏预览 (390px)</button>
+      <button class="btn-outline" onclick="closeQrModal()">关闭</button>
+    </div>
+  </div>
+
+  <!-- NEW COMMUNITY POST / BLOG MODAL -->
+  <div class="modal-backdrop" id="postModal" onclick="if(event.target===this) closePostModal()">
+    <div class="compose-modal">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="qr-modal-title" style="letter-spacing:0.08em;">发布社区内容（同步至个人主页）</div>
+        <button class="search-close" onclick="closePostModal()">关闭 [ESC]</button>
+      </div>
+
+      <div class="inline-panel-grid">
+        <div>
+          <label class="field-label">主属专栏（技能 / 兴趣）</label>
+          <select id="newPostPrimaryCol" class="field-select"></select>
+        </div>
+        <div>
+          <label class="field-label">关联高校 / 地域专栏（选填，跨专栏同步）</label>
+          <select id="newPostSecondaryCol" class="field-select"></select>
+        </div>
+      </div>
+
+      <div>
+        <label class="field-label">内容形态</label>
+        <select id="newPostType" class="field-select">
+          <option value="方法博客">方法博客（长文 + 开源参数库）</option>
+          <option value="小组讨论">小组讨论（提问 / 审美交流）</option>
+          <option value="同好共创">同好共创（找搭子 / 约练）</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="field-label">标题</label>
+        <input id="newPostTitle" class="field-input" placeholder="清晰写明你的方法主题、问题或共创方向..." />
+      </div>
+
+      <div>
+        <label class="field-label">正文内容</label>
+        <textarea id="newPostBody" class="field-textarea" placeholder="支持分段记录你的方法、思考或提问..."></textarea>
+      </div>
+
+      <div>
+        <label class="field-label">开源参数 / 工具清单（选填，GitHub 风格结构化参考块）</label>
+        <textarea id="newPostSpecs" class="field-textarea" style="min-height:76px;" placeholder="例：机身 5100K / 曝光 -0.3EV / 网格 12 列 / 留白 ≥35%"></textarea>
+      </div>
+
+      <div>
+        <label class="field-label">配图（选填，支持本地选图）</label>
+        <input type="file" id="newPostFile" accept="image/*" style="font-size:11.5px; color:var(--ink-muted);" />
+      </div>
+
+      <div style="display:flex; gap:12px; margin-top:4px;">
+        <button class="btn-primary" style="max-width:200px;" onclick="submitNewPost()">确认发布</button>
+        <button class="btn-outline" style="max-width:120px;" onclick="closePostModal()">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE NEW COLUMN MODAL (UNIFIED TIEBA-STYLE NODE CREATION: INTEREST / CAMPUS / REGION) -->
+  <div class="modal-backdrop" id="columnModal" onclick="if(event.target===this) closeColumnModal()">
+    <div class="compose-modal" style="width:520px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="qr-modal-title" style="letter-spacing:0.08em;">创建新专栏（兴趣 / 高校 / 地域）</div>
+        <button class="search-close" onclick="closeColumnModal()">关闭 [ESC]</button>
+      </div>
+
+      <div>
+        <label class="field-label">专栏类型</label>
+        <select id="newColKind" class="field-select">
+          <option value="campus">高校专栏（@ · 可申请校园认证节点）</option>
+          <option value="interest">技能与兴趣专栏（# · 开放式主题吧）</option>
+          <option value="region">地域与社团专栏（@ · 同城或组织节点）</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="field-label">专栏名称</label>
+        <input id="newColName" class="field-input" placeholder="例：西交利物浦大学 / 胶片暗房 / 独立音乐人" />
+      </div>
+
+      <div>
+        <label class="field-label">专栏简介（一句话说明定位与交流范围）</label>
+        <input id="newColDesc" class="field-input" placeholder="例：本校影像、设计与多元技能同好交流、机位共享与共创专栏" />
+      </div>
+
+      <div style="display:flex; gap:12px; margin-top:4px;">
+        <button class="btn-primary" style="max-width:200px;" onclick="submitNewColumn()">确认创建专栏</button>
+        <button class="btn-outline" style="max-width:120px;" onclick="closeColumnModal()">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL FOR FULLSCREEN ARTWORK VIEWING -->
+  <div class="modal-backdrop" id="lightboxModal" onclick="if(event.target===this) closeLightbox()">
+    <div class="lightbox-box">
+      <img id="lightboxImg" src="" alt="" />
+      <div class="lightbox-meta">
+        <span id="lightboxCaption"></span>
+        <button class="search-close" onclick="closeLightbox()">关闭 [ESC]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HIDDEN FILE INPUTS FOR REAL LOCAL IMAGE SELECTION -->
+  <input type="file" id="chatPhotoInput" accept="image/*" style="display:none;" onchange="handleChatPhotoUpload(event)" />
+
+  <button class="sim-exit-bar" onclick="toggleMobileSim()">退出手机预览 · 返回宽屏</button>
+  <div class="toast-banner" id="toastBanner"></div>
+
+  <script>
+    const STORAGE_KEY = "firasat_xxi_demo_v8";
+
+    const REGIONS = ["全部区域", "苏州 · 石湖", "苏州 · 市区", "线上协作"];
+    const CATEGORIES = ["全部品类", "人像摄影", "妆造造型", "视觉设计", "手工美甲", "影像剪辑"];
+    const BUDGETS = [
+      { key: "all", label: "不限预算", max: Infinity },
+      { key: "100", label: "¥100 以内", max: 100 },
+      { key: "150", label: "¥150 以内", max: 150 }
+    ];
+    const CREATOR_SKILLS = ["全部方向", "人像摄影", "妆造造型", "视觉设计", "手工美甲", "影像剪辑", "胶片习作"];
+    const COMMUNITY_TYPES = ["全部形态", "方法博客", "小组讨论", "同好共创"];
+
+    /* ==================== INITIAL SEED DATA ==================== */
+    function getSeedData() {
+      return {
+        profiles: {
+          zhouke: {
+            id: "zhouke",
+            en: "ZHOU KE",
+            name: "周可",
+            region: "苏州 · 石湖",
+            locationDetail: "苏州 · 石湖片区及周边",
+            primarySkill: "人像摄影",
+            skills: ["人像摄影", "视觉设计", "后期方法"],
+            coverImg: "assets/portrait_2.jpg",
+            altImg: "assets/portrait.jpg",
+            heroImg: "assets/portrait_2.jpg",
+            isSelf: true,
+            statement: "偏好阴天自然光与建筑线条里克制的人物状态。拍摄前会对齐景别、着装色调与精修张数；平时也在个人主页与社区持续开源布光与调色参数笔记。" ,
+            works: [
+              { img: "assets/portrait_2.jpg", title: "美术馆洞石立面 · 自然光人像", year: "2026.11" },
+              { img: "assets/portrait.jpg", title: "混凝土墙面 · 阴天人像习作", year: "2026.11" },
+              { img: "assets/concrete_stairs.jpg", title: "清水混凝土楼梯 · 建筑几何光影", year: "2026.10" }
+            ]
+          },
+          chenxi: {
+            id: "chenxi",
+            en: "CHEN XI",
+            name: "陈汐",
+            region: "苏州 · 石湖",
+            locationDetail: "苏州 · 石湖片区",
+            primarySkill: "妆造造型",
+            skills: ["妆造造型", "形象顾问"],
+            coverImg: "assets/makeup.jpg",
+            altImg: "assets/prada_corridor.jpg",
+            heroImg: "assets/makeup.jpg",
+            isSelf: false,
+            statement: "专注低饱和清洁感妆面与极简结构造型，服务写真、答辩形象与小型演出。拒绝流水线厚重妆感，也在社区分享镜头底妆实测记录。",
+            works: [
+              { img: "assets/makeup.jpg", title: "冷灰光影 · 结构银灰眼线妆造", year: "2026.11" },
+              { img: "assets/prada_corridor.jpg", title: "冷白镜面空间 · 秀场造型视觉参考", year: "2026.10" }
+            ]
+          },
+          linyou: {
+            id: "linyou",
+            en: "LIN YOU",
+            name: "林柚",
+            region: "线上协作",
+            locationDetail: "苏州 · 支持全国线上协作",
+            primarySkill: "视觉设计",
+            skills: ["视觉设计", "印刷排版"],
+            coverImg: "assets/design.jpg",
+            altImg: "assets/swiss-poster-01.svg",
+            heroImg: "assets/design.jpg",
+            isSelf: false,
+            statement: "专注瑞士网格版式、展览海报、项目路演视觉与独立印刷物。相信清晰的排版秩序本身就是一种表达。",
+            works: [
+              { img: "assets/design.jpg", title: "艺术展 · 印刷刊物与海报实拍", year: "2026.11" },
+              { img: "assets/swiss-poster-01.svg", title: "FORM & ORDER · 展览主视觉海报", year: "2026.11" },
+              { img: "assets/swiss_poster_1957.jpg", title: "瑞士国际主义网格 · 经典比例研究", year: "2026.10" }
+            ]
+          },
+          suhe: {
+            id: "suhe",
+            en: "SU HE",
+            name: "苏禾",
+            region: "苏州 · 石湖",
+            locationDetail: "苏州 · 石湖 / 支持寄送",
+            primarySkill: "手工美甲",
+            skills: ["手工美甲", "穿戴甲定制"],
+            coverImg: "assets/nails_2.jpg",
+            altImg: "assets/nails.png",
+            heroImg: "assets/nails_2.jpg",
+            isSelf: false,
+            statement: "按本人甲型尺寸量身绘制，偏低饱和裸色、哑光洞石灰与细银线条风格。同城可当面量尺，外地支持线上量甲指南与寄送。",
+            works: [
+              { img: "assets/nails_2.jpg", title: "洞石哑光 · 极细银线手工定制甲", year: "2026.11" },
+              { img: "assets/nails.png", title: "暖灰织物 · 琥珀琉璃手绘甲", year: "2026.11" }
+            ]
+          },
+          azhe: {
+            id: "azhe",
+            en: "A ZHE",
+            name: "阿哲",
+            region: "线上协作",
+            locationDetail: "苏州 · 支持全国线上交付",
+            primarySkill: "影像剪辑",
+            skills: ["影像剪辑", "动态视觉"],
+            coverImg: "assets/cinema_still.jpg",
+            altImg: "assets/aperture.png",
+            heroImg: "assets/cinema_still.jpg",
+            isSelf: false,
+            statement: "专注 3 分钟以内项目路演演示片、纪录短片剪辑、冷调达芬奇调色与克制动态片头。",
+            works: [
+              { img: "assets/cinema_still.jpg", title: "蓝调庭院 · 35mm 短片调色静帧", year: "2026.11" },
+              { img: "assets/aperture.png", title: "概念片头 · 金属光圈动效", year: "2026.11" },
+              { img: "assets/langen_dusk.jpg", title: "暮色玻璃与水影 · 冷暖调色参照", year: "2026.10" }
+            ]
+          },
+          shenyu: {
+            id: "shenyu",
+            en: "SHEN YU",
+            name: "沈屿",
+            region: "苏州 · 市区",
+            locationDetail: "苏州 · 市区及环湖片区",
+            primarySkill: "人像摄影",
+            skills: ["人像摄影", "空间纪实"],
+            coverImg: "assets/lakeside.png",
+            altImg: "assets/kanazawa_snow.jpg",
+            heroImg: "assets/lakeside.png",
+            isSelf: false,
+            statement: "专注傍晚环境纪实、建筑空间与自然跟拍。偏爱水面、雪景与几何立面交界的冷暖过渡光。",
+            works: [
+              { img: "assets/lakeside.png", title: "蓝调时刻 · 湖岸建筑与倒影", year: "2026.11" },
+              { img: "assets/kanazawa_snow.jpg", title: "雪后美术馆 · 极简玻璃外立面", year: "2026.11" },
+              { img: "assets/spiral_stairs.jpg", title: "纯白旋转楼梯 · 建筑几何仰拍", year: "2026.10" }
+            ]
+          },
+          /* NON-PROVIDER REGULAR USERS (PROVING PERSONAL PROFILE IS FOR EVERYONE) */
+          luyu: {
+            id: "luyu",
+            en: "LU YU",
+            name: "陆屿",
+            region: "苏州 · 石湖",
+            locationDetail: "苏州 · 胶片与自然光学习者",
+            primarySkill: "胶片习作",
+            skills: ["胶片习作", "人像摄影"],
+            coverImg: "assets/film_camera.jpg",
+            altImg: "assets/hasselblad.jpg",
+            heroImg: "assets/film_camera.jpg",
+            isSelf: false,
+            statement: "目前还在系统练习构图与自然光人像，暂不接商单。用个人主页记录每卷胶片习作和器材测试，偶尔在社区约同好周末一起扫街互拍。",
+            works: [
+              { img: "assets/film_camera.jpg", title: "主力机器 · Leica M6 旁轴记录", year: "2026.11" },
+              { img: "assets/hasselblad.jpg", title: "中画幅体验 · Hasselblad 500 棚测", year: "2026.11" },
+              { img: "assets/arch_concrete.jpg", title: "黑白胶片卷 #04 · 光之教堂混凝土", year: "2026.10", bw: true }
+            ]
+          },
+          xuning: {
+            id: "xuning",
+            en: "XU NING",
+            name: "许宁",
+            region: "线上协作",
+            locationDetail: "苏州 · 独立出版与字体爱好者",
+            primarySkill: "视觉设计",
+            skills: ["视觉设计", "独立博客"],
+            coverImg: "assets/type-specimen-03.svg",
+            altImg: "assets/swiss-zine-02.svg",
+            heroImg: "assets/type-specimen-03.svg",
+            isSelf: false,
+            statement: "偏爱瑞士排版、杂志网格与前端视觉研究，暂未开启对外服务。在先觉纪收集好用的版式参考，并在社区小组交流中文排版细节。",
+            works: [
+              { img: "assets/type-specimen-03.svg", title: "Aa 克制秩序留白 · 中英字体比例实验", year: "2026.11" },
+              { img: "assets/swiss-zine-02.svg", title: "SILENT ARCHIVE · 24 页刊物版式拆解", year: "2026.11" },
+              { img: "assets/contax_film.jpg", title: "独立出版翻拍器材 · Contax Planar 50mm", year: "2026.10" }
+            ]
+          }
+        },
+        services: [
+          {
+            id: "srv-01",
+            creatorId: "zhouke",
+            category: "人像摄影",
+            region: "苏州 · 石湖",
+            title: "建筑与自然光人像 · 含 3 张精修",
+            shortDesc: "混凝土建筑与湖岸自然光人像，含 90 分钟拍摄、底片初选全给及 3 张精修成片。",
+            deliverable: "90 分钟外拍 + 底片全给 + 3 张精修成片（48 小时内交付）",
+            location: "苏州 · 石湖片区（建筑群 / 湖岸长廊）",
+            price: 90,
+            priceUnit: "¥90 / 次",
+            availableThisWeek: true,
+            published: true,
+            slotLabel: "本周六 14:00 起可约",
+            availBadge: "本周可约",
+            confirmedAt: "2026.11.21",
+            validUntil: "2026.11.29",
+            images: ["assets/portrait.jpg", "assets/concrete_stairs.jpg"],
+            captions: ["图 01 · 建筑立面阴天人像样本（示例）", "图 02 · 清水混凝土楼梯光影构图（示例）"]
+          },
+          {
+            id: "srv-02",
+            creatorId: "chenxi",
+            category: "妆造造型",
+            region: "苏州 · 石湖",
+            title: "冷调写真与活动妆造",
+            shortDesc: "针对约拍、小型演出或正式场合的清洁感造型，含妆前沟通与补妆建议。",
+            deliverable: "60 分钟全妆 + 简约发型整理（含一次性工具）",
+            location: "苏州 · 石湖片区 / 约定室内点位",
+            price: 120,
+            priceUnit: "¥120 / 次",
+            availableThisWeek: true,
+            published: true,
+            slotLabel: "本周五、周日全天可约",
+            availBadge: "本周可约",
+            confirmedAt: "2026.11.22",
+            validUntil: "2026.11.30",
+            images: ["assets/makeup.jpg", "assets/prada_corridor.jpg"],
+            captions: ["图 01 · 极简银灰线条妆造样本（示例）", "图 02 · 冷白镜面空间造型参考（示例）"]
+          },
+          {
+            id: "srv-03",
+            creatorId: "linyou",
+            category: "视觉设计",
+            region: "线上协作",
+            title: "活动主视觉与展览海报",
+            shortDesc: "演出、展览或路演封面视觉设计，交付印刷级 PDF 与线上延展尺寸。",
+            deliverable: "1 套主视觉海报 + 2 轮修改 + 高清印刷/线上源文件",
+            location: "线上协作 · 苏州可约当面核稿",
+            price: 150,
+            priceUnit: "¥150 / 套",
+            availableThisWeek: true,
+            published: true,
+            slotLabel: "本周余 2 个接单名额",
+            availBadge: "本周可约",
+            confirmedAt: "2026.11.20",
+            validUntil: "2026.12.02",
+            images: ["assets/design.jpg", "assets/swiss-poster-01.svg"],
+            captions: ["图 01 · 瑞士网格印刷品与海报样稿（示例）", "图 02 · FORM & ORDER 主视觉海报（示例）"]
+          },
+          {
+            id: "srv-04",
+            creatorId: "suhe",
+            category: "手工美甲",
+            region: "苏州 · 石湖",
+            title: "洞石哑光与细银线手工穿戴甲",
+            shortDesc: "按本人甲型尺寸量身绘制，偏低饱和洞石灰、磨砂与细银线条风格，可重复佩戴。",
+            deliverable: "10 片定制甲片 + 胶贴工具包 + 当面或线上核尺",
+            location: "苏州 · 石湖自取 / 全国可寄",
+            price: 68,
+            priceUnit: "¥68 / 套",
+            availableThisWeek: true,
+            published: true,
+            slotLabel: "本周余 3 副量尺名额",
+            availBadge: "本周可约",
+            confirmedAt: "2026.11.22",
+            validUntil: "2026.12.05",
+            images: ["assets/nails_2.jpg", "assets/nails.png"],
+            captions: ["图 01 · 洞石哑光细银线手工甲样本（示例）", "图 02 · 暖灰琉璃款参考（示例）"]
+          },
+          {
+            id: "srv-05",
+            creatorId: "azhe",
+            category: "影像剪辑",
+            region: "线上协作",
+            title: "35mm 短片剪辑与蓝调调色",
+            shortDesc: "个人纪录短片、3 分钟路演展示片或活动回顾的节奏剪辑、达芬奇调色与声音处理。",
+            deliverable: "3 分钟以内成片 + 1 轮精修反馈 + 4K 导出",
+            location: "线上协作交付",
+            price: 200,
+            priceUnit: "¥200 / 条",
+            availableThisWeek: true,
+            published: true,
+            slotLabel: "本周可接 1 条（3 日交付）",
+            availBadge: "本周可约",
+            confirmedAt: "2026.11.21",
+            validUntil: "2026.12.01",
+            images: ["assets/cinema_still.jpg", "assets/langen_dusk.jpg", "assets/aperture.png"],
+            captions: ["图 01 · 蓝调庭院 35mm 调色静帧（示例）", "图 02 · 暮色水影冷暖调色参照（示例）", "图 03 · 动态片头金属光圈视觉（示例）"]
+          },
+          {
+            id: "srv-06",
+            creatorId: "shenyu",
+            category: "人像摄影",
+            region: "苏州 · 市区",
+            title: "暮色湖畔与建筑空间跟拍",
+            shortDesc: "适合双人轻写真、独立空间纪实或毕业纪念跟拍，捕捉自然松弛的互动瞬间。",
+            deliverable: "120 分钟跟拍 + 底片全给 + 6 张精修成片",
+            location: "苏州 · 市区及环湖景区",
+            price: 140,
+            priceUnit: "¥140 / 次",
+            availableThisWeek: true,
+            published: true,
+            slotLabel: "本周日下午可约",
+            availBadge: "本周可约",
+            confirmedAt: "2026.11.21",
+            validUntil: "2026.11.29",
+            images: ["assets/lakeside.png", "assets/kanazawa_snow.jpg", "assets/spiral_stairs.jpg"],
+            captions: ["图 01 · 暮色湖畔实景样张（示例）", "图 02 · 极简玻璃美术馆外景（示例）", "图 03 · 旋转楼梯空间几何（示例）"]
+          },
+          {
+            id: "srv-07",
+            creatorId: "zhouke",
+            category: "人像摄影",
+            region: "苏州 · 市区",
+            title: "美术馆 / 极简穿搭个人形象照",
+            shortDesc: "适用于个人简历、作品集封面与路演形象展示，提前协同服装色系与拍摄点位。",
+            deliverable: "60 分钟拍摄 + 底片全给 + 4 张精修（横竖构图各 2 张）",
+            location: "苏州 · 美术馆及现代建筑外景",
+            price: 110,
+            priceUnit: "¥110 / 次",
+            availableThisWeek: true,
+            published: true,
+            slotLabel: "本周日 15:00 可约",
+            availBadge: "本周可约",
+            confirmedAt: "2026.11.22",
+            validUntil: "2026.11.30",
+            images: ["assets/portrait_2.jpg", "assets/concrete_stairs.jpg"],
+            captions: ["图 01 · 美术馆极简穿搭形象样本（示例）", "图 02 · 清水混凝土场景参考（示例）"]
+          },
+          {
+            id: "srv-08",
+            creatorId: "suhe",
+            category: "手工美甲",
+            region: "苏州 · 石湖",
+            title: "暖灰琉璃线条定制甲",
+            shortDesc: "低饱和裸透底色配琥珀琉璃晕染，日常耐看且显手型修长，附赠果冻胶与护理工具。",
+            deliverable: "10 片手绘定制甲 + 护理工具包 + 核尺保障",
+            location: "苏州 · 石湖自取 / 全国可寄",
+            price: 78,
+            priceUnit: "¥78 / 套",
+            availableThisWeek: false,
+            published: true,
+            slotLabel: "下周二起按序排单",
+            availBadge: "下周排单",
+            confirmedAt: "2026.11.20",
+            validUntil: "2026.12.06",
+            images: ["assets/nails.png", "assets/nails_2.jpg"],
+            captions: ["图 01 · 暖灰织物琥珀琉璃样本（示例）", "图 02 · 洞石哑光系列对照（示例）"]
+          },
+          {
+            id: "srv-09",
+            creatorId: "linyou",
+            category: "视觉设计",
+            region: "线上协作",
+            title: "独立画册 / 路演册版式设计",
+            shortDesc: "个人作品集画册、大创汇报手册或独立 Zine 的整体网格规范与印刷排版交付。",
+            deliverable: "16–24 页完整排版 + 印刷出血 PDF + 字体层级规范",
+            location: "线上协作交付",
+            price: 220,
+            priceUnit: "¥220 / 册",
+            availableThisWeek: true,
+            published: true,
+            slotLabel: "本周可接 1 册",
+            availBadge: "本周可约",
+            confirmedAt: "2026.11.21",
+            validUntil: "2026.12.05",
+            images: ["assets/swiss-zine-02.svg", "assets/swiss_poster_1957.jpg"],
+            captions: ["图 01 · 独立刊物版式样稿（示例）", "图 02 · 瑞士经典网格比例参考（示例）"]
+          }
+        ],
+        columns: [
+          { id: "col-photo", kind: "interest", name: "影像与光影", badge: "技能专栏", desc: "人像拍摄、自然光布光、胶片习作与后期参数开源交流", region: "" },
+          { id: "col-design", kind: "interest", name: "视觉与排版", badge: "技能专栏", desc: "瑞士网格、中文字体比例、海报印刷与独立出版讨论", region: "" },
+          { id: "col-beauty", kind: "interest", name: "妆造与审美", badge: "技能专栏", desc: "镜头底妆实测、极简甲艺、造型配色与审美拆解", region: "" },
+          { id: "col-collab", kind: "interest", name: "同好共创", badge: "兴趣专栏", desc: "纯交流互拍、技能搭子招募、线下展览与非商用共创", region: "" },
+          { id: "col-usts", kind: "campus", name: "苏州科技大学", badge: "高校认证", desc: "石湖 / 江枫 / 天平 · 校内技能交流、外拍机位开源与同好专栏", region: "苏州 · 石湖" },
+          { id: "col-suda", kind: "campus", name: "苏州大学", badge: "高校认证", desc: "天赐庄 / 独墅湖 · 独立设计、影像与跨校志趣专栏", region: "苏州 · 市区" },
+          { id: "col-suzhou", kind: "region", name: "苏州同城", badge: "地域专栏", desc: "跨校与自由创作者的同城展览、空间打卡与合作交流", region: "苏州 · 市区" }
+        ],
+        posts: [
+          {
+            id: "post-01",
+            columnIds: ["col-photo", "col-usts"],
+            type: "方法博客",
+            version: "v1.2",
+            authorId: "zhouke",
+            title: "阴天室外人像的冷调布光与后期参数记录（含可复用 Lightroom 基准）",
+            excerpt: "建筑西侧与水岸混凝土长廊在阴天 15:00 至 16:30 有最均匀的漫反射天光。本文公开我近期 6 组真实约拍使用的色温、曝光补偿与 HSL 压色参数。",
+            image: "assets/concrete_stairs.jpg",
+            date: "2026.11.21",
+            stars: 18,
+            starred: false,
+            linkedServiceId: "srv-01",
+            specs: "环境：阴天建筑立面 1.2m 外\n色温：5100K · 色调 +2\n曝光：-0.3 EV（保留深色外套纹理）\nHSL：橙饱和度 -14 · 橙明度 -6 · 蓝饱和度 -8",
+            body: [
+              "很多刚拍室外人像的同学总怕阴天“画面发灰”，其实只要选对浅灰混凝土或玻璃立面作为漫反射背景，阴天反而是最容易出杂志冷调质感的天气。",
+              "站位上不要贴墙，让人物离建筑立面保持 1.2 米左右，利用上方天空自然形成头顶柔光与极柔和的下颌阴影。服装尽量收敛在黑、深灰、米白三色之内，把色彩噪声降到最低。",
+              "后期我基本不套重预设，只做三步：拉平高光曲线、压低画面橙黄饱和度、保留真实皮肤肌理不做强磨皮。下面的基准参数可以直接照抄再按机身微调。"
+            ],
+            comments: [
+              { id: "c1", authorId: "luyu", time: "2026.11.21 16:04", text: "上周照着 5100K + 降橙饱和试了一组，肤色发黄的问题一下解决很多！顺便问下机身镜头一般用 50mm 还是 35mm？" },
+              { id: "c2", authorId: "zhouke", time: "2026.11.21 16:19", text: "想带建筑纵深感优先 35mm，近景情绪切 50mm。周六如果去湖畔扫街可以现场一起看直出对比。" }
+            ]
+          },
+          {
+            id: "post-06",
+            columnIds: ["col-photo", "col-usts"],
+            type: "方法博客",
+            version: "v1.1",
+            authorId: "zhouke",
+            title: "苏州科技大学石湖校区外拍机位与光线时间表（开源共建版）",
+            excerpt: "整理了石湖校区图书馆西侧、湖畔混凝土长廊与教学楼连廊三个最出片的低噪点机位，标注了最佳时段与避坑提醒，欢迎在楼层里继续补充江枫/天平点位。",
+            image: "assets/kanazawa_snow.jpg",
+            date: "2026.11.22",
+            stars: 27,
+            starred: false,
+            linkedServiceId: "srv-01",
+            specs: "机位 A：石湖图书馆西侧清水混凝土墙（阴天 15:00–16:30）\n机位 B：南岸水榭与石桥过渡带（日落后 15 分钟蓝调时刻）\n机位 C：教学楼二层极简连廊（晴天 16:30 侧逆光）",
+            body: [
+              "每次带同学或自己找石湖校内干净的拍摄背景，大家问得最多的都是“哪里人少、背景不杂”。索性把这两学期实测过的 3 个机位和光线时间写成一份开源清单，同时挂在 #影像与光影 和 @苏州科技大学 专栏里给大家共用。",
+              "图书馆西侧的灰墙自带建筑几何线条，非常适合拍极简穿搭和答辩/简历形象照；水榭长廊则适合傍晚冷暖光对比。如果大家在石湖或江枫发现了更隐蔽的好机位，欢迎直接在下面盖楼补充，我会定期把新点位合进 v1.2 版本。"
+            ],
+            comments: [
+              { id: "c7", authorId: "chenxi", time: "2026.11.22 11:20", text: "补充一个：美术楼北侧楼梯转角上午 10 点左右有非常锋利的百叶窗斜影，拍特写妆造绝配！" },
+              { id: "c8", authorId: "luyu", time: "2026.11.22 13:05", text: "已收藏，周末互拍直接按这份清单踩点。" }
+            ]
+          },
+          {
+            id: "post-02",
+            columnIds: ["col-collab", "col-usts"],
+            type: "同好共创",
+            version: "",
+            authorId: "luyu",
+            title: "周末找 1–2 位同好一起练室外自然光人像构图（纯互拍交流，不涉商用）",
+            excerpt: "刚入坑自然光人像和胶片两个月，平时自己一个人拍建筑容易卡在人物引导上。想找同样在练构图或愿意当互拍模特的同学周末下午一起走两小时，互相看片复盘。",
+            image: "",
+            date: "2026.11.22",
+            stars: 9,
+            starred: false,
+            linkedServiceId: "",
+            specs: "时间：本周六或周日下午 14:30–16:30\n地点：苏科大石湖校区图书馆西侧集合\n形式：纯同好互拍与片后复盘（AA 喝咖啡）",
+            body: [
+              "我目前还没开任何接单服务，主页里放的都是最近练习的废片和习作。发现自己拍静物和建筑还行，一到拍人就不知道怎么沟通动作和景别。",
+              "希望找 1–2 位同样在练摄影、或者想练镜头感的同学一起互拍，不追求精修出大片，重点是互相挑构图毛病、聊聊为什么某张舒服某张别扭。",
+              "有兴趣的同好可以直接在下面回帖留时间，或者点我主页看看我平时拍的调性合不合得来。"
+            ],
+            comments: [
+              { id: "c3", authorId: "shenyu", time: "2026.11.22 10:15", text: "周日下午我在湖畔拍完一单后有空，可以顺路一起聊聊环境人像的构图取舍。" }
+            ]
+          },
+          {
+            id: "post-07",
+            columnIds: ["col-design", "col-suda", "col-suzhou"],
+            type: "小组讨论",
+            version: "",
+            authorId: "linyou",
+            title: "苏州高校独立设计 / Zine 印刷同好交流：年底想合办一场小型刊物交换展",
+            excerpt: "最近接触到苏大、苏科大和同城好几位在做个人手工书、独立 Zine 和瑞士风海报的创作者，想摸个底：大家手头有没有成型的印刷作品愿意凑一场线下交换展？",
+            image: "assets/swiss_poster_1957.jpg",
+            date: "2026.11.21",
+            stars: 19,
+            starred: false,
+            linkedServiceId: "srv-03",
+            specs: "形式：个人手工书 / 极简海报 / 摄影画册交换与交流\n面向范围：苏州各高校及同城独立创作者（不限专业）",
+            body: [
+              "平时大家的平面和摄影作品大多只停留在屏幕里，其实印成 16 页小册子拿在手里的质感完全不同。年底想约苏州几所高校与同城喜欢独立出版的同好，找个安静咖啡馆或校园空间做一场极轻的小型交换展。",
+              "不收摊位费也不搞商业市集，单纯交换作品、聊排版纸张和印刷工艺。欢迎有兴趣的同学在楼层里留一下自己的方向和学校。"
+            ],
+            comments: [
+              { id: "c9", authorId: "xuning", time: "2026.11.21 19:30", text: "报名！我手头刚好在排一本 24 页的中文极简字体实验册，非常想看大家的实体纸样。" }
+            ]
+          },
+          {
+            id: "post-03",
+            columnIds: ["col-design"],
+            type: "小组讨论",
+            version: "",
+            authorId: "xuning",
+            title: "讨论：做极简风格展示页时，中文字体字号和留白比例怎么配才既克制又不显空？",
+            excerpt: "参考了很多国外极简杂志和时尚站（比如 SSENSE、Cosmos），一换成中文就容易显得字太散或者像毛坯表格。想听听做平面和前端的同好都是怎么拿捏中文密度的？",
+            image: "assets/type-specimen-03.svg",
+            date: "2026.11.20",
+            stars: 24,
+            starred: false,
+            linkedServiceId: "",
+            specs: "",
+            body: [
+              "最近在给自己的个人作品主页调版式，遇到一个很典型的中英差异：英文全大写配 10px–11px 和宽字距非常耐看，但中文方块字本身笔画密、高度齐，套同样的间距经常要么太挤、要么像没加载出 CSS。",
+              "大家平时做中文极简排版时，正文和辅助信息一般用几号字？行高拉到 1.6 还是 1.8？会不会彻底砍掉卡片边框只靠留白对齐？欢迎贴自己的经验。"
+            ],
+            comments: [
+              { id: "c4", authorId: "linyou", time: "2026.11.20 20:42", text: "核心三条：① 辅助标签控在 11px 左右、正文 13px、行高拉到 1.75 以上；② 彻底去掉卡片四周的线框和阴影，只让图片本身建立视觉边界；③ 价格/日期/编号强制用等宽数字（tabular-nums），精密感一下就出来了。" },
+              { id: "c5", authorId: "xuning", time: "2026.11.20 21:05", text: "太受用了！刚把卡片边框全删掉、把价格换成等宽字体，整个页面瞬间呼吸感完全不一样。" }
+            ]
+          },
+          {
+            id: "post-04",
+            columnIds: ["col-beauty", "col-usts"],
+            type: "方法博客",
+            version: "v1.0",
+            authorId: "chenxi",
+            title: "镜头前的底妆克制原则：为什么日常淡妆在室外冷光里反而不上镜",
+            excerpt: "记录 12 次室外约拍跟妆的对照观察：与其堆叠高饱和腮红与唇釉，不如用哑光局部提亮强化骨相清晰度。",
+            image: "assets/makeup.jpg",
+            date: "2026.11.19",
+            stars: 15,
+            starred: false,
+            linkedServiceId: "srv-02",
+            specs: "适用场景：室外阴天 / 建筑灰调人像\n关键原则：底妆半哑光 · 减少珠光高光 · 眉骨与眼尾线条收锐",
+            body: [
+              "室外漫反射光下，相机镜头会吃掉大约 30% 的面部立体度，同时放大油光和多余的珠光颗粒。这就是为什么很多同学镜子里看很精致，拍出来却像泛油或没化妆。",
+              "我的实操做法是：把色彩收干净，腮红只用极低饱和灰粉过渡；把重点放在干净的睫毛根部、克制的眼尾线条与清晰眉流上，让成片既像本人又有镜头锐度。"
+            ],
+            comments: [
+              { id: "c6", authorId: "zhouke", time: "2026.11.19 22:10", text: "摄影师强烈赞同，半哑光底妆在后期拉曲线时肤质干净非常多。" }
+            ]
+          },
+          {
+            id: "post-05",
+            columnIds: ["col-design"],
+            type: "方法博客",
+            version: "v2.0",
+            authorId: "linyou",
+            title: "用 3 条网格规则把活动海报与路演封面从“传单感”拉到展览质感",
+            excerpt: "拆解一份完整的瑞士网格排版清单：字号只留两档、留白不低于 35%、单轴对齐。附本次开源版式参数。",
+            image: "assets/aperture.png",
+            date: "2026.11.16",
+            stars: 31,
+            starred: false,
+            linkedServiceId: "srv-03",
+            specs: "栅格：12 列对称网格 · 栏距 24px\n字号层级：主标题与元信息比值 ≥ 2.4x\n色彩纪律：90% 黑白灰 + 单一主视觉主体",
+            body: [
+              "大多数海报显乱，不是因为素材不好，而是创作者害怕空白——把主标题、时间、地点、主办方、二维码全都放大到差不多大小，铺满四角。",
+              "试着只做减法：整张画面只保留一个视觉主角，所有文字信息统一压小并收束在一条垂直网格线上。当你敢留白时，高级感才真正开始出现。"
+            ],
+            comments: []
+          }
+        ],
+        threads: {
+          "srv-01": {
+            serviceId: "srv-01",
+            unread: 1,
+            shareWechat: false,
+            dealStage: "咨询中", // '咨询中' | '已约时间' | '已站外完成'
+            messages: [
+              { sender: "mine", time: "14:18", text: "你好周可，看到你在社区发的那篇阴天布光笔记和人像作品，想问本周六下午两点还能约吗？" },
+              { sender: "theirs", time: "14:22", text: "你好，周六 14:00 可以约。建议穿深灰、黑或米白系外套，建筑西侧自然漫反射光线拍出来最干净。" }
+            ]
+          }
+        },
+        savedPostIds: ["post-03"]
+      };
+    }
+
+    function loadPersistedData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return getSeedData();
+    }
+
+    let DB = loadPersistedData();
+
+    function savePersistedData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DB));
+      } catch (e) {}
+    }
+
+    function resetAllDemoData() {
+      localStorage.removeItem(STORAGE_KEY);
+      DB = getSeedData();
+      state.category = "全部品类";
+      state.region = "全部区域";
+      state.budget = "all";
+      state.availOnly = false;
+      state.search = "";
+      state.communityColumn = "all";
+      state.communityType = "全部形态";
+      showToast("已恢复全部初始演示数据");
+      switchView(state.view);
+      updateUnreadBadge();
+    }
+
+    /* ==================== UI STATE ==================== */
+    const state = {
+      view: "catalog",
+      // Discovery
+      category: "全部品类",
+      region: "全部区域",
+      budget: "all",
+      availOnly: false,
+      sort: "default",
+      search: "",
+      // Creators directory
+      creatorSkill: "全部方向",
+      creatorRegion: "全部区域",
+      creatorStatusFilter: "all", // 'all' | 'week' | 'community'
+      creatorViewMode: "gallery",
+      creatorSort: "default",
+      creatorHoverId: "zhouke",
+      // Community (unified column model)
+      communityColumn: "all",       // 'all' or any col.id from DB.columns
+      communityType: "全部形态",
+      communitySort: "recent",
+      selectedPostId: "post-01",
+      // Detail & Profile
+      selectedServiceId: "srv-01",
+      selectedProfileId: "zhouke",
+      profileTab: "works", // 'works' | 'services' | 'posts' | 'ai-publish'
+      currentUserId: "zhouke",
+      ownerEditMode: true,
+      showProfileEditForm: false,
+      showWorkUploadForm: false,
+      aiPresetIndex: 0,
+      aiDraft: null,
+      // Chat
+      activeThreadId: "srv-01",
+      pendingChatUpload: null,
+      myWechat: "firasat_demo_2026"
+    };
+
+    const AI_PRESETS = [
+      {
+        label: "样例 01 · 约拍口语原话",
+        raw: "周末下午接人像约拍，苏州石湖附近或者周边都行，大概拍一个半小时，送三张精修底片全给，九十块一次，偏向清冷建筑风不搞过度磨皮，这周六两三点都能拍～",
+        parsed: {
+          title: "冷调建筑人像摄影",
+          category: "人像摄影",
+          region: "苏州 · 石湖",
+          deliverable: "90 分钟拍摄 + 底片全给 + 3 张精修",
+          price: 90,
+          priceUnit: "¥90 / 次",
+          location: "苏州 · 石湖及周边建筑群",
+          availability: "本周末下午（周六 14:00–15:00 可约）",
+          availableThisWeek: true,
+          validUntil: "2026.11.29",
+          reviewFlag: "需本人确认：雨天改期规则与精修返图时长",
+          previewImg: "assets/portrait.jpg"
+        },
+        manualTime: "04:20",
+        aiTime: "00:18"
+      },
+      {
+        label: "样例 02 · 后期带练教学",
+        raw: "接 1 对 1 摄影与冷调后期带练，两小时现场边拍边讲光线和 Lightroom 调色思路，160 一次，苏州可线下也可线上屏幕共享，这周日晚上有空",
+        parsed: {
+          title: "自然光拍摄与冷调后期 1v1 带练",
+          category: "人像摄影",
+          region: "线上协作",
+          deliverable: "120 分钟实拍/屏幕指导 + Lightroom 调色拆解",
+          price: 160,
+          priceUnit: "¥160 / 次",
+          location: "线上协作 / 苏州可线下",
+          availability: "本周日晚可约",
+          availableThisWeek: true,
+          validUntil: "2026.11.29",
+          reviewFlag: "需本人确认：学员是否需自备相机或电脑",
+          previewImg: "assets/lakeside.png"
+        },
+        manualTime: "04:45",
+        aiTime: "00:16"
+      },
+      {
+        label: "样例 03 · 视觉海报排版",
+        raw: "最近空出两单视觉排版，可以做路演 PPT 封面或者展览极简海报，瑞士网格风格，150 一套含两轮修改和印刷 PDF，线上直接对接",
+        parsed: {
+          title: "路演与展览极简网格海报设计",
+          category: "视觉设计",
+          region: "线上协作",
+          deliverable: "主视觉海报 1 套 + 2 轮修改 + 印刷 PDF / 源文件",
+          price: 150,
+          priceUnit: "¥150 / 套",
+          location: "线上协作交付",
+          availability: "本周余 2 个名额",
+          availableThisWeek: true,
+          validUntil: "2026.12.02",
+          reviewFlag: "需本人确认：商用字体授权边界与交付天数",
+          previewImg: "assets/design.jpg"
+        },
+        manualTime: "04:50",
+        aiTime: "00:19"
+      }
+    ];
+
+    /* ==================== UTILITIES ==================== */
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    const DEMO_LIVE_URL = "https://ryan0067618.github.io/firasat-xxi/";
+    const QR_MATRIX = [
+      "11111110101100100010001111111",
+      "10000010000101010100101000001",
+      "10111010101010011101101011101",
+      "10111010111100010110001011101",
+      "10111010010001110011101011101",
+      "10000010101100111010101000001",
+      "11111110101010101010101111111",
+      "00000000110011100110100000000",
+      "11010011010100011100011101101",
+      "10101101110100111111000010011",
+      "01001111100111001101011110100",
+      "01100001100100100011000000111",
+      "10010011100010001011001101101",
+      "11101000111101000011100100011",
+      "01110111010000000000101001111",
+      "10000000111000011000110100111",
+      "01011110010011101101010110001",
+      "10000001011100111111010100111",
+      "00011111100010000110100100001",
+      "00110101001110011110100101101",
+      "00110011110011101110111111011",
+      "00000000000011110000100010100",
+      "11111110100100000101101011011",
+      "10000010001100101111100010101",
+      "10111010011100011011111111000",
+      "10111010100010001100111101011",
+      "10111010001011100111110010100",
+      "10000010101001111100011000011",
+      "11111110110101100000010110100"
+    ];
+
+    function buildQrSvg() {
+      const margin = 3;
+      const n = QR_MATRIX.length;
+      const total = n + margin * 2;
+      let path = "";
+      QR_MATRIX.forEach((row, y) => {
+        for (let x = 0; x < row.length; x++) {
+          if (row[x] === "1") path += `M${x + margin},${y + margin}h1v1h-1z`;
+        }
+      });
+      return `<svg viewBox="0 0 ${total} ${total}" shape-rendering="crispEdges" role="img" aria-label="FIRASAT XXI 手机扫码二维码"><rect width="${total}" height="${total}" fill="#FFFFFF"/><path d="${path}" fill="#000000"/></svg>`;
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+      const el = document.getElementById("toastBanner");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    function getNowStr() {
+      const d = new Date();
+      return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+    }
+
+    function getTodayDate() {
+      return "2026.11.22";
+    }
+
+    /* ==================== NAVIGATION WITH REAL BACK HISTORY STACK ==================== */
+    const navHistory = [];
+
+    function getCurrentViewLabel() {
+      if (state.view === "catalog") return "发现";
+      if (state.view === "creators") return "创作者目录";
+      if (state.view === "community") {
+        const col = getColumnObj(state.communityColumn);
+        return col ? formatColumnLabel(col) : "社区";
+      }
+      if (state.view === "post") {
+        const p = DB.posts.find(x => x.id === state.selectedPostId);
+        return p ? `帖子「${p.title.slice(0, 12)}…」` : "社区帖子";
+      }
+      if (state.view === "detail") {
+        const s = DB.services.find(x => x.id === state.selectedServiceId);
+        return s ? `服务「${s.title}」` : "服务详情";
+      }
+      if (state.view === "profile") {
+        const c = DB.profiles[state.selectedProfileId];
+        return c ? `${c.name}的个人主页` : "个人主页";
+      }
+      if (state.view === "messages") return "消息中心";
+      return "上一页";
+    }
+
+    function captureSnapshot() {
+      return {
+        view: state.view,
+        label: getCurrentViewLabel(),
+        scrollY: window.scrollY,
+        selectedServiceId: state.selectedServiceId,
+        selectedProfileId: state.selectedProfileId,
+        selectedPostId: state.selectedPostId,
+        profileTab: state.profileTab,
+        ownerEditMode: state.ownerEditMode,
+        communityColumn: state.communityColumn
+      };
+    }
+
+    function getBackButtonLabel(fallbackLabel) {
+      if (navHistory.length > 0) {
+        const prev = navHistory[navHistory.length - 1];
+        return `← 返回 ${prev.label}`;
+      }
+      return `← 返回${fallbackLabel}`;
+    }
+
+    function goBack(fallbackView = "catalog") {
+      if (navHistory.length > 0) {
+        const prev = navHistory.pop();
+        state.selectedServiceId = prev.selectedServiceId;
+        state.selectedProfileId = prev.selectedProfileId;
+        state.selectedPostId = prev.selectedPostId;
+        state.profileTab = prev.profileTab;
+        state.ownerEditMode = prev.ownerEditMode;
+        state.communityColumn = prev.communityColumn;
+        switchView(prev.view, { skipHistory: true, restoreScrollY: prev.scrollY });
+      } else {
+        switchView(fallbackView, { skipHistory: true });
+      }
+    }
+
+    function switchView(viewName, opts = {}) {
+      const { skipHistory = false, restoreScrollY = null } = opts;
+
+      // Push previous state onto history stack whenever changing destination
+      if (!skipHistory && state.view) {
+        const snap = captureSnapshot();
+        const isSameScreen =
+          snap.view === viewName &&
+          (viewName !== "detail" || snap.selectedServiceId === state.selectedServiceId) &&
+          (viewName !== "profile" || snap.selectedProfileId === state.selectedProfileId) &&
+          (viewName !== "post" || snap.selectedPostId === state.selectedPostId);
+        if (!isSameScreen) {
+          navHistory.push(snap);
+          if (navHistory.length > 30) navHistory.shift();
+        }
+      }
+
+      state.view = viewName;
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.getElementById("view-" + viewName).classList.add("active");
+
+      const viewingOwnProfile = viewName === "profile" && state.selectedProfileId === state.currentUserId;
+      document.querySelectorAll(".nav-link[data-nav]").forEach(btn => {
+        const key = btn.dataset.nav;
+        const isActive =
+          key === viewName ||
+          (viewName === "detail" && key === "catalog") ||
+          (viewName === "post" && key === "community") ||
+          (viewName === "profile" && !viewingOwnProfile && key === "creators") ||
+          (viewingOwnProfile && key === "my-profile");
+        btn.classList.toggle("active", isActive);
+      });
+
+      if (viewName === "catalog") renderCatalog();
+      if (viewName === "creators") renderCreatorsDirectory();
+      if (viewName === "community") renderCommunity();
+      if (viewName === "post") renderPostDetail();
+      if (viewName === "detail") renderDetail();
+      if (viewName === "profile") renderProfilePage();
+      if (viewName === "messages") renderMessagesPage();
+
+      window.scrollTo({ top: restoreScrollY !== null ? restoreScrollY : 0, behavior: "instant" });
+    }
+
+    function openMyProfile(tab = "works") {
+      if (state.view !== "profile" || state.selectedProfileId !== state.currentUserId) {
+        navHistory.push(captureSnapshot());
+      }
+      state.selectedProfileId = state.currentUserId;
+      state.profileTab = tab;
+      state.ownerEditMode = true;
+      state.showProfileEditForm = false;
+      state.showWorkUploadForm = false;
+      switchView("profile", { skipHistory: true });
+    }
+
+    function openProfile(profileId, tab = "works") {
+      if (state.view !== "profile" || state.selectedProfileId !== profileId) {
+        navHistory.push(captureSnapshot());
+      }
+      state.selectedProfileId = profileId;
+      state.profileTab = tab;
+      state.showProfileEditForm = false;
+      state.showWorkUploadForm = false;
+      if (profileId !== state.currentUserId) state.ownerEditMode = false;
+      switchView("profile", { skipHistory: true });
+    }
+
+    function toggleSearch(forceState) {
+      const bar = document.getElementById("searchBar");
+      const shouldOpen = typeof forceState === "boolean" ? forceState : !bar.classList.contains("open");
+      bar.classList.toggle("open", shouldOpen);
+      if (shouldOpen) {
+        if (!["catalog", "creators", "community"].includes(state.view)) switchView("catalog");
+        setTimeout(() => document.getElementById("searchInput").focus(), 100);
+      } else {
+        document.getElementById("searchInput").value = "";
+        state.search = "";
+        if (state.view === "catalog") renderCatalog();
+        if (state.view === "creators") renderCreatorsDirectory();
+        if (state.view === "community") renderCommunity();
+      }
+    }
+
+    function handleSearch(val) {
+      state.search = val.trim().toLowerCase();
+      if (state.view === "creators") renderCreatorsDirectory();
+      else if (state.view === "community") renderCommunity();
+      else if (state.view === "catalog") renderCatalog();
+      else switchView("catalog");
+    }
+
+    /* ==================== VIEW 1: DISCOVERY CATALOG ==================== */
+    function setCategory(cat) { state.category = cat; renderCatalog(); }
+    function setRegion(reg) { state.region = reg; renderCatalog(); }
+    function setBudget(key) { state.budget = key; renderCatalog(); }
+
+    function setAvailFilter(mode) {
+      state.availOnly = mode === "week";
+      document.getElementById("availAllBtn").classList.toggle("active", !state.availOnly);
+      document.getElementById("availWeekBtn").classList.toggle("active", state.availOnly);
+      renderCatalog();
+    }
+
+    function setSort(sortKey) {
+      state.sort = sortKey;
+      document.querySelectorAll("#sortRail .rail-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.sort === sortKey);
+      });
+      renderCatalog();
+    }
+
+    function getFilteredServices() {
+      const budgetObj = BUDGETS.find(b => b.key === state.budget) || BUDGETS[0];
+      let list = DB.services.filter(s => {
+        if (!s.published) return false;
+        const p = DB.profiles[s.creatorId];
+        if (state.category !== "全部品类" && s.category !== state.category) return false;
+        if (state.region !== "全部区域" && s.region !== state.region) return false;
+        if (s.price > budgetObj.max) return false;
+        if (state.availOnly && !s.availableThisWeek) return false;
+        if (state.search) {
+          const hay = `${s.title} ${s.category} ${s.region} ${s.location} ${s.shortDesc} ${s.deliverable} ${p.name} ${p.en}`.toLowerCase();
+          if (!hay.includes(state.search)) return false;
+        }
+        return true;
+      });
+
+      if (state.sort === "price-asc") list = [...list].sort((a, b) => a.price - b.price);
+      if (state.sort === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
+      if (state.sort === "week") list = [...list].sort((a, b) => Number(b.availableThisWeek) - Number(a.availableThisWeek));
+      return list;
+    }
+
+    function renderCatalog() {
+      document.getElementById("categoryRail").innerHTML =
+        `<div class="rail-title">全部品类</div>` +
+        CATEGORIES.map(cat => `<button class="rail-btn ${state.category === cat ? "active" : ""}" onclick="setCategory('${cat}')">${cat}</button>`).join("");
+
+      document.getElementById("regionRail").innerHTML =
+        `<div class="rail-title">所在区域</div>` +
+        REGIONS.map(reg => `<button class="rail-btn ${state.region === reg ? "active" : ""}" onclick="setRegion('${reg}')">${reg}</button>`).join("");
+
+      document.getElementById("budgetRail").innerHTML =
+        `<div class="rail-title">单次预算</div>` +
+        BUDGETS.map(b => `<button class="rail-btn ${state.budget === b.key ? "active" : ""}" onclick="setBudget('${b.key}')">${b.label}</button>`).join("");
+
+      document.getElementById("mobileCatalogControls").innerHTML = `
+        <div class="mobile-chips">
+          ${CATEGORIES.map(cat => `<button class="rail-btn ${state.category === cat ? "active" : ""}" onclick="setCategory('${cat}')">${cat}</button>`).join("")}
+        </div>
+        <button class="rail-btn ${state.availOnly ? "active" : ""}" style="white-space:nowrap;" onclick="setAvailFilter('${state.availOnly ? "all" : "week"}')">
+          ${state.availOnly ? "仅本周" : "本周可约"}
+        </button>
+      `;
+
+      const list = getFilteredServices();
+      const budgetObj = BUDGETS.find(b => b.key === state.budget);
+      const primaryTitle = state.search
+        ? `搜索「${escapeHtml(state.search)}」`
+        : state.category === "全部品类" ? "全部服务" : state.category;
+      const secondaryMeta = [
+        state.region,
+        state.budget !== "all" ? budgetObj.label : "",
+        state.availOnly ? "仅看本周可约" : ""
+      ].filter(Boolean).join(" · ");
+
+      document.getElementById("galleryHeading").innerHTML = `<strong>${primaryTitle}</strong> ${secondaryMeta}`;
+      document.getElementById("galleryCount").textContent = `${list.length} 项服务`;
+
+      const grid = document.getElementById("catalogGrid");
+      if (!list.length) {
+        grid.style.display = "block";
+        grid.innerHTML = `
+          <div class="empty-state">
+            <p>当前筛选条件下暂无匹配的服务。</p>
+            <button class="btn-outline" style="width:180px;" onclick="resetCatalogFilters()">清除筛选条件</button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.style.display = "grid";
+      grid.innerHTML = list.map(s => {
+        const c = DB.profiles[s.creatorId];
+        return `
+          <article class="item-card" onclick="openDetail('${s.id}')">
+            <div class="item-media">
+              <img class="img-primary" src="${s.images[0]}" alt="${escapeHtml(s.title)}" />
+              ${s.images[1] ? `<img class="img-alt" src="${s.images[1]}" alt="${escapeHtml(s.title)}" />` : ""}
+            </div>
+            <div class="item-info">
+              <div class="item-creator">${c.en} · ${c.name}</div>
+              <div class="item-title">${escapeHtml(s.title)}</div>
+              <div class="item-foot">
+                <span class="item-price mono">${escapeHtml(s.priceUnit)}</span>
+                <span class="item-avail">${s.region} · ${s.availBadge}</span>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function resetCatalogFilters() {
+      state.category = "全部品类";
+      state.region = "全部区域";
+      state.budget = "all";
+      state.availOnly = false;
+      state.search = "";
+      document.getElementById("searchInput").value = "";
+      document.getElementById("availAllBtn").classList.add("active");
+      document.getElementById("availWeekBtn").classList.remove("active");
+      renderCatalog();
+    }
+
+    /* ==================== VIEW 2: SCALABLE CREATORS / USERS DIRECTORY ==================== */
+    function setCreatorSkill(skill) { state.creatorSkill = skill; renderCreatorsDirectory(); }
+    function setCreatorRegion(reg) { state.creatorRegion = reg; renderCreatorsDirectory(); }
+
+    function setCreatorAvail(mode) {
+      state.creatorStatusFilter = mode;
+      document.getElementById("creatorAvailAll").classList.toggle("active", mode === "all");
+      document.getElementById("creatorAvailWeek").classList.toggle("active", mode === "week");
+      document.getElementById("creatorAvailLearner").classList.toggle("active", mode === "community");
+      renderCreatorsDirectory();
+    }
+
+    function setCreatorViewMode(mode) {
+      state.creatorViewMode = mode;
+      document.getElementById("creatorModeGallery").classList.toggle("active", mode === "gallery");
+      document.getElementById("creatorModeIndex").classList.toggle("active", mode === "index");
+      renderCreatorsDirectory();
+    }
+
+    function setCreatorSort(sortKey) {
+      state.creatorSort = sortKey;
+      document.getElementById("creatorSortDefault").classList.toggle("active", sortKey === "default");
+      document.getElementById("creatorSortAz").classList.toggle("active", sortKey === "az");
+      document.getElementById("creatorSortServices").classList.toggle("active", sortKey === "services");
+      renderCreatorsDirectory();
+    }
+
+    function getActiveServicesByCreator(profileId) {
+      return DB.services.filter(s => s.creatorId === profileId && s.published);
+    }
+
+    function previewHoveredCreator(profileId) {
+      state.creatorHoverId = profileId;
+      renderCreatorHoverPreview();
+    }
+
+    function renderCreatorHoverPreview() {
+      const box = document.getElementById("creatorHoverPreviewBox");
+      if (!box) return;
+      if (state.creatorViewMode !== "index") { box.innerHTML = ""; return; }
+      const c = DB.profiles[state.creatorHoverId] || DB.profiles.zhouke;
+      const srvs = getActiveServicesByCreator(c.id);
+      box.innerHTML = `
+        <div class="creator-index-hover-preview">
+          <div class="rail-title">快速预览</div>
+          <img src="${c.coverImg}" alt="${c.name}" />
+          <div style="font-size:11.5px; color:var(--ink);">${c.en} · ${c.name}</div>
+          <div style="font-size:10.5px; color:var(--ink-muted);">${c.region} · ${srvs.length ? `${srvs.length} 项服务` : "记录与交流主页"}</div>
+        </div>
+      `;
+    }
+
+    function renderCreatorsDirectory() {
+      document.getElementById("creatorSkillRail").innerHTML =
+        `<div class="rail-title">兴趣与技能</div>` +
+        CREATOR_SKILLS.map(sk => `<button class="rail-btn ${state.creatorSkill === sk ? "active" : ""}" onclick="setCreatorSkill('${sk}')">${sk}</button>`).join("");
+
+      document.getElementById("creatorRegionRail").innerHTML =
+        `<div class="rail-title">所在区域</div>` +
+        REGIONS.map(reg => `<button class="rail-btn ${state.creatorRegion === reg ? "active" : ""}" onclick="setCreatorRegion('${reg}')">${reg}</button>`).join("");
+
+      document.getElementById("mobileCreatorsControls").innerHTML = `
+        <div class="mobile-chips">
+          ${CREATOR_SKILLS.map(sk => `<button class="rail-btn ${state.creatorSkill === sk ? "active" : ""}" onclick="setCreatorSkill('${sk}')">${sk}</button>`).join("")}
+        </div>
+        <button class="rail-btn" style="white-space:nowrap;" onclick="setCreatorViewMode('${state.creatorViewMode === "gallery" ? "index" : "gallery"}')">
+          ${state.creatorViewMode === "gallery" ? "名录视图" : "画廊视图"}
+        </button>
+      `;
+
+      let creators = Object.values(DB.profiles).filter(c => {
+        const srvs = getActiveServicesByCreator(c.id);
+        if (state.creatorSkill !== "全部方向" && !c.skills.includes(state.creatorSkill) && c.primarySkill !== state.creatorSkill) return false;
+        if (state.creatorRegion !== "全部区域" && c.region !== state.creatorRegion) return false;
+        if (state.creatorStatusFilter === "week" && srvs.length === 0) return false;
+        if (state.creatorStatusFilter === "community" && srvs.length > 0) return false;
+        if (state.search) {
+          const hay = `${c.name} ${c.en} ${c.region} ${c.skills.join(" ")} ${c.statement}`.toLowerCase();
+          if (!hay.includes(state.search)) return false;
+        }
+        return true;
+      });
+
+      if (state.creatorSort === "az") creators.sort((a, b) => a.en.localeCompare(b.en));
+      else if (state.creatorSort === "services") creators.sort((a, b) => getActiveServicesByCreator(b.id).length - getActiveServicesByCreator(a.id).length);
+
+      const filterText = [
+        state.creatorSkill,
+        state.creatorRegion,
+        state.creatorStatusFilter === "week" ? "已开服务" : state.creatorStatusFilter === "community" ? "同好/记录者" : "",
+        state.search ? `关键词「${escapeHtml(state.search)}」` : ""
+      ].filter(Boolean).join(" · ");
+
+      document.getElementById("creatorsHeading").innerHTML = `<strong>创作者与同好目录</strong> ${filterText}`;
+      document.getElementById("creatorsCount").textContent = `${creators.length} 位用户`;
+
+      const container = document.getElementById("creatorsMainContainer");
+      if (!creators.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <p>当前条件下暂无匹配的个人主页。</p>
+            <button class="btn-outline" style="width:180px;" onclick="state.creatorSkill='全部方向'; state.creatorRegion='全部区域'; setCreatorAvail('all'); state.search=''; renderCreatorsDirectory();">重置筛选</button>
+          </div>
+        `;
+        renderCreatorHoverPreview();
+        return;
+      }
+
+      if (state.creatorViewMode === "gallery") {
+        // DISTINCT EDITORIAL CREATOR DOSSIER VIEW (2-col wide cards + bio + multi-work strip)
+        container.innerHTML = `
+          <div class="creators-dossier-grid">
+            ${creators.map(c => {
+              const srvs = getActiveServicesByCreator(c.id);
+              const postCount = DB.posts.filter(p => p.authorId === c.id).length;
+              const minPrice = srvs.length ? Math.min(...srvs.map(s => s.price)) : null;
+              const stripWorks = (c.works || []).slice(0, 3);
+              return `
+                <article class="creator-dossier" onclick="openProfile('${c.id}')">
+                  <div class="dossier-head">
+                    <div>
+                      <span class="dossier-name">${c.name}${c.isSelf ? "（我）" : ""}</span>
+                      <span class="dossier-en">${c.en}</span>
+                    </div>
+                    <span class="dossier-meta">${c.region}</span>
+                  </div>
+
+                  <p class="dossier-bio">${escapeHtml(c.statement)}</p>
+
+                  <div class="dossier-strip ${stripWorks.length <= 2 ? "cols-2" : ""}">
+                    ${stripWorks.map(w => `
+                      <div class="dossier-strip-frame">
+                        <img src="${w.img}" alt="${escapeHtml(w.title)}" class="${w.bw ? "work-bw" : ""}" style="${w.pos ? `object-position:${w.pos};` : ""}" />
+                      </div>
+                    `).join("")}
+                  </div>
+
+                  <div class="dossier-foot">
+                    <span>${c.skills.join(" / ")}</span>
+                    <span class="mono" style="color:var(--ink);">
+                      ${srvs.length ? `${srvs.length} 项服务 · ¥${minPrice}起` : `${postCount} 篇讨论 · 记录主页`}
+                    </span>
+                  </div>
+                </article>
+              `;
+            }).join("")}
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="creator-index-list">
+            ${creators.map(c => {
+              const srvs = getActiveServicesByCreator(c.id);
+              return `
+                <div class="creator-index-row" onclick="openProfile('${c.id}')" onmouseenter="previewHoveredCreator('${c.id}')">
+                  <img class="creator-index-thumb" src="${c.coverImg}" alt="${c.name}" />
+                  <div>
+                    <div style="font-weight:500; color:var(--ink);">${c.en} · ${c.name}</div>
+                    <div style="font-size:10.5px; color:var(--ink-faint); margin-top:2px;">${c.region}</div>
+                  </div>
+                  <div class="creator-index-hide-sm" style="font-size:11.5px; color:var(--ink-2);">${c.skills.join(" / ")}</div>
+                  <div class="creator-index-hide-sm mono" style="font-size:11.5px; color:var(--ink-muted);">${srvs.length ? `${srvs.length} 项服务` : "记录主页"}</div>
+                  <div style="text-align:right; font-size:11px; color:var(--ink);">进入主页 →</div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }
+      renderCreatorHoverPreview();
+    }
+
+    /* ==================== VIEW 3: COMMUNITY (UNIFIED COLUMN / NODE ARCHITECTURE) ==================== */
+    function getColumnObj(colId) {
+      return (DB.columns || []).find(c => c.id === colId) || null;
+    }
+
+    function formatColumnLabel(col) {
+      if (!col) return "";
+      const prefix = col.kind === "interest" ? "#" : "@";
+      return `${prefix}${col.name}`;
+    }
+
+    function getPostColumns(post) {
+      return (post.columnIds || []).map(getColumnObj).filter(Boolean);
+    }
+
+    function renderPostColumnTags(post, clickable = true) {
+      return getPostColumns(post).map(col => {
+        const label = escapeHtml(formatColumnLabel(col));
+        const cls = col.kind === "interest" ? "post-circle-tag" : "school-tag";
+        if (!clickable) return `<span class="${cls}">${label}</span>`;
+        return `<span class="${cls}" onclick="event.stopPropagation(); openCommunityColumn('${col.id}')">${label}</span>`;
+      }).join("");
+    }
+
+    function openCommunityColumn(colId) {
+      state.communityColumn = colId;
+      switchView("community");
+    }
+
+    function setCommunityColumn(colId) {
+      state.communityColumn = colId;
+      renderCommunity();
+    }
+
+    function setCommunityType(type) { state.communityType = type; renderCommunity(); }
+
+    function jumpToColumnServices(region) {
+      state.region = region || "全部区域";
+      state.category = "全部品类";
+      switchView("catalog");
+      showToast(`已切换至「${state.region}」可约服务`);
+    }
+
+    function openColumnModal() {
+      document.getElementById("columnModal").classList.add("open");
+      setTimeout(() => document.getElementById("newColName").focus(), 80);
+    }
+
+    function closeColumnModal() {
+      document.getElementById("columnModal").classList.remove("open");
+    }
+
+    function submitNewColumn() {
+      const kind = document.getElementById("newColKind").value;
+      const name = document.getElementById("newColName").value.trim();
+      const desc = document.getElementById("newColDesc").value.trim();
+      if (!name) {
+        showToast("请输入专栏名称");
+        return;
+      }
+      const badge = kind === "campus" ? "高校认证" : kind === "region" ? "地域专栏" : "技能专栏";
+      const id = "col-" + Date.now();
+      DB.columns.push({
+        id,
+        kind,
+        name,
+        badge,
+        desc: desc || `${name} · 专栏讨论、方法沉淀与同好交流`,
+        region: ""
+      });
+      savePersistedData();
+      document.getElementById("newColName").value = "";
+      document.getElementById("newColDesc").value = "";
+      closeColumnModal();
+      state.communityColumn = id;
+      renderCommunity();
+      showToast(`已创建新专栏「${formatColumnLabel({ kind, name })}」，可直接发帖`);
+    }
+
+    function setCommunitySort(key) {
+      state.communitySort = key;
+      document.getElementById("commSortRecent").classList.toggle("active", key === "recent");
+      document.getElementById("commSortStars").classList.toggle("active", key === "stars");
+      document.getElementById("commSortBlog").classList.toggle("active", key === "blog");
+      renderCommunity();
+    }
+
+    function openPost(postId) {
+      if (state.view !== "post" || state.selectedPostId !== postId) {
+        navHistory.push(captureSnapshot());
+      }
+      state.selectedPostId = postId;
+      switchView("post", { skipHistory: true });
+    }
+
+    function toggleStarPost(postId) {
+      const p = DB.posts.find(x => x.id === postId);
+      if (!p) return;
+      p.starred = !p.starred;
+      p.stars += p.starred ? 1 : -1;
+      if (p.starred) {
+        if (!DB.savedPostIds.includes(postId)) DB.savedPostIds.push(postId);
+        showToast("已收藏至个人主页，并标记为有启发");
+      } else {
+        DB.savedPostIds = DB.savedPostIds.filter(id => id !== postId);
+        showToast("已取消收藏");
+      }
+      savePersistedData();
+      if (state.view === "post") renderPostDetail();
+      if (state.view === "community") renderCommunity();
+    }
+
+    function renderCommunity() {
+      const columns = DB.columns || [];
+      const interestCols = columns.filter(c => c.kind === "interest");
+      const placeCols = columns.filter(c => c.kind !== "interest");
+      const activeCol = getColumnObj(state.communityColumn);
+
+      // Unified Left Rail: All Columns under one coherent abstraction
+      document.getElementById("communityColumnsRail").innerHTML = `
+        <div class="rail-title">社区专栏</div>
+        <button class="rail-btn ${state.communityColumn === "all" ? "active" : ""}" onclick="setCommunityColumn('all')">全部专栏</button>
+
+        <div class="rail-title" style="margin-top:14px; font-weight:500; color:var(--ink-muted);">技能与兴趣 (#)</div>
+        ${interestCols.map(c => `
+          <button class="rail-btn ${state.communityColumn === c.id ? "active" : ""}" onclick="setCommunityColumn('${c.id}')"># ${escapeHtml(c.name)}</button>
+        `).join("")}
+
+        <div class="rail-title" style="margin-top:14px; font-weight:500; color:var(--ink-muted);">高校与地域 (@)</div>
+        ${placeCols.map(c => `
+          <button class="rail-btn ${state.communityColumn === c.id ? "active" : ""}" onclick="setCommunityColumn('${c.id}')">
+            @ ${escapeHtml(c.name)} <span style="font-size:10px; color:var(--ink-faint);">· ${c.kind === "campus" ? "高校" : "地域"}</span>
+          </button>
+        `).join("")}
+      `;
+
+      document.getElementById("communityTypeRail").innerHTML =
+        `<div class="rail-title">内容形态</div>` +
+        COMMUNITY_TYPES.map(t => `<button class="rail-btn ${state.communityType === t ? "active" : ""}" onclick="setCommunityType('${t}')">${t}</button>`).join("");
+
+      document.getElementById("mobileCommunityControls").innerHTML = `
+        <div class="mobile-chips">
+          <button class="rail-btn ${state.communityColumn === "all" ? "active" : ""}" onclick="setCommunityColumn('all')">全部</button>
+          ${columns.map(c => `<button class="rail-btn ${state.communityColumn === c.id ? "active" : ""}" onclick="setCommunityColumn('${c.id}')">${escapeHtml(formatColumnLabel(c))}</button>`).join("")}
+        </div>
+        <button class="rail-btn active" style="white-space:nowrap;" onclick="openPostModal()">+ 发帖</button>
+      `;
+
+      // Dedicated Column Banner whenever inside ANY specific column (#Interest or @Campus/Region)
+      const colHeaderEl = document.getElementById("activeColumnHeader");
+      if (activeCol) {
+        colHeaderEl.innerHTML = `
+          <div class="school-column-banner">
+            <div>
+              <div class="editorial-kicker">COLUMN · ${escapeHtml(activeCol.badge)}</div>
+              <h1 class="school-column-title">${escapeHtml(formatColumnLabel(activeCol))}</h1>
+              <div class="school-column-sub">${escapeHtml(activeCol.desc)}</div>
+            </div>
+            <div class="school-column-actions">
+              <button class="btn-primary" style="width:auto; height:36px;" onclick="openPostModal('', '${activeCol.id}')">+ 在本专栏发帖</button>
+              ${activeCol.region ? `<button class="btn-outline" style="width:auto; height:36px;" onclick="jumpToColumnServices('${activeCol.region}')">查看周边可约服务 →</button>` : ""}
+            </div>
+          </div>
+        `;
+      } else {
+        colHeaderEl.innerHTML = "";
+      }
+
+      let posts = DB.posts.filter(p => {
+        const author = DB.profiles[p.authorId];
+        const colIds = p.columnIds || [];
+        if (state.communityColumn !== "all" && !colIds.includes(state.communityColumn)) return false;
+        if (state.communityType !== "全部形态" && p.type !== state.communityType) return false;
+        if (state.search) {
+          const colNames = getPostColumns(p).map(c => c.name).join(" ");
+          const hay = `${p.title} ${p.excerpt} ${colNames} ${p.type} ${p.specs || ""} ${author.name} ${author.en}`.toLowerCase();
+          if (!hay.includes(state.search)) return false;
+        }
+        return true;
+      });
+
+      if (state.communitySort === "stars") posts = [...posts].sort((a, b) => b.stars - a.stars);
+      if (state.communitySort === "blog") posts = [...posts].sort((a, b) => Number(b.type === "方法博客") - Number(a.type === "方法博客"));
+
+      const scopeTitle = activeCol ? formatColumnLabel(activeCol) : "社区 · 博客 / 方法库 / 专栏讨论";
+      const headMeta = [
+        state.communityType !== "全部形态" ? state.communityType : "",
+        state.search ? `关键词「${escapeHtml(state.search)}」` : ""
+      ].filter(Boolean).join(" · ");
+
+      document.getElementById("communityHeading").innerHTML = `<strong>${escapeHtml(scopeTitle)}</strong> ${headMeta}`;
+      document.getElementById("communityCount").textContent = `${posts.length} 篇内容`;
+
+      const activeIds = ["zhouke", "luyu", "xuning", "linyou", "chenxi"];
+      document.getElementById("communityActiveMembers").innerHTML = activeIds.map(id => {
+        const u = DB.profiles[id];
+        const hasSrv = getActiveServicesByCreator(id).length > 0;
+        return `
+          <button class="active-member-item" onclick="openProfile('${id}')">
+            <span>${u.name}</span>
+            <span style="font-size:10px; color:var(--ink-faint);">${hasSrv ? u.primarySkill : "社区同好"}</span>
+          </button>
+        `;
+      }).join("");
+
+      const container = document.getElementById("communityFeedContainer");
+      if (!posts.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <p>${activeCol ? `「${escapeHtml(formatColumnLabel(activeCol))}」专栏暂无帖子，欢迎发出第一篇内容。` : "当前条件下暂无社区内容。"}</p>
+            <div style="display:flex; gap:12px;">
+              ${activeCol ? `<button class="btn-primary" style="width:170px;" onclick="openPostModal('小组讨论', '${activeCol.id}')">+ 在本专栏发帖</button>` : ""}
+              <button class="btn-outline" style="width:150px;" onclick="state.communityColumn='all'; state.communityType='全部形态'; state.search=''; renderCommunity();">查看全部专栏</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const showFeatured = posts.length >= 2 && posts[0].image && !state.search && !activeCol;
+      const featured = showFeatured ? posts[0] : null;
+      const feedList = showFeatured ? posts.slice(1) : posts;
+
+      let html = "";
+      if (featured) {
+        const a = DB.profiles[featured.authorId];
+        html += `
+          <article class="community-featured" onclick="openPost('${featured.id}')">
+            <div>
+              <div class="post-meta-top">
+                <span class="post-type-tag mono">[${featured.type}${featured.version ? ` · ${featured.version}` : ""}]</span>
+                ${renderPostColumnTags(featured, true)}
+              </div>
+              <h2 class="featured-title">${escapeHtml(featured.title)}</h2>
+              <p class="featured-excerpt">${escapeHtml(featured.excerpt)}</p>
+              <div class="post-meta-foot">
+                <span style="color:var(--ink);">${a.en} · ${a.name}</span>
+                <span class="mono">${featured.comments.length} 讨论 · ${featured.stars} 收藏</span>
+                <span class="mono">${featured.date}</span>
+              </div>
+            </div>
+            <div class="community-featured-img">
+              <img src="${featured.image}" alt="${escapeHtml(featured.title)}" />
+            </div>
+          </article>
+        `;
+      }
+
+      html += `<div class="post-feed">` + feedList.map(p => {
+        const a = DB.profiles[p.authorId];
+        const isRegularUser = getActiveServicesByCreator(a.id).length === 0;
+        return `
+          <article class="post-row ${p.image ? "" : "no-thumb"}" onclick="openPost('${p.id}')">
+            <div>
+              <div class="post-meta-top">
+                <span class="post-type-tag mono">[${p.type}${p.version ? ` · ${p.version}` : ""}]</span>
+                ${renderPostColumnTags(p, true)}
+                ${p.specs ? `<span class="post-circle-tag mono">含参数清单</span>` : ""}
+              </div>
+              <h3 class="post-row-title">${escapeHtml(p.title)}</h3>
+              <p class="post-row-excerpt">${escapeHtml(p.excerpt)}</p>
+              <div class="post-meta-foot">
+                <span style="color:var(--ink);">${a.name}${isRegularUser ? "（社区同好）" : ""}</span>
+                <span class="mono">${p.comments.length} 回复</span>
+                <span class="mono">${p.stars} 收藏</span>
+                <span class="mono">${p.date}</span>
+              </div>
+            </div>
+            ${p.image ? `<img class="post-row-thumb" src="${p.image}" alt="${escapeHtml(p.title)}" />` : ""}
+          </article>
+        `;
+      }).join("") + `</div>`;
+
+      container.innerHTML = html;
+    }
+
+    /* ==================== VIEW 4: POST DETAIL (BLOG + GITHUB PARAMS + TIEBA FLOORS) ==================== */
+    function submitComment(postId) {
+      const input = document.getElementById("newCommentInput");
+      const text = input.value.trim();
+      if (!text) return;
+      const p = DB.posts.find(x => x.id === postId);
+      if (!p) return;
+      p.comments.push({
+        id: "c-" + Date.now(),
+        authorId: state.currentUserId,
+        time: `${getTodayDate()} ${getNowStr()}`,
+        text
+      });
+      savePersistedData();
+      renderPostDetail();
+      showToast("已发表楼层回复");
+    }
+
+    function renderPostDetail() {
+      const p = DB.posts.find(x => x.id === state.selectedPostId) || DB.posts[0];
+      const author = DB.profiles[p.authorId];
+      const postCols = getPostColumns(p);
+      const authorServices = getActiveServicesByCreator(author.id);
+      const linkedSrv = p.linkedServiceId ? DB.services.find(s => s.id === p.linkedServiceId && s.published) : authorServices[0];
+
+      document.getElementById("view-post").innerHTML = `
+        <div class="breadcrumb-row">
+          <button class="back-link" onclick="goBack('community')">${escapeHtml(getBackButtonLabel("社区"))}</button>
+          <span class="mono" style="font-size:10.5px; color:var(--ink-faint);">${postCols.map(formatColumnLabel).join(" / ")} · ${p.type} · ${p.date}</span>
+        </div>
+
+        <div class="post-detail-layout">
+          <!-- Left Sticky Author & GitHub-style Metadata -->
+          <aside class="pdp-col-sticky">
+            <div>
+              <div class="spec-label" style="margin-bottom:6px;">发布者</div>
+              <button class="pdp-creator-link" onclick="openProfile('${author.id}')">${author.en} · ${author.name}</button>
+              <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">
+                ${authorServices.length ? `${author.skills.join(" / ")}` : "社区同好 · 当前未开启商业服务"}
+              </div>
+            </div>
+
+            <div class="github-spec-box">
+              <div class="spec-row">
+                <span class="spec-label">归属专栏</span>
+                <span class="spec-val" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:2px;">
+                  ${postCols.map(c => `<button class="text-action strong" onclick="openCommunityColumn('${c.id}')">${escapeHtml(formatColumnLabel(c))}</button>`).join("")}
+                </span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">文档形态</span>
+                <span class="spec-val mono">${p.type}${p.version ? ` (${p.version})` : ""}</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">参与讨论 / 收藏</span>
+                <span class="spec-val mono">${p.comments.length} 楼 · ${p.stars} 人标记有启发</span>
+              </div>
+            </div>
+
+            <button class="btn-outline" onclick="openProfile('${author.id}')">进入 ${author.name} 的个人主页</button>
+
+            ${linkedSrv ? `
+              <div style="padding-top:14px; border-top:1px solid var(--hairline); display:flex; flex-direction:column; gap:10px;">
+                <div class="spec-label">作者关联可约服务（非强制）</div>
+                <div style="font-size:12px; color:var(--ink);">${escapeHtml(linkedSrv.title)}</div>
+                <div class="mono" style="font-size:11px; color:var(--ink-muted);">${escapeHtml(linkedSrv.priceUnit)} · ${linkedSrv.slotLabel}</div>
+                <button class="text-action strong" style="text-align:left;" onclick="openDetail('${linkedSrv.id}')">查看服务详情或发起咨询 →</button>
+              </div>
+            ` : `
+              <div style="font-size:11px; color:var(--ink-faint); line-height:1.7;">
+                作者当前以作品与同好交流为主，未关联付费服务。
+              </div>
+            `}
+          </aside>
+
+          <!-- Center Longform Blog + Spec Block + Floor Comments -->
+          <article>
+            <div class="post-article-head">
+              <div class="post-meta-top">
+                <span class="post-type-tag mono">[${p.type}${p.version ? ` · ${p.version}` : ""}]</span>
+                ${renderPostColumnTags(p, true)}
+              </div>
+              <h1 class="post-article-title">${escapeHtml(p.title)}</h1>
+              <div class="post-meta-foot">
+                <span>作者：${author.name}</span>
+                <span class="mono">发布于 ${p.date}</span>
+              </div>
+            </div>
+
+            ${p.image ? `<img class="post-article-img" src="${p.image}" alt="${escapeHtml(p.title)}" />` : ""}
+
+            <div class="post-article-body">
+              ${p.body.map(para => `<p>${escapeHtml(para)}</p>`).join("")}
+            </div>
+
+            ${p.specs ? `
+              <div style="margin-bottom:28px;">
+                <div class="rail-title" style="margin-bottom:10px;">结构化参数 / 约定参考（可直接复用）</div>
+                <pre class="post-param-code mono">${escapeHtml(p.specs)}</pre>
+              </div>
+            ` : ""}
+
+            <div class="post-actions-bar">
+              <button class="${p.starred ? "btn-primary" : "btn-outline"}" style="width:auto; height:34px; padding:0 18px;" onclick="toggleStarPost('${p.id}')">
+                ${p.starred ? `已收藏 · 有启发 (${p.stars})` : `收藏 / 标记有启发 (${p.stars})`}
+              </button>
+              <button class="text-action" onclick="copyWechat(this, window.location.href)">复制分享链接</button>
+            </div>
+
+            <!-- Floor Discussion (Tieba / GitHub Issues Style) -->
+            <div class="comments-section">
+              <div class="rail-title">楼层讨论（${p.comments.length}）</div>
+
+              ${p.comments.length ? p.comments.map((cm, idx) => {
+                const cu = DB.profiles[cm.authorId] || DB.profiles.zhouke;
+                const isOp = cm.authorId === p.authorId;
+                return `
+                  <div class="comment-floor">
+                    <div class="comment-head">
+                      <div>
+                        <button class="comment-author" onclick="openProfile('${cu.id}')">${cu.name}</button>
+                        <span class="comment-role">${isOp ? "楼主" : cu.primarySkill}</span>
+                      </div>
+                      <span class="mono" style="color:var(--ink-faint);">#${idx + 1} · ${cm.time}</span>
+                    </div>
+                    <div class="comment-body">${escapeHtml(cm.text)}</div>
+                  </div>
+                `;
+              }).join("") : `<div style="font-size:12px; color:var(--ink-muted); padding:12px 0;">暂无讨论，欢迎发表第一条交流或补充参数。</div>`}
+
+              <div class="comment-composer">
+                <label class="field-label">参与讨论（以当前登录身份 ${DB.profiles[state.currentUserId].name} 回复）</label>
+                <textarea id="newCommentInput" class="field-textarea" style="min-height:84px;" placeholder="补充你的参数经验、提问，或回应同好邀约..."></textarea>
+                <div>
+                  <button class="btn-primary" style="width:auto; height:36px; padding:0 24px;" onclick="submitComment('${p.id}')">发表回复</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Right Related Posts -->
+          <aside class="pdp-col-sticky post-detail-right">
+            <div class="rail-group">
+              <div class="rail-title">同圈子延伸阅读</div>
+              ${DB.posts.filter(x => x.id !== p.id).slice(0, 3).map(rp => `
+                <button class="rail-btn" style="padding:8px 0; border-bottom:1px solid var(--hairline);" onclick="openPost('${rp.id}')">
+                  <div style="color:var(--ink); font-size:11.5px; line-height:1.5;">${escapeHtml(rp.title)}</div>
+                  <div class="mono" style="font-size:10px; color:var(--ink-faint); margin-top:4px;">${rp.type} · ${rp.comments.length} 回复</div>
+                </button>
+              `).join("")}
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    /* ==================== NEW POST MODAL ==================== */
+    function openPostModal(defaultType, defaultColId) {
+      const columns = DB.columns || [];
+      const interestCols = columns.filter(c => c.kind === "interest");
+      const placeCols = columns.filter(c => c.kind !== "interest");
+
+      const priSel = document.getElementById("newPostPrimaryCol");
+      const secSel = document.getElementById("newPostSecondaryCol");
+
+      priSel.innerHTML = interestCols.map(c => `<option value="${c.id}"># ${escapeHtml(c.name)}</option>`).join("");
+      secSel.innerHTML = `<option value="">不额外关联高校 / 地域专栏</option>` +
+        placeCols.map(c => `<option value="${c.id}">@ ${escapeHtml(c.name)}（${c.kind === "campus" ? "高校" : "地域"}）</option>`).join("");
+
+      const targetId = defaultColId || (state.communityColumn !== "all" ? state.communityColumn : "");
+      const targetCol = getColumnObj(targetId);
+      if (targetCol) {
+        if (targetCol.kind === "interest") priSel.value = targetCol.id;
+        else secSel.value = targetCol.id;
+      }
+
+      if (defaultType) document.getElementById("newPostType").value = defaultType;
+      document.getElementById("postModal").classList.add("open");
+    }
+
+    function closePostModal() {
+      document.getElementById("postModal").classList.remove("open");
+    }
+
+    function submitNewPost() {
+      const primaryCol = document.getElementById("newPostPrimaryCol").value;
+      const secondaryCol = document.getElementById("newPostSecondaryCol").value;
+      const columnIds = [primaryCol, secondaryCol].filter(Boolean);
+      const type = document.getElementById("newPostType").value;
+      const title = document.getElementById("newPostTitle").value.trim();
+      const bodyText = document.getElementById("newPostBody").value.trim();
+      const specs = document.getElementById("newPostSpecs").value.trim();
+      const fileInput = document.getElementById("newPostFile");
+
+      if (!title || !bodyText) {
+        showToast("请至少填写标题与正文内容");
+        return;
+      }
+
+      const finalize = (imgDataUrl) => {
+        const newPost = {
+          id: "post-" + Date.now(),
+          columnIds,
+          type,
+          version: type === "方法博客" ? "v1.0" : "",
+          authorId: state.currentUserId,
+          title,
+          excerpt: bodyText.slice(0, 90) + (bodyText.length > 90 ? "…" : ""),
+          image: imgDataUrl || "",
+          date: getTodayDate(),
+          stars: 1,
+          starred: false,
+          linkedServiceId: "",
+          specs,
+          body: bodyText.split(/\n+/).filter(Boolean),
+          comments: []
+        };
+        DB.posts.unshift(newPost);
+        savePersistedData();
+        document.getElementById("newPostTitle").value = "";
+        document.getElementById("newPostBody").value = "";
+        document.getElementById("newPostSpecs").value = "";
+        fileInput.value = "";
+        closePostModal();
+        closeColumnModal();
+        const colNames = columnIds.map(id => formatColumnLabel(getColumnObj(id))).join(" + ");
+        showToast(`已发布至 ${colNames}，并同步个人主页`);
+        openPost(newPost.id);
+      };
+
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => finalize(e.target.result);
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        finalize("");
+      }
+    }
+
+    /* ==================== VIEW 5: SERVICE DETAIL (PDP) ==================== */
+    function openDetail(serviceId) {
+      if (state.view !== "detail" || state.selectedServiceId !== serviceId) {
+        navHistory.push(captureSnapshot());
+      }
+      state.selectedServiceId = serviceId;
+      switchView("detail", { skipHistory: true });
+    }
+
+    function renderDetail() {
+      const s = DB.services.find(x => x.id === state.selectedServiceId) || DB.services[0];
+      const c = DB.profiles[s.creatorId];
+      const activeCount = getActiveServicesByCreator(c.id).length;
+
+      document.getElementById("view-detail").innerHTML = `
+        <div class="breadcrumb-row">
+          <button class="back-link" onclick="goBack('catalog')">${escapeHtml(getBackButtonLabel("发现"))}</button>
+          <span class="mono" style="font-size:10.5px; color:var(--ink-faint);">${s.id.toUpperCase()} / ${s.category} / ${s.region}</span>
+        </div>
+
+        <div class="pdp-layout">
+          <div class="pdp-col-sticky">
+            <button class="pdp-creator-link" onclick="openProfile('${c.id}')">${c.en} · ${c.name}</button>
+            <h1 class="pdp-title">${escapeHtml(s.title)}</h1>
+            <p class="pdp-desc">${escapeHtml(s.shortDesc)}</p>
+
+            <div class="spec-list">
+              <div class="spec-row">
+                <span class="spec-label">交付口径</span>
+                <span class="spec-val">${escapeHtml(s.deliverable)}</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">服务区域</span>
+                <span class="spec-val">${escapeHtml(s.location)}</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">信息有效期</span>
+                <span class="spec-val mono">确认于 ${s.confirmedAt} · 有效至 ${s.validUntil}</span>
+              </div>
+            </div>
+
+            <button class="back-link" style="text-align:left; color:var(--ink);" onclick="openProfile('${c.id}')">
+              进入 ${c.name} 的个人主页（作品 · ${activeCount} 项服务 · 博客与讨论） →
+            </button>
+          </div>
+
+          <div class="pdp-images">
+            ${s.images.map((img, i) => `
+              <div>
+                <div class="pdp-figure">
+                  <img src="${img}" alt="${escapeHtml(s.title)}" />
+                </div>
+                <div class="pdp-caption">${escapeHtml(s.captions[i] || "")}</div>
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="pdp-col-sticky">
+            <div class="pdp-price-block">
+              <div class="pdp-price mono">${escapeHtml(s.priceUnit)}</div>
+              <div class="pdp-slot">${escapeHtml(s.slotLabel)}</div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <button class="btn-primary" onclick="openChatDrawer('${s.id}')">发起服务咨询</button>
+              <button class="btn-outline" onclick="openProfile('${c.id}')">查看个人主页</button>
+            </div>
+
+            <div class="pdp-policy">
+              直接进入关联本项服务的一对一图文对话，无需先填预约表。<br /><br />
+              可约状态仅作参考，不构成自动锁档；双方可按需在对话内自愿展示微信号，支持站外沟通与履约。
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ==================== VIEW 6: UNIFIED PERSONAL PROFILE (FULL REAL INTERACTIONS) ==================== */
+    function setProfileTab(tab) {
+      state.profileTab = tab;
+      renderProfilePage();
+    }
+
+    function setOwnerEditMode(isEdit) {
+      state.ownerEditMode = isEdit;
+      state.showProfileEditForm = false;
+      state.showWorkUploadForm = false;
+      if (!isEdit && state.profileTab === "ai-publish") state.profileTab = "services";
+      renderProfilePage();
+    }
+
+    function toggleProfileEditForm() {
+      state.showProfileEditForm = !state.showProfileEditForm;
+      renderProfilePage();
+    }
+
+    function saveProfileBio() {
+      const me = DB.profiles[state.currentUserId];
+      const newStatement = document.getElementById("editBioStatement").value.trim();
+      const newSkills = document.getElementById("editBioSkills").value.split(/[/,，、\s]+/).map(s => s.trim()).filter(Boolean);
+      const newRegion = document.getElementById("editBioRegion").value;
+      if (newStatement) me.statement = newStatement;
+      if (newSkills.length) me.skills = newSkills;
+      me.region = newRegion;
+      state.showProfileEditForm = false;
+      savePersistedData();
+      showToast("已更新个人主页简介与标签");
+      renderProfilePage();
+    }
+
+    function toggleWorkUploadForm() {
+      state.showWorkUploadForm = !state.showWorkUploadForm;
+      renderProfilePage();
+    }
+
+    function submitNewWork() {
+      const baseTitle = document.getElementById("newWorkTitle").value.trim();
+      const fileInput = document.getElementById("newWorkFile");
+      const me = DB.profiles[state.currentUserId];
+      const files = Array.from(fileInput.files || []);
+
+      if (!files.length) {
+        const title = baseTitle || "新上传作品习作";
+        me.works.unshift({ img: "assets/swiss-poster-01.svg", title, year: "2026.11" });
+        state.showWorkUploadForm = false;
+        savePersistedData();
+        showToast(`已添加作品「${title}」至个人主页`);
+        renderProfilePage();
+        return;
+      }
+
+      let remaining = files.length;
+      files.forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const cleanName = file.name.replace(/\.[^.]+$/, "");
+          const title = baseTitle
+            ? (files.length > 1 ? `${baseTitle} #0${idx + 1}` : baseTitle)
+            : cleanName;
+          me.works.unshift({ img: e.target.result, title, year: "2026.11" });
+          remaining--;
+          if (remaining === 0) {
+            state.showWorkUploadForm = false;
+            savePersistedData();
+            showToast(`已批量添加 ${files.length} 件作品至个人主页`);
+            renderProfilePage();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function toggleServicePublish(serviceId) {
+      const s = DB.services.find(x => x.id === serviceId);
+      if (!s) return;
+      s.published = !s.published;
+      savePersistedData();
+      showToast(s.published ? `已恢复上架「${s.title}」` : `已暂停接单并从发现页隐藏「${s.title}」`);
+      renderProfilePage();
+    }
+
+    function renewServiceValidity(serviceId) {
+      const s = DB.services.find(x => x.id === serviceId);
+      if (!s) return;
+      s.confirmedAt = getTodayDate();
+      s.validUntil = "2026.12.06";
+      savePersistedData();
+      showToast(`已刷新「${s.title}」确认时间，有效期延至 2026.12.06`);
+      renderProfilePage();
+    }
+
+    function selectAiPreset(idx) {
+      state.aiPresetIndex = idx;
+      state.aiDraft = { ...AI_PRESETS[idx].parsed };
+      renderProfilePage();
+    }
+
+    function parseCustomAiText() {
+      const val = document.getElementById("aiRawInput").value.trim();
+      const preset = AI_PRESETS[state.aiPresetIndex];
+      if (!val || val === preset.raw) {
+        state.aiDraft = { ...preset.parsed };
+        renderAiResultPanel(state.aiDraft, preset.manualTime, preset.aiTime);
+        showToast("已完成结构化提取，可直接微调右侧任意字段后发布");
+        return;
+      }
+
+      const priceMatch = val.match(/(\d+)\s*(元|块|r|¥)?/i);
+      const priceNum = priceMatch ? Number(priceMatch[1]) : 100;
+      const cat = val.includes("美甲") || val.includes("甲") ? "手工美甲"
+        : val.includes("妆") ? "妆造造型"
+        : val.includes("海报") || val.includes("设计") || val.includes("PPT") ? "视觉设计"
+        : val.includes("剪辑") || val.includes("视频") ? "影像剪辑"
+        : "人像摄影";
+      const reg = val.includes("石湖") ? "苏州 · 石湖"
+        : val.includes("市区") ? "苏州 · 市区"
+        : "线上协作";
+
+      state.aiDraft = {
+        title: val.slice(0, 14).replace(/[，。！？\s~～]+/g, ""),
+        category: cat,
+        region: reg,
+        deliverable: val.length > 42 ? val.slice(0, 42) + "…" : val,
+        price: priceNum,
+        priceUnit: `¥${priceNum} / 次`,
+        location: reg,
+        availability: val.includes("周末") || val.includes("周六") || val.includes("周日") || val.includes("本周") ? "本周可约" : "档期需进一步确认",
+        availableThisWeek: true,
+        validUntil: "2026.11.29",
+        reviewFlag: "AI 草案仅作辅助整理，发布前须经本人确认",
+        previewImg: cat === "手工美甲" ? "assets/nails.png" : cat === "视觉设计" ? "assets/design.jpg" : cat === "妆造造型" ? "assets/makeup.jpg" : "assets/portrait.jpg"
+      };
+      renderAiResultPanel(state.aiDraft, "04:15", "00:16");
+      showToast("已按输入文本提取草案，可点击右侧字段微调");
+    }
+
+    function updateAiDraftField(field, val) {
+      if (!state.aiDraft) state.aiDraft = { ...AI_PRESETS[state.aiPresetIndex].parsed };
+      state.aiDraft[field] = val;
+      if (field === "priceUnit") {
+        const m = val.match(/\d+/);
+        if (m) state.aiDraft.price = Number(m[0]);
+      }
+      // Update live card preview text immediately
+      const previewTitle = document.getElementById("aiPreviewTitle");
+      const previewPrice = document.getElementById("aiPreviewPrice");
+      const previewRegion = document.getElementById("aiPreviewRegion");
+      if (previewTitle) previewTitle.textContent = state.aiDraft.title;
+      if (previewPrice) previewPrice.textContent = state.aiDraft.priceUnit;
+      if (previewRegion) previewRegion.textContent = state.aiDraft.region;
+    }
+
+    function publishParsedService() {
+      const p = state.aiDraft || { ...AI_PRESETS[state.aiPresetIndex].parsed };
+      const newId = `srv-0${DB.services.length + 1}`;
+      DB.services.unshift({
+        id: newId,
+        creatorId: state.currentUserId,
+        category: p.category,
+        region: p.region,
+        title: p.title,
+        shortDesc: `由本人通过个人主页 AI 辅助整理并复核发布：${p.deliverable}`,
+        deliverable: p.deliverable,
+        location: p.location || p.region,
+        price: Number(p.price) || 90,
+        priceUnit: p.priceUnit,
+        availableThisWeek: p.availableThisWeek !== false,
+        published: true,
+        slotLabel: p.availability,
+        availBadge: p.availableThisWeek !== false ? "本周可约" : "排单中",
+        confirmedAt: getTodayDate(),
+        validUntil: p.validUntil,
+        images: [p.previewImg, "assets/lakeside.png"],
+        captions: ["图 01 · 新发布服务主图（示例）", "图 02 · 个人历史作品参考（示例）"]
+      });
+      savePersistedData();
+      state.profileTab = "services";
+      renderProfilePage();
+      showToast(`已复核并发布「${p.title}」，现可在发现页检索`);
+    }
+
+    function renderAiResultPanel(p, manualTime, aiTime) {
+      const container = document.getElementById("aiRightCol");
+      if (!container) return;
+      const me = DB.profiles[state.currentUserId];
+
+      container.innerHTML = `
+        <div class="ai-result-wrap">
+          <div>
+            <div class="rail-title" style="margin-bottom:12px;">AI 提取草案（点击任意行可直接微调）</div>
+            <div class="ai-spec-table">
+              <div class="ai-edit-row"><span class="ai-edit-key">服务名称</span><input class="ai-edit-input" value="${escapeHtml(p.title)}" oninput="updateAiDraftField('title', this.value)" /></div>
+              <div class="ai-edit-row"><span class="ai-edit-key">归属品类</span><input class="ai-edit-input" value="${escapeHtml(p.category)}" oninput="updateAiDraftField('category', this.value)" /></div>
+              <div class="ai-edit-row"><span class="ai-edit-key">所在区域</span><input class="ai-edit-input" value="${escapeHtml(p.region)}" oninput="updateAiDraftField('region', this.value)" /></div>
+              <div class="ai-edit-row"><span class="ai-edit-key">交付口径</span><input class="ai-edit-input" value="${escapeHtml(p.deliverable)}" oninput="updateAiDraftField('deliverable', this.value)" /></div>
+              <div class="ai-edit-row"><span class="ai-edit-key">报价单位</span><input class="ai-edit-input mono" value="${escapeHtml(p.priceUnit)}" oninput="updateAiDraftField('priceUnit', this.value)" /></div>
+              <div class="ai-edit-row"><span class="ai-edit-key">可约档期</span><input class="ai-edit-input" value="${escapeHtml(p.availability)}" oninput="updateAiDraftField('availability', this.value)" /></div>
+              <div class="ai-edit-row"><span class="ai-edit-key">有效期至</span><input class="ai-edit-input mono" value="${escapeHtml(p.validUntil)}" oninput="updateAiDraftField('validUntil', this.value)" /></div>
+              <div class="ai-edit-row"><span class="ai-edit-key">复核提醒</span><span style="font-size:11.5px; color:var(--ink-muted);">${escapeHtml(p.reviewFlag)}</span></div>
+            </div>
+            <div style="margin-top:18px;">
+              <button class="btn-primary" style="max-width:220px;" onclick="publishParsedService()">本人确认并发布服务</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="rail-title" style="margin-bottom:12px;">发现页实时预览</div>
+            <div class="item-card" style="cursor:default;">
+              <div class="item-media">
+                <img class="img-primary" src="${p.previewImg}" alt="${escapeHtml(p.title)}" />
+              </div>
+              <div class="item-info">
+                <div class="item-creator">${me.en} · ${me.name}</div>
+                <div class="item-title" id="aiPreviewTitle">${escapeHtml(p.title)}</div>
+                <div class="item-foot">
+                  <span class="item-price mono" id="aiPreviewPrice">${escapeHtml(p.priceUnit)}</span>
+                  <span class="item-avail" id="aiPreviewRegion">${escapeHtml(p.region)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="benchmark-block">
+          <div class="benchmark-title">人工手填 vs. AI 辅助建卡对照（研究验证参考）</div>
+          <table class="benchmark-table">
+            <thead>
+              <tr><th>指标</th><th>纯人工手填</th><th>AI 起草 + 本人复核</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>单卡整理耗时</td><td class="mono">${manualTime}</td><td class="mono"><strong>${aiTime}</strong></td></tr>
+              <tr><td>关键字段完整性</td><td>常漏填价格单位或有效期</td><td>自动抽取并提示缺失项</td></tr>
+              <tr><td>信息责任边界</td><td>个人自填上架</td><td>AI 仅出草案，本人确认生效</td></tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderProfilePage() {
+      const c = DB.profiles[state.selectedProfileId] || DB.profiles.zhouke;
+      const isOwnProfile = c.id === state.currentUserId;
+      const managing = isOwnProfile && state.ownerEditMode;
+
+      const allMyServices = DB.services.filter(s => s.creatorId === c.id);
+      const visibleServices = managing ? allMyServices : allMyServices.filter(s => s.published);
+      const activeCount = allMyServices.filter(s => s.published).length;
+      const myPosts = DB.posts.filter(p => p.authorId === c.id);
+      const savedPosts = isOwnProfile ? DB.posts.filter(p => DB.savedPostIds.includes(p.id)) : [];
+
+      let tabContent = "";
+      if (state.profileTab === "works") {
+        tabContent = `
+          ${managing ? `
+            <div class="gallery-meta-bar">
+              <div class="gallery-heading"><strong>个人作品</strong> 独立于单笔交易的长期视觉档案</div>
+              <button class="text-action strong" onclick="toggleWorkUploadForm()">${state.showWorkUploadForm ? "收起上传" : "+ 上传本地作品"}</button>
+            </div>
+          ` : ""}
+
+          ${managing && state.showWorkUploadForm ? `
+            <div class="inline-panel">
+              <div class="rail-title">添加新作品至个人主页</div>
+              <div class="inline-panel-grid">
+                <div>
+                  <label class="field-label">作品标题</label>
+                  <input id="newWorkTitle" class="field-input" placeholder="例：午后建筑光影习作 #08" />
+                </div>
+                <div>
+                  <label class="field-label">选择本地图片（支持一次多选批量上传）</label>
+                  <input id="newWorkFile" type="file" accept="image/*" multiple style="padding-top:8px; font-size:11.5px;" />
+                </div>
+              </div>
+              <div style="display:flex; gap:12px;">
+                <button class="btn-primary" style="width:auto; height:36px;" onclick="submitNewWork()">确认添加到作品集</button>
+                <button class="btn-outline" style="width:auto; height:36px;" onclick="toggleWorkUploadForm()">取消</button>
+              </div>
+            </div>
+          ` : ""}
+
+          <div class="profile-works-grid">
+            ${c.works.map((w, idx) => `
+              <div class="profile-work-item ${idx === 0 && c.works.length >= 4 ? "featured" : ""}" onclick="openWorkLightbox('${c.id}', ${idx})">
+                <div class="profile-work-frame">
+                  <img src="${w.img}" alt="${escapeHtml(w.title)}" class="${w.bw ? "work-bw" : ""}" style="${w.pos ? `object-position:${w.pos};` : ""}" />
+                </div>
+                <div class="profile-work-cap">
+                  <span>${escapeHtml(w.title)}</span>
+                  <span class="mono">${w.year}</span>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      } else if (state.profileTab === "services") {
+        tabContent = `
+          ${managing ? `
+            <div class="gallery-meta-bar">
+              <div class="gallery-heading"><strong>我的服务与档期</strong> 修改文案不自动延长有效期，需本人主动确认</div>
+              <button class="text-action strong" onclick="setProfileTab('ai-publish')">+ AI 辅助发布新服务</button>
+            </div>
+          ` : ""}
+          ${visibleServices.length ? `
+            <div class="profile-services-list">
+              ${visibleServices.map(s => `
+                <div class="profile-service-row" style="opacity:${s.published ? 1 : 0.5};" onclick="openDetail('${s.id}')">
+                  <img class="profile-service-thumb" src="${s.images[0]}" alt="${escapeHtml(s.title)}" />
+                  <div>
+                    <div style="font-size:12.5px; color:var(--ink);">${escapeHtml(s.title)}${!s.published ? " <span style='color:var(--ink-muted); font-size:11px;'>（已暂停展示）</span>" : ""}</div>
+                    <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">${escapeHtml(s.deliverable)}</div>
+                  </div>
+                  <div class="mono" style="font-size:11px; color:var(--ink-muted);">
+                    ${managing ? `确认 ${s.confirmedAt}<br />有效至 ${s.validUntil}` : `${s.region}<br />${escapeHtml(s.slotLabel)}`}
+                  </div>
+                  <div class="mono" style="font-size:12px;">${escapeHtml(s.priceUnit)}</div>
+                  <div class="manage-actions" onclick="event.stopPropagation();">
+                    ${managing ? `
+                      <button class="text-action strong" onclick="renewServiceValidity('${s.id}')">确认续期</button>
+                      <button class="text-action" onclick="toggleServicePublish('${s.id}')">${s.published ? "暂停接单" : "恢复上架"}</button>
+                      <button class="text-action" onclick="openDetail('${s.id}')">预览</button>
+                    ` : `
+                      <button class="btn-outline" style="height:34px; width:108px;" onclick="openChatDrawer('${s.id}')">聊一聊</button>
+                    `}
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          ` : `
+            <div class="empty-state" style="padding:56px 0;">
+              <p>${c.name} 当前暂未对外开启可约服务，以个人作品、方法博客与社区交流为主。</p>
+              ${managing ? `<button class="btn-primary" style="width:200px;" onclick="setProfileTab('ai-publish')">+ 用 AI 辅助开启首项服务</button>` : ""}
+            </div>
+          `}
+        `;
+      } else if (state.profileTab === "posts") {
+        tabContent = `
+          ${managing ? `
+            <div class="gallery-meta-bar">
+              <div class="gallery-heading"><strong>我的博客与讨论</strong> 发布后同步展示在社区与个人主页</div>
+              <button class="text-action strong" onclick="openPostModal('方法博客')">+ 写新博客 / 发起讨论</button>
+            </div>
+          ` : ""}
+          ${myPosts.length ? `
+            <div class="post-feed" style="border-top:1px solid var(--hairline);">
+              ${myPosts.map(p => `
+                <article class="post-row ${p.image ? "" : "no-thumb"}" onclick="openPost('${p.id}')">
+                  <div>
+                    <div class="post-meta-top">
+                      <span class="post-type-tag mono">[${p.type}${p.version ? ` · ${p.version}` : ""}]</span>
+                      ${renderPostColumnTags(p, true)}
+                    </div>
+                    <h3 class="post-row-title">${escapeHtml(p.title)}</h3>
+                    <p class="post-row-excerpt">${escapeHtml(p.excerpt)}</p>
+                    <div class="post-meta-foot mono">
+                      <span>${p.comments.length} 讨论</span>
+                      <span>${p.stars} 收藏</span>
+                      <span>${p.date}</span>
+                    </div>
+                  </div>
+                  ${p.image ? `<img class="post-row-thumb" src="${p.image}" alt="${escapeHtml(p.title)}" />` : ""}
+                </article>
+              `).join("")}
+            </div>
+          ` : `<div class="empty-state" style="padding:48px 0;"><p>暂未发布公开博客或讨论。</p></div>`}
+
+          ${managing && savedPosts.length ? `
+            <div style="margin-top:44px;">
+              <div class="rail-title" style="margin-bottom:12px;">我收藏的社区方法与讨论 (${savedPosts.length})</div>
+              <div style="border-top:1px solid var(--hairline);">
+                ${savedPosts.map(sp => `
+                  <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--hairline); cursor:pointer; font-size:12px;" onclick="openPost('${sp.id}')">
+                    <span><span class="mono" style="color:var(--ink-muted); margin-right:8px;">[${sp.type}]</span>${escapeHtml(sp.title)}</span>
+                    <span class="mono" style="color:var(--ink-faint);">${DB.profiles[sp.authorId].name} →</span>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          ` : ""}
+        `;
+      } else if (state.profileTab === "ai-publish" && managing) {
+        const preset = AI_PRESETS[state.aiPresetIndex];
+        if (!state.aiDraft) state.aiDraft = { ...preset.parsed };
+        tabContent = `
+          <div class="ai-grid">
+            <div>
+              <div class="rail-title" style="margin-bottom:8px;">AI 辅助建卡 · 从口语原话生成标准服务</div>
+              <p style="font-size:12px; color:var(--ink-muted); line-height:1.75; margin-bottom:18px;">
+                直接粘贴零散接单描述，AI 自动提取交付口径、价格单位、区域与档期；右侧每一项均支持本人二次微调，确认后立即上架到发现页与个人主页。
+              </p>
+              <div class="ai-presets">
+                ${AI_PRESETS.map((pr, i) => `
+                  <button class="rail-btn ${i === state.aiPresetIndex ? "active" : ""}" onclick="selectAiPreset(${i})">${pr.label}</button>
+                `).join("")}
+              </div>
+              <textarea id="aiRawInput" class="field-textarea" style="min-height:165px; margin-bottom:16px;">${preset.raw}</textarea>
+              <button class="btn-outline" style="max-width:200px;" onclick="parseCustomAiText()">提取结构化草案</button>
+            </div>
+            <div id="aiRightCol"></div>
+          </div>
+        `;
+      }
+
+      document.getElementById("view-profile").innerHTML = `
+        <div class="breadcrumb-row">
+          <button class="back-link" onclick="goBack('creators')">${escapeHtml(getBackButtonLabel("创作者目录"))}</button>
+          ${isOwnProfile ? `
+            <div class="mode-switch">
+              <button class="${managing ? "active" : ""}" onclick="setOwnerEditMode(true)">我的空间（含编辑与 AI 发布）</button>
+              <span style="color:var(--hairline-strong);">/</span>
+              <button class="${!managing ? "active" : ""}" onclick="setOwnerEditMode(false)">访客视角预览</button>
+            </div>
+          ` : `
+            <span class="mono" style="font-size:10.5px; color:var(--ink-faint);">${c.locationDetail}</span>
+          `}
+        </div>
+
+        ${managing && state.showProfileEditForm ? `
+          <div class="inline-panel">
+            <div class="rail-title">编辑个人主页资料</div>
+            <div class="inline-panel-grid">
+              <div>
+                <label class="field-label">多元技能 / 兴趣标签（用 / 分隔）</label>
+                <input id="editBioSkills" class="field-input" value="${escapeHtml(c.skills.join(" / "))}" />
+              </div>
+              <div>
+                <label class="field-label">常驻区域</label>
+                <select id="editBioRegion" class="field-select">
+                  ${REGIONS.filter(r => r !== "全部区域").map(r => `<option value="${r}" ${r === c.region ? "selected" : ""}>${r}</option>`).join("")}
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="field-label">个人简介与表达</label>
+              <textarea id="editBioStatement" class="field-textarea" style="min-height:84px;">${escapeHtml(c.statement)}</textarea>
+            </div>
+            <div style="display:flex; gap:12px;">
+              <button class="btn-primary" style="width:auto; height:36px;" onclick="saveProfileBio()">保存修改</button>
+              <button class="btn-outline" style="width:auto; height:36px;" onclick="toggleProfileEditForm()">取消</button>
+            </div>
+          </div>
+        ` : ""}
+
+        <div class="editorial-hero">
+          <div class="editorial-bio-col">
+            <div class="editorial-kicker">${c.locationDetail} · 个人数字主页</div>
+            <h1 class="editorial-name">${c.name} <span style="color:var(--ink-muted); font-size:18px; margin-left:8px;">${c.en}</span></h1>
+            <p class="editorial-statement">${escapeHtml(c.statement)}</p>
+            <div class="editorial-tags">
+              ${c.skills.map(sk => `<span>${escapeHtml(sk)}</span>`).join("<span>/</span>")}
+            </div>
+            <div style="margin-top:8px; display:flex; gap:12px; flex-wrap:wrap; max-width:420px;">
+              ${managing ? `
+                <button class="btn-primary" style="width:auto;" onclick="setProfileTab('ai-publish')">+ AI 辅助发布服务</button>
+                <button class="btn-outline" style="width:auto;" onclick="openPostModal('方法博客')">写博客 / 发帖</button>
+                <button class="btn-outline" style="width:auto;" onclick="toggleProfileEditForm()">编辑简介</button>
+              ` : `
+                ${visibleServices.length ? `<button class="btn-primary" style="width:auto; min-width:160px;" onclick="openChatDrawer('${visibleServices[0].id}')">发起服务咨询</button>` : ""}
+                <button class="btn-outline" style="width:auto;" onclick="setProfileTab('posts')">查看博客与讨论 (${myPosts.length})</button>
+              `}
+            </div>
+          </div>
+
+          <div class="editorial-hero-img">
+            <img src="${c.heroImg}" alt="${c.name}" />
+          </div>
+        </div>
+
+        ${managing ? `
+          <div class="owner-strip">
+            <div class="stat-cell">
+              <span class="stat-label">在架服务</span>
+              <span class="stat-value mono">${activeCount} / ${allMyServices.length} 项</span>
+            </div>
+            <div class="stat-cell">
+              <span class="stat-label">博客与社区发帖</span>
+              <span class="stat-value mono">${myPosts.length} 篇发布 · ${savedPosts.length} 收藏</span>
+            </div>
+            <div class="stat-cell">
+              <span class="stat-label">微信号隐私设置</span>
+              <span class="stat-value">默认保密 · 仅单会话自愿展示</span>
+            </div>
+            <div class="stat-cell">
+              <span class="stat-label">统一身份</span>
+              <span class="stat-value">可同时浏览、讨论、发布与购买</span>
+            </div>
+          </div>
+        ` : ""}
+
+        <div class="sub-tabs">
+          <button class="sub-tab ${state.profileTab === "works" ? "active" : ""}" onclick="setProfileTab('works')">作品集 (${c.works.length})</button>
+          <button class="sub-tab ${state.profileTab === "services" ? "active" : ""}" onclick="setProfileTab('services')">${managing ? `服务与档期 (${allMyServices.length})` : `可约服务 (${visibleServices.length})`}</button>
+          <button class="sub-tab ${state.profileTab === "posts" ? "active" : ""}" onclick="setProfileTab('posts')">博客与讨论 (${myPosts.length})</button>
+          ${managing ? `<button class="sub-tab ${state.profileTab === "ai-publish" ? "active" : ""}" onclick="setProfileTab('ai-publish')">+ 新建服务（AI 辅助）</button>` : ""}
+        </div>
+
+        ${tabContent}
+      `;
+
+      if (state.profileTab === "ai-publish" && managing) {
+        const preset = AI_PRESETS[state.aiPresetIndex];
+        renderAiResultPanel(state.aiDraft || preset.parsed, preset.manualTime, preset.aiTime);
+      }
+    }
+
+    /* ==================== CHAT ENGINE (WITH REAL LOCAL IMAGE UPLOAD & DEAL STAGE) ==================== */
+    function ensureThread(serviceId) {
+      if (!DB.threads[serviceId]) {
+        const s = DB.services.find(x => x.id === serviceId);
+        const c = DB.profiles[s.creatorId];
+        DB.threads[serviceId] = {
+          serviceId,
+          unread: 0,
+          shareWechat: false,
+          dealStage: "咨询中",
+          messages: [
+            { sender: "theirs", time: "现在", text: `你好，这里是 ${c.name}。你正在咨询「${s.title}」（${s.priceUnit}），可直接发想约的时间或参考图。` }
+          ]
+        };
+        savePersistedData();
+      }
+      return DB.threads[serviceId];
+    }
+
+    function updateUnreadBadge() {
+      const total = Object.values(DB.threads).reduce((sum, t) => sum + (t.unread || 0), 0);
+      document.getElementById("navMessagesBtn").textContent = total > 0 ? `消息 (${total})` : "消息";
+    }
+
+    function setDealStage(serviceId, stage, isDrawer) {
+      const t = ensureThread(serviceId);
+      t.dealStage = stage;
+      savePersistedData();
+      rerenderChat(serviceId, isDrawer);
+      showToast(`合作进展已标记为「${stage}」`);
+    }
+
+    function triggerChatPhotoUpload(serviceId, isDrawer) {
+      state.pendingChatUpload = { serviceId, isDrawer };
+      const input = document.getElementById("chatPhotoInput");
+      input.value = "";
+      input.click();
+    }
+
+    function handleChatPhotoUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file || !state.pendingChatUpload) return;
+      const { serviceId, isDrawer } = state.pendingChatUpload;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const t = ensureThread(serviceId);
+        t.messages.push({ sender: "mine", time: getNowStr(), text: "", img: e.target.result });
+        savePersistedData();
+        rerenderChat(serviceId, isDrawer);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function buildChatPanelHtml(serviceId, isDrawer) {
+      const s = DB.services.find(x => x.id === serviceId) || DB.services[0];
+      const c = DB.profiles[s.creatorId];
+      const t = ensureThread(serviceId);
+      const inputId = isDrawer ? "drawerChatInput" : "pageChatInput";
+      const stages = ["咨询中", "已约时间", "已站外完成"];
+
+      return `
+        ${isDrawer ? `
+          <div class="chat-header">
+            <div style="font-size:12px; font-weight:500; letter-spacing:0.04em;">${c.en} · ${c.name}</div>
+            <button class="search-close" onclick="closeChatDrawer()">关闭 [ESC]</button>
+          </div>
+        ` : ""}
+        <div class="chat-context-bar">
+          <img src="${s.images[0]}" alt="${escapeHtml(s.title)}" />
+          <div class="chat-context-text">
+            <div class="chat-context-title">${escapeHtml(s.title)}</div>
+            <div class="chat-context-meta mono">${escapeHtml(s.priceUnit)} · ${escapeHtml(s.slotLabel)}</div>
+          </div>
+          <button class="back-link" onclick="${isDrawer ? "closeChatDrawer();" : ""} openDetail('${s.id}')">详情</button>
+        </div>
+
+        <div class="chat-status-strip">
+          <span>合作状态记录</span>
+          <div class="status-steps">
+            ${stages.map(st => `
+              <button class="status-step ${t.dealStage === st ? "active" : ""}" onclick="setDealStage('${serviceId}', '${st}', ${isDrawer})">${st}</button>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="chat-messages" id="${isDrawer ? "drawerMsgList" : "pageMsgList"}">
+          ${t.messages.map(m => `
+            <div class="msg-row ${m.sender}">
+              <div class="msg-meta mono">${m.sender === "mine" ? "我" : c.name} · ${m.time}</div>
+              ${m.text ? `<div class="msg-body">${escapeHtml(m.text)}</div>` : ""}
+              ${m.img ? `<img class="msg-img" src="${m.img}" alt="参考图" />` : ""}
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="wechat-strip">
+          <div class="wechat-toggle-row">
+            <span>向当前对方展示我的微信号</span>
+            <button class="switch-btn ${t.shareWechat ? "on" : ""}" onclick="toggleWechatShare('${serviceId}', ${isDrawer})" aria-label="切换微信展示"></button>
+          </div>
+          ${t.shareWechat ? `
+            <div class="wechat-card">
+              <span class="mono">已展示微信号：${state.myWechat}</span>
+              <button class="copy-btn" onclick="copyWechat(this, '${state.myWechat}')">复制号码</button>
+            </div>
+          ` : `
+            <div style="font-size:10.5px; color:var(--ink-faint);">默认保密 · 仅对当前会话生效，随时可撤回展示</div>
+          `}
+        </div>
+
+        <div class="chat-composer">
+          <button class="chat-action-btn" onclick="triggerChatPhotoUpload('${serviceId}', ${isDrawer})" title="从本地选择参考图">+ 图片</button>
+          <input
+            type="text"
+            id="${inputId}"
+            class="chat-input"
+            placeholder="输入想确认的时间、风格或需求..."
+            onkeydown="if(event.key==='Enter') sendChatMessage('${serviceId}', ${isDrawer})"
+          />
+          <button class="chat-send-btn" onclick="sendChatMessage('${serviceId}', ${isDrawer})">发送</button>
+        </div>
+      `;
+    }
+
+    function openChatDrawer(serviceId) {
+      state.activeThreadId = serviceId;
+      const t = ensureThread(serviceId);
+      t.unread = 0;
+      savePersistedData();
+      updateUnreadBadge();
+      const drawer = document.getElementById("chatDrawer");
+      drawer.innerHTML = buildChatPanelHtml(serviceId, true);
+      drawer.classList.add("open");
+      document.getElementById("drawerBackdrop").classList.add("open");
+      scrollMessagesToBottom("drawerMsgList");
+    }
+
+    function closeChatDrawer() {
+      document.getElementById("chatDrawer").classList.remove("open");
+      document.getElementById("drawerBackdrop").classList.remove("open");
+    }
+
+    function toggleWechatShare(serviceId, isDrawer) {
+      const t = ensureThread(serviceId);
+      t.shareWechat = !t.shareWechat;
+      savePersistedData();
+      rerenderChat(serviceId, isDrawer);
+    }
+
+    function copyWechat(btn, text) {
+      if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+      const old = btn.textContent;
+      btn.textContent = "已复制";
+      setTimeout(() => { btn.textContent = old; }, 1400);
+    }
+
+    function sendChatMessage(serviceId, isDrawer) {
+      const input = document.getElementById(isDrawer ? "drawerChatInput" : "pageChatInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const t = ensureThread(serviceId);
+      t.messages.push({ sender: "mine", time: getNowStr(), text });
+      savePersistedData();
+      rerenderChat(serviceId, isDrawer);
+
+      setTimeout(() => {
+        const s = DB.services.find(x => x.id === serviceId);
+        t.messages.push({
+          sender: "theirs",
+          time: getNowStr(),
+          text: `收到，${s.slotLabel} 这个时间没问题。方便的话可以打开下方微信号展示开关，或者我们直接在这里敲定具体交付细节。`
+        });
+        savePersistedData();
+        rerenderChat(serviceId, isDrawer);
+      }, 750);
+    }
+
+    function rerenderChat(serviceId, isDrawer) {
+      if (isDrawer && document.getElementById("chatDrawer").classList.contains("open")) {
+        document.getElementById("chatDrawer").innerHTML = buildChatPanelHtml(serviceId, true);
+        scrollMessagesToBottom("drawerMsgList");
+      }
+      if (state.view === "messages") renderMessagesPage();
+    }
+
+    function scrollMessagesToBottom(id) {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollTop = el.scrollHeight;
+      }, 20);
+    }
+
+    function selectInboxThread(serviceId) {
+      state.activeThreadId = serviceId;
+      DB.threads[serviceId].unread = 0;
+      savePersistedData();
+      updateUnreadBadge();
+      renderMessagesPage();
+    }
+
+    function renderMessagesPage() {
+      const ids = Object.keys(DB.threads);
+      if (!ids.includes(state.activeThreadId)) state.activeThreadId = ids[0];
+      DB.threads[state.activeThreadId].unread = 0;
+      savePersistedData();
+      updateUnreadBadge();
+
+      document.getElementById("view-messages").innerHTML = `
+        <div class="gallery-meta-bar">
+          <div class="gallery-heading"><strong>消息中心</strong> 服务关联一对一图文沟通 · Web 首版无站外推送</div>
+          <div class="gallery-count mono">${ids.length} 段会话</div>
+        </div>
+        <div class="messages-layout">
+          <div class="thread-list">
+            ${ids.map(id => {
+              const t = DB.threads[id];
+              const s = DB.services.find(x => x.id === id) || DB.services[0];
+              const c = DB.profiles[s.creatorId];
+              const last = t.messages[t.messages.length - 1];
+              return `
+                <button class="thread-item ${id === state.activeThreadId ? "active" : ""}" onclick="selectInboxThread('${id}')">
+                  <img class="thread-thumb" src="${s.images[0]}" alt="${escapeHtml(s.title)}" />
+                  <div style="min-width:0;">
+                    <div class="thread-top">
+                      <span class="thread-name">${c.name}${t.unread ? `<span class="unread-mark"></span>` : ""}</span>
+                      <span class="thread-time mono">${last.time}</span>
+                    </div>
+                    <div class="thread-service">${escapeHtml(s.title)} · ${t.dealStage}</div>
+                    <div class="thread-snippet">${escapeHtml(last.text || "[图片]")}</div>
+                  </div>
+                </button>
+              `;
+            }).join("")}
+          </div>
+          <div class="chat-stage">
+            ${buildChatPanelHtml(state.activeThreadId, false)}
+          </div>
+        </div>
+      `;
+      scrollMessagesToBottom("pageMsgList");
+    }
+
+    /* ==================== QR MODAL, LIGHTBOX & MOBILE SIM ==================== */
+    function openQrModal() { document.getElementById("qrModal").classList.add("open"); }
+    function closeQrModal() { document.getElementById("qrModal").classList.remove("open"); }
+    function toggleMobileSim() { closeQrModal(); document.body.classList.toggle("mobile-sim"); }
+
+    function copyDemoUrl() {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(DEMO_LIVE_URL)
+          .then(() => showToast("已复制线上原型链接"))
+          .catch(() => showToast("链接：" + DEMO_LIVE_URL));
+      } else {
+        showToast("链接：" + DEMO_LIVE_URL);
+      }
+    }
+
+    function downloadQrPng() {
+      const margin = 4;
+      const n = QR_MATRIX.length;
+      const total = n + margin * 2;
+      const scale = 40;
+      const canvas = document.createElement("canvas");
+      canvas.width = total * scale;
+      canvas.height = total * scale;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#000000";
+      QR_MATRIX.forEach((row, y) => {
+        for (let x = 0; x < row.length; x++) {
+          if (row[x] === "1") {
+            ctx.fillRect((x + margin) * scale, (y + margin) * scale, scale, scale);
+          }
+        }
+      });
+      const a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = "FIRASAT_XXI_QR.png";
+      a.click();
+      showToast("已下载高清二维码 PNG");
+    }
+
+    function openWorkLightbox(profileId, idx) {
+      const c = DB.profiles[profileId];
+      if (!c || !c.works[idx]) return;
+      const w = c.works[idx];
+      const img = document.getElementById("lightboxImg");
+      img.src = w.img;
+      img.alt = w.title || "";
+      img.classList.toggle("work-bw", Boolean(w.bw));
+      document.getElementById("lightboxCaption").textContent = `${c.name} · ${w.title} (${w.year})`;
+      document.getElementById("lightboxModal").classList.add("open");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightboxModal").classList.remove("open");
+    }
+
+    /* ==================== INIT ==================== */
+    document.getElementById("miniQrContainer").innerHTML = buildQrSvg();
+    document.getElementById("largeQrContainer").innerHTML = buildQrSvg();
+
+    window.addEventListener("scroll", () => {
+      document.getElementById("siteHeader").classList.toggle("scrolled", window.scrollY > 8);
+    });
+
+    window.addEventListener("keydown", e => {
+      if (e.key === "Escape") {
+        toggleSearch(false);
+        closeChatDrawer();
+        closeQrModal();
+        closePostModal();
+        closeColumnModal();
+        closeLightbox();
+      }
+    });
+
+    renderCatalog();
+    updateUnreadBadge();
+  </script>
+</body>
+</html>
