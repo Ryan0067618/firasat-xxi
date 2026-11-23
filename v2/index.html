@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+<title>FIRASAT XXI · 先觉纪</title>
+<style>
+:root{
+  --bg:#ffffff; --ink:#0b0b0b; --ink2:#3a3a3a; --mute:#767676; --faint:#a6a6a6;
+  --line:#ececec; --line2:#d8d8d8; --surface:#f4f4f2; --signal:#ff5a1f;
+  --sans:"Inter","Helvetica Neue",Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --mono:"JetBrains Mono","SF Mono",Consolas,"Courier New",monospace;
+  --pad:clamp(16px,3vw,40px);
+  --hdr:60px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:inherit}
+input,textarea,select{font:inherit;color:inherit}
+ul{list-style:none}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1680px;margin:0 auto;padding:0 var(--pad)}
+.link{color:var(--ink2);font-size:13px;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line2)}
+.link:hover{color:var(--ink);text-decoration-color:var(--ink)}
+.m-only{display:none!important}
+
+/* ---------- avatar ---------- */
+.av{width:28px;height:28px;border-radius:50%;display:inline-grid;place-items:center;color:#fff;font-size:12px;font-weight:600;flex:none;line-height:1}
+.av-xs{width:18px;height:18px;font-size:9px}
+.av-s{width:32px;height:32px;font-size:13px}
+.av-m{width:40px;height:40px;font-size:15px}
+.av-l{width:64px;height:64px;font-size:24px}
+.av-xl{width:104px;height:104px;font-size:40px;border:5px solid #fff}
+
+/* ---------- header ---------- */
+.hdr{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
+.hdr.scrolled{border-bottom-color:var(--line)}
+.hdr-in{height:var(--hdr);padding:0 var(--pad);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;max-width:1680px;margin:0 auto}
+.brand{display:flex;align-items:baseline;gap:10px;justify-self:start}
+.brand b{font-size:15px;font-weight:700;letter-spacing:.22em}
+.brand span{font-size:12px;color:var(--mute);letter-spacing:.12em}
+.nav{display:flex;gap:36px}
+.nav button{font-size:14px;color:var(--mute);height:var(--hdr);position:relative;transition:color .15s}
+.nav button:hover{color:var(--ink)}
+.nav button.on{color:var(--ink);font-weight:600}
+.nav button.on::after{content:"";position:absolute;left:0;right:0;bottom:14px;height:2px;background:var(--ink)}
+.hdr-r{justify-self:end;display:flex;align-items:center;gap:22px}
+.hdr-r .t{font-size:13px;color:var(--ink2);display:inline-flex;align-items:center}
+.hdr-r .t:hover,.hdr-r .t.on{color:var(--ink)}
+.hdr-r .t.on{font-weight:600}
+.me{border-radius:50%;outline:2px solid transparent;outline-offset:2px;transition:outline-color .15s}
+.me.on{outline-color:var(--ink)}
+.badge-dot{display:inline-block;min-width:17px;height:17px;padding:0 5px;border-radius:9px;background:var(--signal);color:#fff;font-size:10px;line-height:17px;text-align:center;margin-left:5px;font-family:var(--mono);font-weight:600}
+.badge-dot:empty{display:none}
+
+.tabbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);grid-template-columns:repeat(5,1fr)}
+.tabbar button{height:56px;font-size:12px;color:var(--mute);text-align:center;display:flex;align-items:center;justify-content:center}
+.tabbar button.on{color:var(--ink);font-weight:700}
+.tabbar .badge-dot{margin-left:3px}
+
+/* ---------- shared ---------- */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.chips::-webkit-scrollbar{display:none}
+.chips.wrapc{flex-wrap:wrap}
+.chip{height:34px;padding:0 16px;border-radius:999px;border:1px solid var(--line2);font-size:13px;white-space:nowrap;color:var(--ink2);transition:all .15s;flex:none;display:inline-flex;align-items:center}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:999px;padding:3px;flex:none}
+.seg button{height:28px;padding:0 16px;border-radius:999px;font-size:13px;color:var(--mute)}
+.seg button.on{background:var(--ink);color:#fff}
+.btn{height:46px;border-radius:999px;padding:0 24px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;white-space:nowrap;text-align:center}
+.btn-k{background:var(--ink);color:#fff}
+.btn-k:hover{background:#333}
+.btn-o{border:1px solid var(--line2);background:#fff}
+.btn-o:hover,.btn-o.on{border-color:var(--ink)}
+.btn-s{height:34px;padding:0 16px;font-size:13px}
+.btn-w{width:100%}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--signal);flex:none}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2);white-space:nowrap}
+.live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.sec-h{font-size:12px;color:var(--faint);font-weight:500;letter-spacing:.08em;margin-bottom:12px}
+.back{font-size:13px;color:var(--mute);padding:20px 0 16px;display:inline-flex}
+.back:hover{color:var(--ink)}
+.empty{padding:72px 0;text-align:center;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:16px}
+.empty.sm{padding:40px 20px}
+.price{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);font-size:14px;white-space:nowrap}
+.price small{color:var(--faint);font-size:.85em}
+.who-row{display:flex;align-items:center;gap:12px;text-align:left}
+.who-n{font-size:15px;font-weight:600}
+.who-s{font-size:12px;color:var(--mute)}
+
+/* ---------- explore ---------- */
+.hero{padding:64px 0 32px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end}
+.hero h1{font-size:clamp(40px,6.4vw,96px);line-height:1;font-weight:700;letter-spacing:-.03em}
+.hero-side{font-size:13px;color:var(--mute);text-align:right;line-height:2}
+.hero-side b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:15px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0 22px;position:sticky;top:var(--hdr);background:rgba(255,255,255,.96);z-index:5}
+.masonry{column-count:4;column-gap:14px}
+.masonry.m3{column-count:3}
+.tile{break-inside:avoid;margin-bottom:24px;cursor:zoom-in;display:block;width:100%}
+.tile-img{overflow:hidden;background:var(--surface);position:relative}
+.tile-img img{width:100%;height:auto;transition:transform .7s var(--ease)}
+.tile:hover .tile-img img{transform:scale(1.03)}
+.tile-cap{display:flex;justify-content:space-between;align-items:center;padding-top:10px;font-size:13px;gap:8px}
+.tile-cap .who{display:flex;align-items:center;gap:8px;color:var(--ink2);cursor:pointer}
+.tile-cap .who:hover{color:var(--ink)}
+.tile-cap .yr{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.tile-del{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.92);font-size:13px;opacity:0;transition:opacity .15s}
+.tile:hover .tile-del{opacity:1}
+.tile-add{break-inside:avoid;width:100%;border:1px dashed var(--line2);aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;color:var(--mute);font-size:14px;cursor:pointer;margin-bottom:24px;transition:all .15s}
+.tile-add:hover{border-color:var(--ink);color:var(--ink)}
+
+.people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 22px}
+.pcard{cursor:pointer}
+.pmosaic{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:4px;aspect-ratio:3/2;overflow:hidden;background:var(--surface)}
+.pmosaic img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.pmosaic img:first-child{grid-row:span 2}
+.pmosaic.n1{grid-template-columns:1fr}
+.pmosaic.n2 img:nth-child(2){grid-row:span 2}
+.pcard:hover .pmosaic img:first-child{transform:scale(1.03)}
+.pcard-b{display:flex;justify-content:space-between;align-items:flex-start;padding-top:14px;gap:12px}
+.pname{font-size:24px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.pskills{font-size:13px;color:var(--mute);margin-top:4px}
+
+/* ---------- services ---------- */
+.split{display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px;padding-top:40px}
+.rail{position:sticky;top:calc(var(--hdr) + 24px);align-self:start}
+.rail h4,.rail-sheet h4{font-size:12px;color:var(--faint);font-weight:500;letter-spacing:.08em;margin:26px 0 8px}
+.rail h4:first-child,.rail-sheet h4:first-child{margin-top:0}
+.opt{display:flex;width:100%;justify-content:space-between;font-size:14px;color:var(--mute);padding:5px 0;transition:color .15s}
+.opt:hover{color:var(--ink)}
+.opt.on{color:var(--ink);font-weight:600}
+.opt .n{font-family:var(--mono);font-size:12px;color:var(--faint);font-weight:400}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;cursor:pointer;margin-top:26px;padding-top:18px;border-top:1px solid var(--line)}
+.sw{width:36px;height:20px;border-radius:999px;background:var(--line2);position:relative;transition:background .2s;flex:none}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s var(--ease)}
+.sw.on{background:var(--ink)}
+.sw.on::after{left:18px}
+.list-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:26px;gap:16px}
+.list-head h2{font-size:34px;font-weight:700;letter-spacing:-.015em;line-height:1.1}
+.list-head h2 small{font-size:14px;color:var(--faint);font-weight:400;margin-left:10px;font-family:var(--mono)}
+.sorts{display:flex;gap:18px;font-size:13px;flex:none}
+.sorts button{color:var(--mute)}
+.sorts button.on{color:var(--ink);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 18px}
+.card{cursor:pointer}
+.card-img{aspect-ratio:4/5;overflow:hidden;background:var(--surface);position:relative}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.card:hover .card-img img{transform:scale(1.03)}
+.flag{position:absolute;left:12px;top:12px;background:#fff;font-size:12px;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;font-weight:500}
+.card-t{font-size:16px;font-weight:600;margin-top:14px;line-height:1.4}
+.card-m{display:flex;justify-content:space-between;align-items:center;margin-top:4px;font-size:13px;color:var(--mute);gap:10px}
+.feat{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:40px;margin-bottom:64px;cursor:pointer;align-items:end}
+.feat-img{aspect-ratio:16/10;overflow:hidden;background:var(--surface)}
+.feat-img img{width:100%;height:100%;object-fit:cover;object-position:center 22%;transition:transform .9s var(--ease)}
+.feat:hover .feat-img img{transform:scale(1.025)}
+.feat-k{font-size:12px;color:var(--ink2);letter-spacing:.06em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.feat-t{font-size:clamp(28px,3.2vw,46px);font-weight:700;line-height:1.1;letter-spacing:-.02em}
+.feat-who{display:flex;align-items:center;gap:10px;margin-top:18px;font-size:14px;color:var(--ink2)}
+.feat-inc{font-size:14px;color:var(--mute);margin-top:12px}
+.feat-p{margin:22px 0 24px}
+.feat-p .price{font-size:26px}
+.m-filters{display:none}
+
+/* ---------- service detail ---------- */
+.pdp{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(320px,1fr);gap:64px}
+.pdp-imgs{display:flex;flex-direction:column;gap:10px}
+.pdp-imgs img{width:100%;height:auto;background:var(--surface)}
+.pdp-side{position:sticky;top:calc(var(--hdr) + 24px);align-self:start;max-width:440px}
+.pdp-side h1{font-size:clamp(28px,2.8vw,40px);line-height:1.15;font-weight:700;letter-spacing:-.02em;margin:28px 0 14px}
+.pdp-price .price{font-size:26px}
+.avail{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:14px;color:var(--ink2)}
+.pdp-desc{font-size:15px;color:var(--ink2);margin-top:22px;line-height:1.8}
+.incl{border-top:1px solid var(--line);padding:20px 0 4px;margin-top:24px}
+.incl li{font-size:14px;padding:4px 0 4px 18px;position:relative}
+.incl li::before{content:"";position:absolute;left:0;top:13px;width:8px;height:1px;background:var(--ink)}
+.kv{display:grid;grid-template-columns:76px 1fr;gap:8px 12px;font-size:13px;border-top:1px solid var(--line);padding:20px 0;margin-top:16px}
+.kv dt{color:var(--faint)}
+.fine{font-size:12px;color:var(--faint);text-align:center;margin-top:12px}
+.more{margin-top:96px;padding-top:28px;border-top:1px solid var(--line)}
+
+/* ---------- profile ---------- */
+.pf-bar{display:flex;justify-content:space-between;align-items:center;min-height:56px}
+.pf-mode{font-size:13px;color:var(--mute);display:flex;gap:10px;align-items:center}
+.cover{display:flex;gap:4px;height:clamp(240px,34vw,460px);background:var(--surface);overflow:hidden}
+.cover img{flex:1 1 0;min-width:0;height:100%;object-fit:cover;cursor:zoom-in}
+.pf-head{padding:0 0 0 4px}
+.pf-head>.av{margin-top:-52px;position:relative}
+.pf-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:18px;flex-wrap:wrap}
+.pf-name{font-size:clamp(36px,5vw,64px);font-weight:700;letter-spacing:-.03em;line-height:1}
+.pf-name small{font-size:16px;color:var(--faint);font-weight:400;letter-spacing:0;margin-left:14px}
+.pf-bio{font-size:17px;color:var(--ink2);margin-top:16px;max-width:620px;line-height:1.7}
+.pf-meta{font-size:13px;color:var(--mute);margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 16px}
+.pf-act{display:flex;gap:10px;flex-wrap:wrap}
+.tabs{display:flex;gap:32px;border-bottom:1px solid var(--line);margin:44px 0 32px;overflow-x:auto;scrollbar-width:none}
+.tabs button{padding:12px 0;font-size:15px;color:var(--mute);position:relative;white-space:nowrap}
+.tabs button.on{color:var(--ink);font-weight:600}
+.tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+.tabs .n{font-family:var(--mono);font-size:12px;color:var(--faint);margin-left:6px;font-weight:400}
+.srow{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:24px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.srow:first-child{padding-top:0}
+.srow.dim{opacity:.5}
+.srow img{width:120px;aspect-ratio:4/5;object-fit:cover;background:var(--surface)}
+.srow-t{font-size:18px;font-weight:600;line-height:1.35}
+.srow-d{font-size:13px;color:var(--mute);margin-top:4px}
+.srow-s{font-size:12px;color:var(--mute);margin-top:10px}
+.srow-r{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.srow-r .price{font-size:17px}
+.srow-a{display:flex;gap:14px;align-items:center}
+
+/* ---------- community ---------- */
+.col-btn{display:flex;align-items:center;gap:8px;width:100%;font-size:14px;color:var(--mute);padding:5px 0;transition:color .15s}
+.col-btn:hover{color:var(--ink)}
+.col-btn .sym{font-family:var(--mono);color:var(--faint);width:14px;flex:none}
+.col-btn .n{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--faint)}
+.col-btn.on{color:var(--ink);font-weight:600}
+.col-btn.on .sym{color:var(--signal)}
+.rail .add{margin-top:22px;display:inline-block}
+.col-head{padding-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.col-type{font-size:12px;color:var(--faint);letter-spacing:.08em;margin-bottom:8px}
+.col-head h2{font-size:clamp(30px,3.4vw,44px);font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.col-head h2 .sym{color:var(--faint);font-weight:400;margin-right:6px}
+.col-head p{color:var(--mute);margin-top:10px;font-size:15px}
+.col-act{display:flex;gap:10px}
+.kinds{padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.kinds .chip{height:30px;font-size:12px;padding:0 14px}
+.post{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:32px;padding:28px 0;border-bottom:1px solid var(--line);cursor:pointer;align-items:center}
+.post.noimg{grid-template-columns:1fr}
+.post-k{font-size:12px;color:var(--mute);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.kind{color:var(--ink);font-weight:600}
+.tag{font-size:12px;color:var(--mute)}
+.tag:hover{color:var(--ink)}
+.post-t{font-size:22px;font-weight:650;line-height:1.35;margin:10px 0 8px;letter-spacing:-.01em}
+.post:hover .post-t{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.post-e{font-size:14px;color:var(--mute);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.75}
+.post-m{font-size:12px;color:var(--faint);margin-top:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.post-m .a{display:inline-flex;align-items:center;gap:7px;color:var(--ink2)}
+.post>img{width:220px;aspect-ratio:4/3;object-fit:cover;background:var(--surface)}
+.read{max-width:720px;margin:0 auto 40px}
+.read h1{font-size:clamp(30px,4vw,46px);line-height:1.18;font-weight:700;letter-spacing:-.02em;margin:16px 0 26px}
+.read-by{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+.read-hero{width:100%;margin:34px 0 8px}
+.read-body{padding-top:24px}
+.read-body p{font-size:16.5px;line-height:1.95;color:#222;margin-bottom:20px}
+.params{background:var(--surface);padding:20px 22px;margin:28px 0}
+.params-h{display:flex;justify-content:space-between;font-size:12px;color:var(--mute);margin-bottom:10px}
+.params pre{font-family:var(--mono);font-size:13px;line-height:2;white-space:pre-wrap;color:var(--ink)}
+.author-svc{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:center;padding:16px;border:1px solid var(--line);margin:36px 0;cursor:pointer;transition:border-color .15s}
+.author-svc:hover{border-color:var(--ink)}
+.author-svc img{width:64px;height:80px;object-fit:cover}
+.floors{margin-top:48px}
+.floor{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:20px 0;border-top:1px solid var(--line)}
+.floor-h{display:flex;gap:10px;align-items:baseline;font-size:13px;color:var(--faint)}
+.floor-h b{color:var(--ink);font-weight:600}
+.floor p{font-size:15px;margin-top:4px;line-height:1.75}
+.reply-box{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding-top:20px;border-top:1px solid var(--line)}
+
+/* ---------- messages / chat ---------- */
+.msgs{display:grid;grid-template-columns:340px minmax(0,1fr);height:calc(100vh - var(--hdr));height:calc(100dvh - var(--hdr));border-top:1px solid var(--line)}
+.tlist{border-right:1px solid var(--line);overflow:auto}
+.tlist-h{font-size:22px;font-weight:700;padding:22px 20px 12px}
+.titem{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;padding:14px 20px;align-items:center;width:100%;transition:background .15s}
+.titem:hover{background:#fafaf9}
+.titem.on{background:var(--surface)}
+.ti-top{display:flex;gap:8px;align-items:baseline;font-size:14px}
+.ti-top b{font-weight:600}
+.ti-svc{font-size:12px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ti-last{font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-pane{min-height:0;display:flex;flex-direction:column}
+.chat-h{padding:12px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex:none}
+.chat-who{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+.chat-svc{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--mute);margin-top:2px;max-width:100%}
+.chat-svc img{width:18px;height:22px;object-fit:cover}
+.chat-svc span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-svc:hover{color:var(--ink)}
+.stage select{appearance:none;-webkit-appearance:none;border:1px solid var(--line2);border-radius:999px;height:30px;padding:0 26px 0 12px;font-size:12px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23767676'/%3E%3C/svg%3E") no-repeat right 11px center;cursor:pointer;color:var(--ink2)}
+.chat-body{flex:1;overflow:auto;padding:24px 20px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.bub{max-width:74%;padding:10px 15px;border-radius:20px;font-size:14px;line-height:1.55;word-break:break-word}
+.bub.me{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.bub.them{align-self:flex-start;background:var(--surface);border-bottom-left-radius:6px}
+.bub.img{padding:0;background:none;overflow:hidden;border-radius:16px}
+.bub.img img{max-width:240px;max-height:300px;object-fit:cover}
+.sys{align-self:center;font-size:11px;color:var(--faint);margin:10px 0 4px}
+.wx{border:1px solid var(--line2);border-radius:18px;padding:12px 16px;min-width:220px;max-width:74%}
+.wx.me{align-self:flex-end}
+.wx.them{align-self:flex-start}
+.wx-l{font-size:12px;color:var(--mute)}
+.wx-id{font-size:16px;margin:2px 0 8px}
+.wx-a{display:flex;gap:14px}
+.chat-empty{margin:auto;text-align:center;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px;max-width:340px}
+.chat-empty b{color:var(--ink);font-size:16px}
+.chat-empty .qchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.composer{border-top:1px solid var(--line);padding:12px 16px;display:flex;gap:8px;align-items:center;flex:none;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+.composer input{flex:1;min-width:0;height:42px;border-radius:999px;border:1px solid var(--line2);padding:0 18px;outline:none;background:#fff;font-size:14px}
+.composer input:focus{border-color:var(--ink)}
+.icon-btn{height:42px;padding:0 14px;border-radius:999px;font-size:13px;color:var(--ink2);border:1px solid var(--line2);flex:none}
+.icon-btn:hover{border-color:var(--ink)}
+.send{height:42px;padding:0 20px;border-radius:999px;background:var(--ink);color:#fff;font-size:14px;font-weight:600;flex:none}
+.x{width:34px;height:34px;border-radius:50%;background:var(--surface);font-size:14px;display:inline-grid;place-items:center;align-items:center;justify-content:center;flex:none;text-align:center}
+.x:hover{background:var(--line)}
+.drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:opacity .25s;z-index:60}
+.drawer-bg.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:100%;background:#fff;z-index:61;transform:translateX(100%);transition:transform .34s var(--ease);display:flex;flex-direction:column}
+.drawer.on{transform:none}
+
+/* ---------- overlays ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(10,10,10,.42);z-index:70;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.on{display:flex}
+.modal{background:#fff;width:560px;max-width:100%;max-height:calc(100vh - 40px);overflow:auto;border-radius:22px;padding:28px}
+.modal.wide{width:960px}
+.modal.sm{width:420px}
+.modal.phone-m{width:auto;background:transparent;padding:0;overflow:visible;display:flex;flex-direction:column;align-items:center;gap:16px;max-height:none}
+.modal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:16px}
+.modal-h h3{font-size:22px;font-weight:700;letter-spacing:-.01em}
+.hint{font-size:14px;color:var(--mute);margin:-12px 0 18px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;color:var(--mute);margin-bottom:6px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.inp{width:100%;height:44px;border:1px solid var(--line2);border-radius:12px;padding:0 14px;outline:none;background:#fff;font-size:14px}
+textarea.inp{height:auto;min-height:110px;padding:12px 14px;line-height:1.7;resize:vertical}
+select.inp{appearance:none;-webkit-appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23767676'/%3E%3C/svg%3E") no-repeat right 14px center}
+.inp:focus{border-color:var(--ink)}
+.modal-f{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+.create-opts{display:flex;flex-direction:column;gap:10px}
+.create-opts button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:20px 22px;border:1px solid var(--line);border-radius:16px;transition:border-color .15s}
+.create-opts button:hover{border-color:var(--ink)}
+.create-opts b{font-size:17px}
+.create-opts span{font-size:13px;color:var(--mute)}
+.ai-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:36px}
+.ai-prev{background:var(--surface);padding:24px;border-radius:16px;align-self:start;position:sticky;top:0}
+.ai-prev .card{cursor:default;max-width:280px;margin:0 auto}
+.ai-tip{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2);margin-bottom:18px}
+.covers{display:flex;gap:8px;flex-wrap:wrap}
+.covers button{width:56px;height:70px;overflow:hidden;outline:2px solid transparent;outline-offset:2px;border-radius:4px}
+.covers button.on{outline-color:var(--ink)}
+.covers img{width:100%;height:100%;object-fit:cover}
+.covers .up{border:1px dashed var(--line2);display:grid;place-items:center;font-size:18px;color:var(--mute)}
+.loading{display:flex;align-items:center;gap:10px;color:var(--mute);padding:40px 0;justify-content:center}
+.spin{width:16px;height:16px;border:2px solid var(--line2);border-top-color:var(--ink);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.viewer{position:fixed;inset:0;background:#fff;z-index:80;display:none;grid-template-columns:minmax(0,1fr) 380px}
+.viewer.on{display:grid}
+.v-stage{display:flex;align-items:center;justify-content:center;padding:48px 72px;background:var(--surface);position:relative;min-height:0}
+.v-stage>img{max-width:100%;max-height:calc(100vh - 96px);object-fit:contain}
+.v-close{position:absolute;top:18px;left:18px;background:#fff}
+.v-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#fff;font-size:16px;text-align:center}
+.v-nav.prev{left:16px}
+.v-nav.next{right:16px}
+.v-side{padding:32px 28px;overflow:auto;display:flex;flex-direction:column;gap:30px}
+.v-title{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+.v-meta{font-size:12px;color:var(--faint);margin-top:6px}
+.mini-svc{display:flex;justify-content:space-between;align-items:center;width:100%;padding:14px 0;border-top:1px solid var(--line);font-size:14px;gap:12px}
+.mini-svc:last-child{border-bottom:1px solid var(--line)}
+.mini-svc:hover span:first-child{text-decoration:underline;text-underline-offset:3px}
+.v-more{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.v-more img{aspect-ratio:1;object-fit:cover;cursor:pointer;background:var(--surface)}
+
+.search{position:fixed;inset:0;z-index:75;background:rgba(255,255,255,.985);display:none;overflow:auto}
+.search.on{display:block}
+.search-in{max-width:900px;margin:0 auto;padding:24px var(--pad) 80px}
+.search-top{display:flex;align-items:center;gap:16px}
+.search-top input{flex:1;min-width:0;font-size:clamp(24px,4vw,40px);font-weight:700;border:0;border-bottom:2px solid var(--ink);padding:10px 0;outline:none;background:transparent;letter-spacing:-.01em}
+.sr-g h5{font-size:12px;color:var(--faint);letter-spacing:.08em;margin:32px 0 6px;font-weight:500}
+.sr-item{display:flex;gap:14px;align-items:center;padding:10px 0;width:100%;border-bottom:1px solid var(--line)}
+.sr-item:hover .sr-t{text-decoration:underline;text-underline-offset:3px}
+.sr-item img{width:44px;height:54px;object-fit:cover;flex:none;background:var(--surface)}
+.sr-t{font-size:15px;font-weight:600}
+.sr-s{font-size:12px;color:var(--mute)}
+.sr-item .price{margin-left:auto}
+.sr-none{color:var(--mute);margin-top:32px}
+
+.qr-box{display:flex;justify-content:center}
+.qr-box svg{width:220px;height:220px}
+.qr-url{font-size:11.5px;color:var(--mute);text-align:center;margin:14px 0 20px;word-break:break-all}
+.qr-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.phone{width:392px;height:min(820px,calc(100vh - 110px));border:10px solid #111;border-radius:44px;overflow:hidden;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.phone iframe{width:100%;height:100%;border:0;display:block}
+
+.toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,16px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:999px;font-size:13px;z-index:100;opacity:0;pointer-events:none;transition:all .25s var(--ease);white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.foot{margin-top:120px;border-top:1px solid var(--line)}
+.foot-in{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:28px;padding-bottom:32px;font-size:12px;color:var(--faint);flex-wrap:wrap}
+.foot-in b{color:var(--ink);letter-spacing:.18em;font-weight:700;margin-right:8px}
+.foot-in .r{display:flex;gap:18px}
+body[data-view="messages"] .foot{display:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:1400px){ .masonry{column-count:3} .masonry.m3{column-count:3} }
+@media (max-width:1100px){
+  .people{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .split{grid-template-columns:170px minmax(0,1fr);gap:36px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pdp{gap:40px}
+}
+@media (max-width:860px){
+  :root{--hdr:54px}
+  body{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+  .nav,.hide-m{display:none!important}
+  .m-only{display:inline-flex!important}
+  .hdr-in{grid-template-columns:1fr auto}
+  .tabbar{display:grid}
+  .hero{grid-template-columns:1fr;padding:32px 0 18px;gap:14px}
+  .hero-side{text-align:left;line-height:1.8}
+  .bar{padding:10px 0 16px;gap:10px}
+  .bar .chips{flex:1;min-width:0;padding-right:18px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent)}
+  .masonry,.masonry.m3{column-count:2;column-gap:10px}
+  .tile{margin-bottom:18px}
+  .tile-cap{font-size:12px;padding-top:7px}
+  .people{grid-template-columns:1fr;gap:36px}
+  .split{grid-template-columns:1fr;gap:0;padding-top:16px}
+  .rail{display:none}
+  .m-filters{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+  .list-head{flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:20px}
+  .list-head h2{font-size:28px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 10px}
+  .card-t{font-size:14px;margin-top:10px}
+  .card-m{font-size:12px;flex-direction:column;align-items:flex-start;gap:2px}
+  .flag{left:8px;top:8px;font-size:11px;padding:3px 8px}
+  .feat{grid-template-columns:1fr;gap:16px;margin-bottom:40px}
+  .pdp{grid-template-columns:1fr;gap:8px}
+  .pdp-side{position:static;max-width:none}
+  .pdp-side h1{margin-top:20px}
+  .more{margin-top:56px}
+  .cover{height:260px;margin:0 calc(var(--pad) * -1)}
+  .cover img:nth-child(3){display:none}
+  .pf-head>.av{width:84px;height:84px;font-size:32px;margin-top:-42px}
+  .pf-top{flex-direction:column;align-items:flex-start;gap:18px}
+  .pf-act{width:100%}
+  .pf-act .btn{flex:1}
+  .pf-bio{font-size:15px}
+  .tabs{margin:32px 0 22px;gap:26px}
+  .srow{grid-template-columns:84px minmax(0,1fr);gap:16px}
+  .srow img{width:84px}
+  .srow-t{font-size:16px}
+  .srow-r{grid-column:1 / -1;flex-direction:row;justify-content:space-between;align-items:center}
+  .post{grid-template-columns:minmax(0,1fr) 96px;gap:16px;padding:22px 0}
+  .post>img{width:96px;aspect-ratio:1}
+  .post-t{font-size:17px}
+  .post-e{-webkit-line-clamp:2;font-size:13px}
+  .col-head{padding-bottom:16px}
+  .read-body p{font-size:16px}
+  .msgs{grid-template-columns:1fr;height:calc(100dvh - var(--hdr) - 60px - env(safe-area-inset-bottom))}
+  .msgs.has .tlist{display:none}
+  .msgs:not(.has) .chat-pane{display:none}
+  .tlist{border-right:0}
+  .drawer{width:100%}
+  .viewer{grid-template-columns:1fr;grid-template-rows:62vh auto;overflow:auto}
+  .v-stage{padding:56px 12px 20px}
+  .v-stage>img{max-height:100%}
+  .v-nav{width:36px;height:36px}
+  .v-side{padding:24px var(--pad) 48px}
+  .modal-bg{align-items:flex-end;padding:0}
+  .modal{border-radius:22px 22px 0 0;width:100%;max-height:92vh;padding:24px var(--pad) calc(24px + env(safe-area-inset-bottom))}
+  .modal.wide,.modal.sm{width:100%}
+  .ai-grid{grid-template-columns:1fr;gap:24px}
+  .ai-prev{position:static}
+  .row2{grid-template-columns:1fr}
+  .foot{margin-top:72px}
+  .toast{bottom:calc(76px + env(safe-area-inset-bottom))}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr" id="hdr">
+  <div class="hdr-in">
+    <button class="brand" onclick="go('#/')"><b>FIRASAT XXI</b><span>先觉纪</span></button>
+    <nav class="nav">
+      <button data-nav="explore" onclick="go('#/')">探索</button>
+      <button data-nav="services" onclick="go('#/services')">服务</button>
+      <button data-nav="community" onclick="go('#/community')">社区</button>
+    </nav>
+    <div class="hdr-r">
+      <button class="t" onclick="openSearch()">搜索</button>
+      <button class="t hide-m" data-nav="messages" onclick="go('#/messages')">消息<span class="badge-dot" id="b1"></span></button>
+      <button class="t hide-m" onclick="openQr()">扫码</button>
+      <button class="me hide-m" data-nav="me" id="meBtn" onclick="openMe()"></button>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span><b>FIRASAT XXI</b>先觉纪 · 概念原型，人物与内容均为示例</span>
+    <span class="r"><button class="link" onclick="openQr()">扫码体验</button><button class="link" onclick="resetDemo()">重置演示数据</button></span>
+  </div>
+</footer>
+
+<nav class="tabbar">
+  <button data-nav="explore" onclick="go('#/')">探索</button>
+  <button data-nav="services" onclick="go('#/services')">服务</button>
+  <button data-nav="community" onclick="go('#/community')">社区</button>
+  <button data-nav="messages" onclick="go('#/messages')">消息<span class="badge-dot" id="b2"></span></button>
+  <button data-nav="me" onclick="openMe()">我</button>
+</nav>
+
+<div class="drawer-bg" id="drawerBg" onclick="closeChat()"></div>
+<aside class="drawer" id="drawer" aria-label="对话"></aside>
+<div class="viewer" id="viewer"></div>
+<div class="search" id="search">
+  <div class="search-in">
+    <div class="search-top">
+      <input id="q" placeholder="搜人、作品、服务或帖子" oninput="renderSearch()" autocomplete="off" />
+      <button class="x" onclick="closeSearch()">✕</button>
+    </div>
+    <div id="sr"></div>
+  </div>
+</div>
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal" id="modal"></div></div>
+<input type="file" id="chatFile" accept="image/*" hidden />
+<input type="file" id="coverFile" accept="image/*" hidden />
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const KEY = "firasat_v2_state";
+const LIVE_URL = "https://ryan0067618.github.io/firasat-xxi/";
+const ASSET = "../assets/";
+const AR = {"portrait.jpg":.75,"lakeside.png":1.78,"design.jpg":.75,"nails.png":1,"nails_2.jpg":.75,"makeup.jpg":.75,"portrait_2.jpg":.75,"cinema_still.jpg":.75,"langen_dusk.jpg":1.5,"kanazawa_snow.jpg":1.78,"arch_concrete.jpg":.75,"prada_corridor.jpg":1.5,"concrete_stairs.jpg":1.5,"spiral_stairs.jpg":1.5,"film_camera.jpg":1.4,"contax_film.jpg":1.5,"hasselblad.jpg":1.17,"swiss-poster-01.svg":.75,"swiss-zine-02.svg":.75,"type-specimen-03.svg":.75,"swiss_poster_1957.jpg":.71};
+
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function addDays(n){ const d=new Date(TODAY); d.setDate(d.getDate()+n); return iso(d); }
+const todayIso = iso(TODAY);
+function md(s){ const p=s.split("-"); return (+p[1])+"."+(+p[2]); }
+function relDate(s){ if(s===todayIso) return "今天"; if(s===addDays(-1)) return "昨天"; return md(s); }
+
+const CATS = ["全部","摄影","妆造","美甲","设计","影像"];
+const REGIONS = ["全部区域","苏州 · 石湖","苏州 · 市区","线上"];
+const BUDGETS = [["all","不限"],["100","¥100 以内"],["200","¥200 以内"]];
+const TAGS = ["全部","影像","空间","妆造","美甲","设计","胶片"];
+const QUICK = ["你好，想先了解一下～","这周末还有空档吗？","可以多看几张样片吗？"];
+const REPLIES = ["好呀，你大概想约哪天？","可以的，有参考图的话直接发我看看～","这周六下午和周日上午都还空着。","收到，我先整理几张类似风格的样片给你。","没问题，细节我们到时候再对一下。"];
+
+function seed(){
+  const w = (id,by,img,title,tag,year)=>({id,by,img,title,tag,year,ar:AR[img]||1});
+  return {
+    v:2, me:"zhouke",
+    people:{
+      zhouke:{id:"zhouke",name:"周可",en:"Zhou Ke",tone:"#111111",bio:"拍人，也做海报。偏爱阴天、冷色，和不太笑的人像。",skills:["人像摄影","视觉设计","调色"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:"zhouke_film"},
+      linyou:{id:"linyou",name:"林柚",en:"Lin You",tone:"#6d5a4e",bio:"手绘穿戴甲，一副一副慢慢画。",skills:["穿戴甲","手绘"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
+      chenxi:{id:"chenxi",name:"陈汐",en:"Chen Xi",tone:"#3c4650",bio:"给要拍照的人化妆，偶尔也给自己拍。",skills:["拍照妆","活动妆造"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
+      azhe:{id:"azhe",name:"阿哲",en:"A Zhe",tone:"#2a2a2e",bio:"拍很短的片子。喜欢蓝调时刻和不剪断的长镜头。",skills:["短片拍摄","剪辑","调色"],school:"苏州大学",region:"苏州 · 市区",wechat:""},
+      shenyu:{id:"shenyu",name:"沈屿",en:"Shen Yu",tone:"#55504a",bio:"建筑学在读，用相机记线条和光。",skills:["建筑摄影","空间拍摄"],school:"苏州科技大学",region:"苏州 · 市区",wechat:""},
+      luyu:{id:"luyu",name:"陆屿",en:"Lu Yu",tone:"#7a746c",bio:"胶片新手，收了三台老相机，正在学会等光。",skills:["胶片","扫街"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
+      xuning:{id:"xuning",name:"许宁",en:"Xu Ning",tone:"#1f2a33",bio:"不是设计专业，但很在意字和字之间的距离。",skills:["中文排版","字体"],school:"苏州大学",region:"线上",wechat:""}
+    },
+    works:[
+      w("w1","zhouke","portrait.jpg","灰色午后","影像","2026"),
+      w("w11","shenyu","arch_concrete.jpg","光的十字","空间","2026"),
+      w("w4","linyou","nails.png","冷银 · 短方","美甲","2026"),
+      w("w8","azhe","cinema_still.jpg","雨后庭院 · 短片静帧","影像","2026"),
+      w("w21","xuning","swiss_poster_1957.jpg","临摹 · 1957","设计","2026"),
+      w("w6","chenxi","makeup.jpg","银灰眼妆","妆造","2026"),
+      w("w2","zhouke","lakeside.png","湖边，十一月","影像","2026"),
+      w("w13","shenyu","concrete_stairs.jpg","黑钢楼梯","空间","2026"),
+      w("w15","luyu","film_camera.jpg","第一台旁轴","胶片","2026"),
+      w("w5","linyou","nails_2.jpg","洞石色穿戴甲","美甲","2026"),
+      w("w9","azhe","langen_dusk.jpg","暮色水面","影像","2025"),
+      w("w3","zhouke","design.jpg","展览海报 · 石与纸","设计","2026"),
+      w("w12","shenyu","prada_corridor.jpg","镜面走廊","空间","2025"),
+      w("w7","chenxi","portrait_2.jpg","黑大衣","妆造","2026"),
+      w("w18","xuning","swiss-poster-01.svg","网格练习 01","设计","2026"),
+      w("w10","azhe","kanazawa_snow.jpg","雪后玻璃","影像","2025"),
+      w("w16","luyu","contax_film.jpg","Contax · 50mm","胶片","2026"),
+      w("w14","shenyu","spiral_stairs.jpg","旋转","空间","2025"),
+      w("w19","xuning","swiss-zine-02.svg","小志排版","设计","2026"),
+      w("w17","luyu","hasselblad.jpg","方画幅","胶片","2026"),
+      w("w20","xuning","type-specimen-03.svg","字体样张","设计","2026")
+    ],
+    services:[
+      {id:"s1",by:"zhouke",short:"冷调人像 · 一小时",cat:"摄影",region:"苏州 · 石湖",price:90,unit:"次",includes:["1 小时拍摄","精修 3 张","全部原片"],duration:"约 1 小时",slots:"本周六、周日下午",week:true,desc:"自然光为主，不用摆复杂姿势。适合第一组像样的个人照。",images:["portrait.jpg","lakeside.png"],valid:addDays(10),confirmed:addDays(-1),published:true},
+      {id:"s3",by:"linyou",short:"手绘穿戴甲",cat:"美甲",region:"苏州 · 石湖",price:68,unit:"副",includes:["按甲型定制尺寸","手绘 1 款","附胶片与锉条"],duration:"3 天制作",slots:"本周还能接 2 单",week:true,desc:"先量尺寸再画，偏冷色和低饱和。",images:["nails.png","nails_2.jpg"],valid:addDays(9),confirmed:addDays(-2),published:true},
+      {id:"s4",by:"chenxi",short:"拍照妆 / 活动妆",cat:"妆造",region:"苏州 · 石湖",price:80,unit:"次",includes:["底妆与眼妆","简单整理发型","自带全部工具"],duration:"约 50 分钟",slots:"本周五晚、周六上午",week:true,desc:"上镜比日常妆更需要结构感，会按你的拍摄风格调整。",images:["makeup.jpg","portrait_2.jpg"],valid:addDays(12),confirmed:addDays(-3),published:true},
+      {id:"s6",by:"shenyu",short:"空间与小店拍摄",cat:"摄影",region:"苏州 · 市区",price:120,unit:"次",includes:["2 小时拍摄","精修 8 张"],duration:"约 2 小时",slots:"本周日",week:true,desc:"适合工作室、小店和展陈空间，偏干净的线条构图。",images:["arch_concrete.jpg","prada_corridor.jpg"],valid:addDays(8),confirmed:addDays(-4),published:true},
+      {id:"s2",by:"zhouke",short:"活动海报设计",cat:"设计",region:"线上",price:150,unit:"套",includes:["1 张主海报","2 轮修改","印刷 PDF"],duration:"3–5 天交付",slots:"下周可排",week:false,desc:"网格清楚、信息有主次的海报。",images:["design.jpg"],valid:addDays(12),confirmed:addDays(-5),published:true},
+      {id:"s5",by:"azhe",short:"3 分钟短片拍摄与剪辑",cat:"影像",region:"苏州 · 市区",price:260,unit:"条",includes:["半天拍摄","剪辑与调色","1 轮修改"],duration:"7 天交付",slots:"下周起",week:false,desc:"毕业纪念、社团介绍或个人短片都可以。",images:["cinema_still.jpg","langen_dusk.jpg","kanazawa_snow.jpg"],valid:addDays(14),confirmed:addDays(-6),published:true}
+    ],
+    columns:[
+      {id:"light",type:"topic",sym:"#",name:"影像与光影",desc:"拍照、调色、布光，把方法写下来。"},
+      {id:"type",type:"topic",sym:"#",name:"视觉与排版",desc:"字、网格和留白。"},
+      {id:"look",type:"topic",sym:"#",name:"妆造与审美",desc:"妆面、穿搭与手作。"},
+      {id:"co",type:"topic",sym:"#",name:"同好共创",desc:"约人一起拍、一起做点什么。"},
+      {id:"usts",type:"campus",sym:"@",name:"苏州科技大学",desc:"石湖与江枫校区的同学。",region:"苏州 · 石湖"},
+      {id:"suda",type:"campus",sym:"@",name:"苏州大学",desc:"独墅湖与本部的同学。",region:"苏州 · 市区"},
+      {id:"sz",type:"city",sym:"@",name:"苏州同城",desc:"在苏州的人，不分学校。",region:"苏州 · 市区"}
+    ],
+    posts:[
+      {id:"p1",by:"zhouke",kind:"博客",title:"阴天拍人像：我常用的三组参数",excerpt:"阴天不是坏天气，它是一块免费的柔光箱。这是我在石湖拍了二十多组之后留下来的设置。",body:["阴天不是坏天气，它是一块免费的柔光箱。这是我在石湖拍了二十多组之后留下来的设置。","最容易出错的是白平衡。相机自动白平衡在阴天会偏暖，皮肤发黄。我固定在 5200K，后期再整体压冷一点。","姿势上不用设计太多。让对方走、停、回头，比站定摆拍自然得多。"],params:"光圈    f/2.0 – f/2.8\n快门    1/250 以上\n白平衡  5200K，后期压冷 200K\n曲线    暗部抬 6%，高光压 4%",version:"v1.2",cols:["light","usts"],img:"lakeside.png",date:addDays(-2),saves:18,replies:[{by:"luyu",text:"白平衡那条太有用了，之前一直拍得发黄。",t:"昨天"},{by:"chenxi",text:"下次一起拍，我来化妆～",t:"今天"}]},
+      {id:"p3",by:"luyu",kind:"共创",title:"周六下午石湖扫街互拍，还差两个人",excerpt:"胶片数码都可以，不收费，拍完互相交换原图。下午三点图书馆门口集合。",body:["胶片数码都可以，不收费，拍完互相交换原图。","下午三点图书馆门口集合，沿着湖边走到傍晚。新手也欢迎，我也是新手。"],params:"",version:"",cols:["co","usts"],img:"film_camera.jpg",date:addDays(-1),saves:6,replies:[{by:"shenyu",text:"我来，带一台数码。",t:"今天"}]},
+      {id:"p2",by:"xuning",kind:"讨论",title:"中文海报里，标题到底该多大？",excerpt:"看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。",body:["看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。","我自己的感觉是：标题越大，越像在喊。但太小又没人看。你们怎么判断？"],params:"",version:"",cols:["type"],img:"swiss-poster-01.svg",date:addDays(-3),saves:11,replies:[{by:"zhouke",text:"我的经验：主标题和其他信息的字号差至少 2.4 倍，画面才有主次。",t:"2 天前"}]},
+      {id:"p4",by:"linyou",kind:"博客",title:"穿戴甲尺寸怎么量，才不翘边",excerpt:"十个手指一个个量，一次量对，比做好了再改省事得多。",body:["十个手指一个个量，一次量对，比做好了再改省事得多。","最常见的问题是选大了。甲片比甲面宽，边缘就会翘起来。"],params:"测量  透明胶贴甲面，描边后量最宽处\n记录  拇指 → 小指，单位毫米\n选码  宁小 0.5mm，不要大",version:"v1.0",cols:["look"],img:"nails_2.jpg",date:addDays(-4),saves:23,replies:[]},
+      {id:"p5",by:"shenyu",kind:"博客",title:"苏州五个适合拍建筑线条的地方",excerpt:"不用去很远。这五个地方我都去过不止一次，附上我觉得光线最好的时间。",body:["不用去很远。这五个地方我都去过不止一次，附上我觉得光线最好的时间。","拍线条最重要的是等人少。工作日早上基本可以拍到空场。"],params:"苏州博物馆    上午 9–10 点，侧光\n诚品书店      阴天，中庭顶光\n金鸡湖步道    日落前 30 分钟\n平江路        清晨，人最少\n校园图书馆    雨后，地面有反光",version:"v1.1",cols:["light","sz"],img:"concrete_stairs.jpg",date:addDays(-5),saves:31,replies:[]},
+      {id:"p6",by:"chenxi",kind:"讨论",title:"拍照妆和日常妆，差别到底在哪？",excerpt:"经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。",body:["经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。","简单说：镜头会吃掉轮廓。日常妆在照片里会变平。"],params:"",version:"",cols:["look","usts"],img:"",date:addDays(-6),saves:9,replies:[{by:"zhouke",text:"从拍的角度看，眉眼的结构最关键，其他可以淡。",t:"5 天前"}]},
+      {id:"p7",by:"azhe",kind:"共创",title:"毕业短片招一位演员，3 分钟，不需要经验",excerpt:"拍一个关于离开的小故事。一个下午，在独墅湖附近。",body:["拍一个关于离开的小故事。一个下午，在独墅湖附近。","不需要表演经验，只需要愿意在镜头前安静地待一会儿。"],params:"",version:"",cols:["co","suda"],img:"cinema_still.jpg",date:addDays(-7),saves:4,replies:[]}
+    ],
+    threads:{
+      s3:{sid:"s3",stage:"咨询中",unread:1,last:Date.now()-3600e3,msgs:[{from:"me",text:"你好，想做一副短款的，偏冷一点的颜色",t:"昨天 21:14"},{from:"them",text:"可以呀～平时指甲大概多长？有参考图可以直接发我",t:"昨天 21:20"}]}
+    },
+    saved:[]
+  };
+}
+
+let DB = load();
+function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.v===2) return s; }catch(e){} return seed(); }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(DB)); }catch(e){ toast("本地存储已满，部分图片未保存"); } }
+function resetDemo(){ if(!confirm("恢复到初始演示数据？你添加的内容会被清除。")) return; localStorage.removeItem(KEY); DB=seed(); ui=initUi(); closeAll(); if(cur()!=="#/") go("#/"); else render(); toast("已恢复初始数据"); }
+
+function initUi(){ return { exTag:"全部", exMode:"works", svc:{cat:"全部",region:"全部区域",budget:"all",week:false,sort:"new"}, kind:"全部", ptab:"works", asVisitor:false, chat:null, viewer:null, draft:null, sheet:false }; }
+let ui = initUi();
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const $ = s => document.querySelector(s);
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+const src = x => !x ? "" : (x.startsWith("data:") ? x : ASSET + x);
+const P = id => DB.people[id];
+const W = id => DB.works.find(w=>w.id===id);
+const S = id => DB.services.find(s=>s.id===id);
+const C = id => DB.columns.find(c=>c.id===id);
+const PO = id => DB.posts.find(p=>p.id===id);
+const isLive = s => s.published && s.valid >= todayIso;
+const liveSvcOf = pid => DB.services.filter(s=>s.by===pid && isLive(s));
+const worksOf = pid => DB.works.filter(w=>w.by===pid);
+const postsOf = pid => DB.posts.filter(p=>p.by===pid);
+const regionShort = r => r.replace("苏州 · ","");
+function av(pid, cls){ const p=P(pid); if(!p) return ""; return `<span class="av ${cls||""}" style="background:${p.tone}">${esc(p.name[0])}</span>`; }
+function priceHtml(s){ return `<span class="price">¥${s.price}<small> / ${esc(s.unit)}</small></span>`; }
+function nowLabel(){ const d=new Date(); return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"); }
+function trunc(s,n){ return s.length>n ? s.slice(0,n)+"…" : s; }
+let toastT;
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),2200); }
+function copyText(t){
+  const ok=()=>toast("已复制");
+  if(navigator.clipboard&&window.isSecureContext){ navigator.clipboard.writeText(t).then(ok).catch(()=>fallbackCopy(t)); } else fallbackCopy(t);
+}
+function fallbackCopy(t){ const a=document.createElement("textarea"); a.value=t; document.body.appendChild(a); a.select(); try{document.execCommand("copy"); toast("已复制");}catch(e){ toast(t); } a.remove(); }
+function readImage(file, max){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=e=>{ const img=new Image(); img.onload=()=>{ const k=Math.min(1, max/Math.max(img.width,img.height)); const c=document.createElement("canvas"); c.width=Math.round(img.width*k); c.height=Math.round(img.height*k); c.getContext("2d").drawImage(img,0,0,c.width,c.height); res({data:c.toDataURL("image/jpeg",.82), ar:+(img.width/img.height).toFixed(3)}); }; img.onerror=rej; img.src=e.target.result; };
+    r.onerror=rej; r.readAsDataURL(file);
+  });
+}
+
+/* =========================================================
+   ROUTER (hash based, native back works)
+   ========================================================= */
+const stack = [];
+const scrollMem = {};
+let fresh = false;
+function cur(){ return location.hash || "#/"; }
+function parse(h){ const parts=h.replace(/^#\/?/,"").split("/"); const map={"":"explore",services:"services",s:"service",u:"user",community:"community",post:"post",messages:"messages"}; return {name:map[parts[0]]||"explore", id:parts[1]?decodeURIComponent(parts[1]):null}; }
+function go(h){ if(h===cur()){ closeAll(); render(); window.scrollTo(0,0); return; } scrollMem[cur()]=window.scrollY; fresh=true; location.hash=h; }
+function goBack(fb){ if(stack.length>1) history.back(); else go(fb); }
+function onHash(){
+  const h=cur(); const target=scrollMem[h]||0; let back=false;
+  if(!fresh && stack.length>1 && stack[stack.length-2]===h){ stack.pop(); back=true; }
+  else if(stack[stack.length-1]!==h) stack.push(h);
+  closeAll(); render();
+  const y = (back||!fresh) ? target : 0;
+  requestAnimationFrame(()=>window.scrollTo(0,y));
+  fresh=false;
+}
+window.addEventListener("hashchange", onHash);
+function labelOf(h){
+  const r=parse(h);
+  switch(r.name){
+    case "explore": return "探索";
+    case "services": return "服务";
+    case "service": { const s=S(r.id); return s ? s.short : "服务"; }
+    case "user": { const p=P(r.id); return p ? (r.id===DB.me ? "我的主页" : p.name+" 的主页") : "主页"; }
+    case "community": { const c=r.id&&C(r.id); return c ? c.sym+" "+c.name : "社区"; }
+    case "post": { const p=PO(r.id); return p ? trunc(p.title,14) : "帖子"; }
+    case "messages": return "消息";
+  }
+  return "返回";
+}
+function backBtn(fb, fbLabel){ const prev=stack.length>1?stack[stack.length-2]:null; return `<button class="back" onclick="goBack('${fb}')">← ${esc(prev?labelOf(prev):fbLabel)}</button>`; }
+
+function render(){
+  const r=parse(cur());
+  let nav={explore:"explore",services:"services",service:"services",community:"community",post:"community",messages:"messages",user:r.id===DB.me?"me":""}[r.name];
+  document.querySelectorAll("[data-nav]").forEach(b=>b.classList.toggle("on", b.dataset.nav===nav));
+  document.body.dataset.view=r.name;
+  let html;
+  switch(r.name){
+    case "services": html=vServices(); break;
+    case "service": html=vService(r.id); break;
+    case "user": html=vUser(r.id); break;
+    case "community": html=vCommunity(r.id); break;
+    case "post": html=vPost(r.id); break;
+    case "messages": html=vMessages(r.id); break;
+    default: html=vExplore();
+  }
+  $("#app").innerHTML=html;
+  $("#meBtn").innerHTML=av(DB.me,"av-s");
+  updateBadge();
+  if(r.name==="messages") scrollChat("pane");
+}
+function notFound(){ return `<div class="wrap"><div class="empty"><p>内容不存在或已被移除。</p><button class="btn btn-o btn-s" onclick="go('#/')">回到探索</button></div></div>`; }
+function openMe(){ ui.ptab="works"; ui.asVisitor=false; go("#/u/"+DB.me); }
+
+/* =========================================================
+   EXPLORE
+   ========================================================= */
+function exploreList(){ return DB.works.filter(w=>ui.exTag==="全部"||w.tag===ui.exTag); }
+function vExplore(){
+  const people=Object.values(DB.people);
+  const live=DB.services.filter(isLive).length;
+  let body;
+  if(ui.exMode==="works"){
+    const list=exploreList();
+    body = list.length ? `<div class="masonry">${list.map(tileHtml).join("")}</div>` : `<div class="empty"><p>这个分类还没有作品。</p></div>`;
+  } else {
+    const list=people.filter(p=>ui.exTag==="全部"||worksOf(p.id).some(w=>w.tag===ui.exTag));
+    body = `<div class="people">${list.map(personCard).join("")}</div>`;
+  }
+  return `<div class="wrap">
+    <section class="hero">
+      <h1>一个人，<br>不止一种可能。</h1>
+      <div class="hero-side"><b>${people.length}</b> 个人 · <b>${DB.works.length}</b> 件作品<br><b>${live}</b> 项服务现在可约</div>
+    </section>
+    <div class="bar">
+      <div class="chips">${TAGS.map(t=>`<button class="chip ${ui.exTag===t?"on":""}" onclick="ui.exTag='${t}';render()">${t}</button>`).join("")}</div>
+      <div class="seg"><button class="${ui.exMode==="works"?"on":""}" onclick="ui.exMode='works';render()">作品</button><button class="${ui.exMode==="people"?"on":""}" onclick="ui.exMode='people';render()">人</button></div>
+    </div>
+    ${body}
+  </div>`;
+}
+function tileHtml(w){
+  const p=P(w.by); const live=liveSvcOf(w.by).length>0;
+  return `<figure class="tile" onclick="openViewer('${w.id}','all')">
+    <div class="tile-img"><img src="${src(w.img)}" alt="${esc(w.title)}" style="aspect-ratio:${w.ar}" loading="lazy"></div>
+    <figcaption class="tile-cap"><span class="who" onclick="event.stopPropagation();go('#/u/${w.by}')">${av(w.by,"av-xs")}${esc(p.name)}</span>${live?`<span class="live">可约</span>`:""}</figcaption>
+  </figure>`;
+}
+function personCard(p){
+  const ws=worksOf(p.id).slice(0,3); const n=ws.length; const live=liveSvcOf(p.id).length;
+  return `<article class="pcard" onclick="go('#/u/${p.id}')">
+    <div class="pmosaic n${Math.max(1,Math.min(n,3))}">${ws.map(w=>`<img src="${src(w.img)}" alt="" loading="lazy">`).join("")}</div>
+    <div class="pcard-b"><div><div class="pname">${esc(p.name)}</div><div class="pskills">${esc(p.skills.join(" / "))}</div></div>${live?`<span class="live">${live} 项可约</span>`:`<span class="pskills">同好</span>`}</div>
+  </article>`;
+}
+
+/* ---------- work viewer ---------- */
+function viewerList(){ const sc=ui.viewer.scope; return sc==="all" ? exploreList() : worksOf(sc); }
+function openViewer(wid, scope){ ui.viewer={wid, scope:scope||"all"}; renderViewer(); $("#viewer").classList.add("on"); document.body.style.overflow="hidden"; }
+function closeViewer(){ $("#viewer").classList.remove("on"); document.body.style.overflow=""; ui.viewer=null; }
+function stepViewer(d){ const l=viewerList(); if(!l.length) return; const i=l.findIndex(x=>x.id===ui.viewer.wid); ui.viewer.wid=l[(i+d+l.length)%l.length].id; renderViewer(); }
+function renderViewer(){
+  const w=W(ui.viewer.wid); if(!w) return closeViewer();
+  const p=P(w.by); const svcs=liveSvcOf(p.id); const more=worksOf(p.id).filter(x=>x.id!==w.id).slice(0,6);
+  const many=viewerList().length>1;
+  $("#viewer").innerHTML=`
+    <div class="v-stage">
+      <button class="x v-close" onclick="closeViewer()" aria-label="关闭">✕</button>
+      ${many?`<button class="v-nav prev" onclick="stepViewer(-1)" aria-label="上一张">←</button>`:""}
+      <img src="${src(w.img)}" alt="${esc(w.title)}">
+      ${many?`<button class="v-nav next" onclick="stepViewer(1)" aria-label="下一张">→</button>`:""}
+    </div>
+    <aside class="v-side">
+      <button class="who-row" onclick="closeViewer();go('#/u/${p.id}')">${av(p.id,"av-m")}<div><div class="who-n">${esc(p.name)}</div><div class="who-s">${esc(p.skills.join(" / "))}</div></div></button>
+      <div><div class="v-title">${esc(w.title)}</div><div class="v-meta mono">${esc(w.tag)} · ${esc(w.year)}</div></div>
+      ${svcs.length&&p.id!==DB.me?`<div><div class="sec-h">可以约 ${esc(p.name)}</div>${svcs.map(s=>`<button class="mini-svc" onclick="closeViewer();go('#/s/${s.id}')"><span>${esc(s.short)}</span>${priceHtml(s)}</button>`).join("")}</div>`:""}
+      ${more.length?`<div><div class="sec-h">更多作品</div><div class="v-more">${more.map(x=>`<img src="${src(x.img)}" alt="" onclick="ui.viewer.wid='${x.id}';renderViewer()">`).join("")}</div></div>`:""}
+      <button class="btn btn-o btn-w" onclick="closeViewer();go('#/u/${p.id}')">去 ${esc(p.name)} 的主页</button>
+    </aside>`;
+}
+
+/* =========================================================
+   SERVICES
+   ========================================================= */
+function svcFiltered(){
+  const f=ui.svc; let l=DB.services.filter(isLive);
+  if(f.cat!=="全部") l=l.filter(s=>s.cat===f.cat);
+  if(f.region!=="全部区域") l=l.filter(s=>s.region===f.region);
+  if(f.budget!=="all") l=l.filter(s=>s.price<=+f.budget);
+  if(f.week) l=l.filter(s=>s.week);
+  if(f.sort==="low") l=[...l].sort((a,b)=>a.price-b.price);
+  else if(f.sort==="high") l=[...l].sort((a,b)=>b.price-a.price);
+  else l=[...l].sort((a,b)=>b.confirmed.localeCompare(a.confirmed));
+  return l;
+}
+function setSvc(k,v){ ui.svc[k]=v; render(); if(ui.sheet) $("#modal").innerHTML=sheetHtml(); }
+function toggleWeek(){ setSvc("week", !ui.svc.week); }
+function railHtml(){
+  const f=ui.svc; const live=DB.services.filter(isLive);
+  const g=(title,key,opts)=>`<h4>${title}</h4>${opts.map(([v,l,n])=>`<button class="opt ${String(f[key])===String(v)?"on":""}" onclick="setSvc('${key}','${v}')"><span>${l}</span>${n!=null?`<span class="n">${n}</span>`:""}</button>`).join("")}`;
+  return g("分类","cat",CATS.map(c=>[c,c,c==="全部"?live.length:live.filter(s=>s.cat===c).length]))
+    + g("地点","region",REGIONS.map(r=>[r,r,null]))
+    + g("预算","budget",BUDGETS.map(b=>[b[0],b[1],null]))
+    + `<div class="toggle-row" onclick="toggleWeek()"><span>只看本周可约</span><span class="sw ${f.week?"on":""}"></span></div>`;
+}
+function sheetHtml(){ return `<div class="modal-h"><h3>筛选</h3><button class="x" onclick="closeModal()">✕</button></div><div class="rail-sheet">${railHtml()}</div><div class="modal-f"><button class="btn btn-o" onclick="ui.svc={cat:'全部',region:'全部区域',budget:'all',week:false,sort:ui.svc.sort};render();$('#modal').innerHTML=sheetHtml()">清除</button><button class="btn btn-k" onclick="closeModal()">看 ${svcFiltered().length} 项结果</button></div>`; }
+function openSheet(){ ui.sheet=true; modal(sheetHtml(),"sm"); }
+function vServices(){
+  const f=ui.svc; const l=svcFiltered();
+  const pristine=f.cat==="全部"&&f.region==="全部区域"&&f.budget==="all"&&!f.week&&f.sort==="new";
+  let feat=null, rest=l;
+  if(pristine){ feat=l.find(s=>s.week)||null; rest=l.filter(s=>s!==feat); }
+  const extra=(f.region!=="全部区域")+(f.budget!=="all");
+  return `<div class="wrap"><div class="split">
+    <aside class="rail">${railHtml()}</aside>
+    <div>
+      <div class="m-filters">
+        <div class="chips">${CATS.map(c=>`<button class="chip ${f.cat===c?"on":""}" onclick="setSvc('cat','${c}')">${c}</button>`).join("")}</div>
+        <div class="chips"><button class="chip ${f.week?"on":""}" onclick="toggleWeek()">本周可约</button><button class="chip ${extra?"on":""}" onclick="openSheet()">地点与预算${extra?" · "+extra:""}</button></div>
+      </div>
+      <div class="list-head">
+        <h2>${f.cat==="全部"?"全部服务":esc(f.cat)}<small>${l.length}</small></h2>
+        <div class="sorts">${[["new","最新"],["low","价格低"],["high","价格高"]].map(([k,t])=>`<button class="${f.sort===k?"on":""}" onclick="setSvc('sort','${k}')">${t}</button>`).join("")}</div>
+      </div>
+      ${feat?featHtml(feat):""}
+      ${rest.length?`<div class="grid">${rest.map(s=>cardHtml(s)).join("")}</div>`:(feat?"":`<div class="empty"><p>没有符合条件的服务。</p><button class="btn btn-o btn-s" onclick="ui.svc={cat:'全部',region:'全部区域',budget:'all',week:false,sort:'new'};render()">清除筛选</button></div>`)}
+    </div>
+  </div></div>`;
+}
+function cardHtml(s, preview){
+  const p=P(s.by);
+  return `<article class="card" ${preview?"":`onclick="go('#/s/${s.id}')"`}>
+    <div class="card-img"><img src="${src(s.images[0])}" alt="${esc(s.short)}" loading="lazy">${s.week?`<span class="flag"><i class="dot"></i>本周可约</span>`:""}</div>
+    <div class="card-t">${esc(s.short||"未命名服务")}</div>
+    <div class="card-m"><span>${esc(p.name)} · ${esc(regionShort(s.region))}</span>${priceHtml(s)}</div>
+  </article>`;
+}
+function featHtml(s){
+  const p=P(s.by);
+  return `<article class="feat" onclick="go('#/s/${s.id}')">
+    <div class="feat-img"><img src="${src(s.images[0])}" alt="${esc(s.short)}"></div>
+    <div>
+      <div class="feat-k"><i class="dot"></i>本周可约</div>
+      <h3 class="feat-t">${esc(s.short)}</h3>
+      <div class="feat-who">${av(p.id,"av-s")}${esc(p.name)} · ${esc(s.region)}</div>
+      <div class="feat-inc">${s.includes.map(esc).join(" · ")}</div>
+      <div class="feat-p">${priceHtml(s)}</div>
+      <span class="btn btn-k">查看详情</span>
+    </div>
+  </article>`;
+}
+
+/* ---------- service detail ---------- */
+function vService(id){
+  const s=S(id); if(!s) return notFound();
+  const p=P(s.by); const mine=s.by===DB.me;
+  const others=DB.services.filter(x=>x.by===s.by&&x.id!==s.id&&isLive(x));
+  return `<div class="wrap">
+    ${backBtn("#/services","服务")}
+    <div class="pdp">
+      <div class="pdp-imgs">${s.images.map(i=>`<img src="${src(i)}" alt="">`).join("")}</div>
+      <aside class="pdp-side">
+        <button class="who-row" onclick="go('#/u/${p.id}')">${av(p.id,"av-m")}<div><div class="who-n">${esc(p.name)}</div><div class="who-s">${esc(p.school)} · ${esc(p.region)}</div></div></button>
+        <h1>${esc(s.short)}</h1>
+        <div class="pdp-price">${priceHtml(s)}</div>
+        <div class="avail">${s.week?`<i class="dot"></i>`:""}${esc(s.slots)}</div>
+        ${s.desc?`<p class="pdp-desc">${esc(s.desc)}</p>`:""}
+        <ul class="incl">${s.includes.map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
+        <dl class="kv"><dt>时长</dt><dd>${esc(s.duration||"—")}</dd><dt>地点</dt><dd>${esc(s.region)}</dd><dt>信息有效</dt><dd class="mono">至 ${md(s.valid)}</dd></dl>
+        ${mine
+          ? `<button class="btn btn-o btn-w" onclick="ui.ptab='services';ui.asVisitor=false;go('#/u/${DB.me}')">在我的主页管理</button>`
+          : `<button class="btn btn-k btn-w" onclick="openChat('${s.id}')">发消息</button><p class="fine">先聊需求，价格和时间以你们双方确认为准</p>`}
+      </aside>
+    </div>
+    ${others.length?`<section class="more"><div class="sec-h">${esc(p.name)} 的其他服务</div><div class="grid">${others.map(x=>cardHtml(x)).join("")}</div></section>`:""}
+  </div>`;
+}
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+function setPTab(k){ ui.ptab=k; render(); }
+function vUser(id){
+  const p=P(id); if(!p) return notFound();
+  const isMe=id===DB.me; const own=isMe&&!ui.asVisitor;
+  const works=worksOf(id);
+  const svcAll=DB.services.filter(s=>s.by===id);
+  const svcs=own?svcAll:svcAll.filter(isLive);
+  const posts=postsOf(id);
+  const saved=own?DB.posts.filter(x=>DB.saved.includes(x.id)):[];
+  const tabs=[["works","作品",works.length]];
+  if(own||svcs.length) tabs.push(["services","服务",svcs.length]);
+  tabs.push(["posts","笔记",posts.length]);
+  if(own) tabs.push(["saved","收藏",saved.length]);
+  if(!tabs.some(t=>t[0]===ui.ptab)) ui.ptab="works";
+
+  let content="";
+  if(ui.ptab==="works"){
+    content = (works.length||own) ? `<div class="masonry m3">
+      ${own?`<button class="tile-add" onclick="openUploadWork()">+ 添加作品</button>`:""}
+      ${works.map(w=>`<figure class="tile" onclick="openViewer('${w.id}','${id}')"><div class="tile-img"><img src="${src(w.img)}" alt="${esc(w.title)}" style="aspect-ratio:${w.ar}" loading="lazy">${own?`<button class="tile-del" title="删除" onclick="event.stopPropagation();delWork('${w.id}')">✕</button>`:""}</div><figcaption class="tile-cap"><span>${esc(w.title)}</span><span class="yr">${esc(w.year)}</span></figcaption></figure>`).join("")}
+    </div>` : `<div class="empty"><p>还没有作品。</p></div>`;
+  } else if(ui.ptab==="services"){
+    content = svcs.length ? `<div>${svcs.map(s=>srowHtml(s,own)).join("")}</div>`
+      : `<div class="empty"><p>还没有开放的服务。</p>${own?`<button class="btn btn-k" onclick="openPublish()">发布第一项服务</button>`:""}</div>`;
+  } else if(ui.ptab==="posts"){
+    content = posts.length ? posts.map(postRow).join("") : `<div class="empty"><p>还没有写过笔记。</p>${own?`<button class="btn btn-k" onclick="openCompose()">写第一篇</button>`:""}</div>`;
+  } else {
+    content = saved.length ? saved.map(postRow).join("") : `<div class="empty"><p>在社区里收藏的内容会出现在这里。</p><button class="btn btn-o btn-s" onclick="go('#/community')">去社区看看</button></div>`;
+  }
+
+  const cover=works.slice(0,3);
+  let actions="";
+  if(own) actions=`<button class="btn btn-o" onclick="openEditProfile()">编辑资料</button><button class="btn btn-k" onclick="openCreate()">+ 新建</button>`;
+  else if(!isMe && svcs.length) actions=`<button class="btn btn-k" onclick="contactPerson('${id}')">发消息</button>`;
+
+  return `<div class="wrap">
+    <div class="pf-bar">
+      ${isMe?`<span></span>`:backBtn("#/","探索")}
+      ${isMe?`<div class="pf-mode">${ui.asVisitor?`<span>你正在以访客身份查看</span><button class="link" onclick="ui.asVisitor=false;render()">退出</button>`:`<button class="link" onclick="ui.asVisitor=true;render()">以访客身份查看</button>`}</div>`:""}
+    </div>
+    <div class="cover">${cover.map(w=>`<img src="${src(w.img)}" alt="" onclick="openViewer('${w.id}','${id}')">`).join("")}</div>
+    <div class="pf-head">
+      ${av(id,"av-xl")}
+      <div class="pf-top">
+        <div>
+          <h1 class="pf-name">${esc(p.name)}<small>${esc(p.en||"")}</small></h1>
+          <p class="pf-bio">${esc(p.bio)}</p>
+          <div class="pf-meta"><span>${esc(p.skills.join(" / "))}</span><span>${esc(p.school)} · ${esc(p.region)}</span></div>
+        </div>
+        ${actions?`<div class="pf-act">${actions}</div>`:""}
+      </div>
+    </div>
+    <nav class="tabs">${tabs.map(([k,l,n])=>`<button class="${ui.ptab===k?"on":""}" onclick="setPTab('${k}')">${l}<span class="n">${n}</span></button>`).join("")}</nav>
+    ${content}
+  </div>`;
+}
+function srowHtml(s, own){
+  const live=isLive(s); const expired=s.valid<todayIso;
+  let status;
+  if(own) status = !s.published ? "已暂停，访客看不到" : expired ? "信息已过期，确认后重新展示" : `<span class="mono">有效至 ${md(s.valid)}</span>`;
+  else status = s.week ? `<span class="live">本周可约</span>` : esc(s.slots);
+  return `<div class="srow ${live?"":"dim"}" onclick="go('#/s/${s.id}')">
+    <img src="${src(s.images[0])}" alt="">
+    <div><div class="srow-t">${esc(s.short)}</div><div class="srow-d">${esc(s.includes.join(" · "))}</div><div class="srow-s">${status}</div></div>
+    <div class="srow-r">${priceHtml(s)}<div class="srow-a" onclick="event.stopPropagation()">${own
+      ? `<button class="link" onclick="renewSvc('${s.id}')">确认仍可约</button><button class="link" onclick="togglePub('${s.id}')">${s.published?"暂停":"恢复"}</button>`
+      : `<button class="btn btn-k btn-s" onclick="openChat('${s.id}')">发消息</button>`}</div></div>
+  </div>`;
+}
+function contactPerson(pid){
+  const svcs=liveSvcOf(pid);
+  if(svcs.length===1) return openChat(svcs[0].id);
+  modal(`<div class="modal-h"><h3>想咨询哪一项？</h3><button class="x" onclick="closeModal()">✕</button></div>
+    ${svcs.map(s=>`<button class="mini-svc" onclick="closeModal();openChat('${s.id}')"><span>${esc(s.short)}</span>${priceHtml(s)}</button>`).join("")}`,"sm");
+}
+function renewSvc(id){ const s=S(id); s.valid=addDays(14); s.confirmed=todayIso; save(); render(); toast("已确认，展示到 "+md(s.valid)); }
+function togglePub(id){ const s=S(id); s.published=!s.published; save(); render(); toast(s.published?"已恢复展示":"已暂停，访客暂时看不到"); }
+function delWork(id){ if(!confirm("删除这件作品？")) return; DB.works=DB.works.filter(w=>w.id!==id); save(); render(); }
+
+/* ---------- create / upload / edit ---------- */
+function openCreate(){
+  modal(`<div class="modal-h"><h3>新建</h3><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="create-opts">
+    <button onclick="openUploadWork()"><b>作品</b><span>上传图片，放进作品集</span></button>
+    <button onclick="openPublish()"><b>服务</b><span>写一段话，AI 帮你整理成服务卡</span></button>
+    <button onclick="openCompose()"><b>笔记 / 帖子</b><span>写方法、发起讨论，或约人一起做点什么</span></button>
+  </div>`,"sm");
+}
+function openUploadWork(){
+  modal(`<div class="modal-h"><h3>添加作品</h3><button class="x" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>选择图片（可多选）</label><input type="file" id="wkFile" accept="image/*" multiple class="inp" style="padding-top:10px"></div>
+    <div class="field"><label>标题（多张时自动编号）</label><input id="wkTitle" class="inp" placeholder="例如：雨后的图书馆"></div>
+    <div class="field"><label>分类</label><select id="wkTag" class="inp">${TAGS.slice(1).map(t=>`<option>${t}</option>`).join("")}</select></div>
+    <div class="modal-f"><button class="btn btn-o" onclick="closeModal()">取消</button><button class="btn btn-k" id="wkBtn" onclick="submitWork()">添加</button></div>`,"sm");
+}
+async function submitWork(){
+  const files=[...$("#wkFile").files]; if(!files.length) return toast("先选择图片");
+  $("#wkBtn").textContent="处理中…";
+  const title=$("#wkTitle").value.trim()||"未命名作品"; const tag=$("#wkTag").value;
+  const added=[];
+  for(let i=0;i<files.length;i++){ try{ const r=await readImage(files[i],1400); added.push({id:"w"+Date.now()+i,by:DB.me,img:r.data,ar:r.ar,title:files.length>1?`${title} ${String(i+1).padStart(2,"0")}`:title,tag,year:String(TODAY.getFullYear())}); }catch(e){} }
+  DB.works.unshift(...added); save(); closeModal(); ui.ptab="works"; ui.asVisitor=false;
+  if(cur()!=="#/u/"+DB.me) go("#/u/"+DB.me); else render();
+  toast(`已添加 ${added.length} 件作品`);
+}
+function openEditProfile(){
+  const p=P(DB.me);
+  modal(`<div class="modal-h"><h3>编辑资料</h3><button class="x" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>一句话介绍</label><textarea id="epBio" class="inp" style="min-height:84px">${esc(p.bio)}</textarea></div>
+    <div class="field"><label>擅长（用 / 分隔）</label><input id="epSkills" class="inp" value="${esc(p.skills.join(" / "))}"></div>
+    <div class="row2">
+      <div class="field"><label>学校 / 机构</label><input id="epSchool" class="inp" value="${esc(p.school)}"></div>
+      <div class="field"><label>常在</label><select id="epRegion" class="inp">${REGIONS.slice(1).map(r=>`<option ${r===p.region?"selected":""}>${r}</option>`).join("")}</select></div>
+    </div>
+    <div class="field"><label>微信号（不公开，只在对话里由你主动发送）</label><input id="epWx" class="inp" value="${esc(p.wechat||"")}"></div>
+    <div class="modal-f"><button class="btn btn-o" onclick="closeModal()">取消</button><button class="btn btn-k" onclick="saveProfile()">保存</button></div>`);
+}
+function saveProfile(){
+  const p=P(DB.me);
+  p.bio=$("#epBio").value.trim()||p.bio;
+  p.skills=$("#epSkills").value.split("/").map(s=>s.trim()).filter(Boolean);
+  p.school=$("#epSchool").value.trim(); p.region=$("#epRegion").value; p.wechat=$("#epWx").value.trim();
+  save(); closeModal(); render(); toast("资料已更新");
+}
+
+/* ---------- AI service publishing ---------- */
+const AI_PRESETS = [
+  ["毕业照","这周末有空，可以在石湖拍毕业照，胶片感冷调风格，一次90，含3张精修和全部原片，大概1小时，周六周日下午都行"],
+  ["活动海报","最近能接两单活动海报，瑞士网格风格，150一套，含2轮修改和印刷PDF，线上对接，下周可以排，3天交付"],
+  ["形象照","帮同学拍形象照，校内图书馆门口，39一次，含2张精修，大约20分钟，本周工作日晚上都可以"]
+];
+function parseAi(t){
+  const d={short:"",cat:"摄影",region:"苏州 · 石湖",price:0,unit:"次",includes:[],slots:"",week:false,duration:"",validDays:14,img:null};
+  const cats=[["美甲",/穿戴甲|美甲|指甲/],["妆造",/化妆|妆造|妆面|拍照妆/],["设计",/海报|设计|排版|logo|LOGO|PPT|ppt/],["影像",/视频|短片|剪辑|vlog|Vlog/],["摄影",/拍|摄影|写真|照/]];
+  for(const [c,re] of cats){ if(re.test(t)){ d.cat=c; break; } }
+  if(/线上|远程|网上/.test(t)) d.region="线上"; else if(/市区|观前|园区|独墅湖|苏大/.test(t)) d.region="苏州 · 市区";
+  const pm=t.match(/[¥￥]\s*(\d{2,4})|(\d{2,4})\s*(?:元|块|r\b)|(\d{2,4})\s*(?:一|每|\/)\s*(次|套|副|条|张|小时|个)/) || t.match(/(?:一次|每次)\s*(\d{2,4})/) || t.match(/(\d{2,4})(?=一)/);
+  if(pm){ d.price=+(pm[1]||pm[2]||pm[3]||0); if(pm[4]) d.unit=pm[4]; }
+  const um=t.match(/\d{2,4}\s*(?:元|块)?\s*(?:一|每|\/)\s*(次|套|副|条|张|小时|个)/) || t.match(/(?:一|每)(次|套|副|条|张)\s*\d{2,4}/);
+  if(um) d.unit=um[1]; else if(!pm||!pm[4]) d.unit={美甲:"副",设计:"套",影像:"条"}[d.cat]||"次";
+  const inc=[...t.matchAll(/(?:含|包括|包含|附赠|送)([^，。,；;\n]+)/g)].flatMap(m=>m[1].split(/和|、|及|\+|以及/)).map(s=>s.trim()).filter(Boolean);
+  d.includes=inc.map(s=>s.replace(/^(\d+)/,"$1 ").replace(/\s+/g," ").trim());
+  const sm=t.match(/周[一二三四五六日天](?:[、和至到\-]?周?[一二三四五六日天])*[^，。,\n]{0,6}/) || t.match(/(本周|这周|周末|下周|这几天)[^，。,\n]{0,10}/);
+  if(sm) d.slots=sm[0].replace(/^这周/,"本周").replace(/(都行|都可以|可以|有空)$/,"");
+  d.week=/本周|这周|周末|这几天/.test(t)&&!/^下周/.test(d.slots);
+  const dm=t.match(/(\d+(?:\.\d+)?\s*个?小时|\d+\s*分钟|\d+\s*天(?:交付|内)?)/);
+  if(dm){ const x=dm[0].replace("个小时","小时").replace(/(\d)\s*(天|分钟|小时)/,"$1 $2"); d.duration=/交付|内/.test(x)?x:"约 "+x; }
+  const style=(t.match(/(胶片感|胶片|冷调|日系|复古|极简|瑞士网格|手绘|韩系|毕业照|形象照|证件照)/)||[])[1];
+  const base={摄影:"人像摄影",美甲:"手绘穿戴甲",妆造:"拍照妆",设计:"海报设计",影像:"短片拍摄剪辑"}[d.cat];
+  if(style&&/照$/.test(style)) d.short=(t.includes("冷调")?"冷调":"")+style;
+  else d.short=style ? style.replace("胶片感","胶片").replace("瑞士网格","网格风")+base : base;
+  if(/活动海报/.test(t)) d.short=(style?style.replace("瑞士网格","网格风"):"")+"活动海报";
+  return d;
+}
+function openPublish(){
+  ui.draft=null; ui.aiPreset=0;
+  modal(publishStep1(),"wide");
+}
+function publishStep1(){
+  return `<div class="modal-h"><h3>发布服务</h3><button class="x" onclick="closeModal()">✕</button></div>
+    <p class="hint">像发朋友圈一样写一段，说清楚做什么、多少钱、什么时候有空。AI 会整理成服务卡，你再核对。</p>
+    <div class="chips" style="margin-bottom:12px">${AI_PRESETS.map((p,i)=>`<button class="chip ${ui.aiPreset===i?"on":""}" onclick="ui.aiPreset=${i};$('#aiRaw').value=AI_PRESETS[${i}][1];document.querySelectorAll('#modal .chips .chip').forEach((c,j)=>c.classList.toggle('on',j===${i}))">示例 · ${p[0]}</button>`).join("")}</div>
+    <textarea id="aiRaw" class="inp" style="min-height:150px">${esc(AI_PRESETS[ui.aiPreset||0][1])}</textarea>
+    <div class="modal-f"><button class="btn btn-o" onclick="closeModal()">取消</button><button class="btn btn-k" onclick="runAi()">整理成服务卡</button></div>`;
+}
+function runAi(){
+  const raw=$("#aiRaw").value.trim(); if(!raw) return toast("先写一段描述");
+  ui.raw=raw;
+  $("#modal").innerHTML=`<div class="modal-h"><h3>发布服务</h3><button class="x" onclick="closeModal()">✕</button></div><div class="loading"><span class="spin"></span>正在整理…</div>`;
+  setTimeout(()=>{ const d=parseAi(raw); const mine=worksOf(DB.me); d.img=(mine.find(w=>({摄影:"影像",设计:"设计"})[d.cat]===w.tag)||mine[0]||{}).img||null; ui.draft=d; $("#modal").innerHTML=publishStep2(); },650);
+}
+function draftAsService(){ const d=ui.draft; return {id:"preview",by:DB.me,short:d.short,cat:d.cat,region:d.region,price:d.price||0,unit:d.unit,includes:d.includes,duration:d.duration,slots:d.slots,week:d.week,images:[d.img||"aperture.png"]}; }
+function publishStep2(){
+  const d=ui.draft; const mine=worksOf(DB.me);
+  const filled=[d.short,d.price,d.unit,d.includes.length,d.slots,d.duration,d.region].filter(Boolean).length;
+  return `<div class="modal-h"><h3>核对服务卡</h3><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="ai-tip"><i class="dot"></i>AI 已填好 ${filled} 项，改哪里右边会同步。</div>
+  <div class="ai-grid">
+    <div>
+      <div class="field"><label>名称</label><input class="inp" value="${esc(d.short)}" oninput="ui.draft.short=this.value;updPrev()"></div>
+      <div class="row2">
+        <div class="field"><label>分类</label><select class="inp" onchange="ui.draft.cat=this.value;updPrev()">${CATS.slice(1).map(c=>`<option ${c===d.cat?"selected":""}>${c}</option>`).join("")}</select></div>
+        <div class="field"><label>地点</label><select class="inp" onchange="ui.draft.region=this.value;updPrev()">${REGIONS.slice(1).map(r=>`<option ${r===d.region?"selected":""}>${r}</option>`).join("")}</select></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>价格（元）</label><input class="inp mono" type="number" min="0" value="${d.price||""}" oninput="ui.draft.price=+this.value;updPrev()"></div>
+        <div class="field"><label>单位</label><input class="inp" value="${esc(d.unit)}" oninput="ui.draft.unit=this.value;updPrev()"></div>
+      </div>
+      <div class="field"><label>包含什么（一行一项）</label><textarea class="inp" style="min-height:90px" oninput="ui.draft.includes=this.value.split('\\n').map(s=>s.trim()).filter(Boolean);updPrev()">${esc(d.includes.join("\n"))}</textarea></div>
+      <div class="row2">
+        <div class="field"><label>什么时候有空</label><input class="inp" value="${esc(d.slots)}" oninput="ui.draft.slots=this.value"></div>
+        <div class="field"><label>大概多久</label><input class="inp" value="${esc(d.duration)}" oninput="ui.draft.duration=this.value"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>展示多久后需要你再确认</label><select class="inp" onchange="ui.draft.validDays=+this.value">${[7,14,30].map(n=>`<option value="${n}" ${n===d.validDays?"selected":""}>${n} 天</option>`).join("")}</select></div>
+        <div class="field"><label>&nbsp;</label><div class="toggle-row" style="margin:0;padding:12px 0 0;border:0" onclick="ui.draft.week=!ui.draft.week;this.querySelector('.sw').classList.toggle('on',ui.draft.week);updPrev()"><span>本周可约</span><span class="sw ${d.week?"on":""}"></span></div></div>
+      </div>
+      <div class="field"><label>封面</label><div class="covers">${mine.slice(0,7).map(w=>`<button class="${d.img===w.img?"on":""}" onclick="ui.draft.img=W('${w.id}').img;document.querySelectorAll('.covers button').forEach(b=>b.classList.remove('on'));this.classList.add('on');updPrev()"><img src="${src(w.img)}" alt=""></button>`).join("")}<button class="up" onclick="$('#coverFile').click()">+</button></div></div>
+    </div>
+    <div class="ai-prev"><div class="sec-h" style="text-align:center">在服务页里会这样展示</div><div id="aiPrev">${cardHtml(draftAsService(),true)}</div></div>
+  </div>
+  <div class="modal-f"><button class="btn btn-o" onclick="$('#modal').innerHTML=publishStep1();$('#aiRaw').value=ui.raw">改原文</button><button class="btn btn-k" onclick="publishDraft()">发布</button></div>`;
+}
+function updPrev(){ const el=$("#aiPrev"); if(el) el.innerHTML=cardHtml(draftAsService(),true); }
+$("#coverFile").addEventListener("change", async e=>{ const f=e.target.files[0]; if(!f||!ui.draft) return; const r=await readImage(f,1400); ui.draft.img=r.data; $("#modal").innerHTML=publishStep2(); e.target.value=""; });
+function publishDraft(){
+  const d=ui.draft;
+  if(!d.short.trim()) return toast("给服务起个名字");
+  if(!d.price) return toast("填一下价格");
+  const s={id:"s"+Date.now(),by:DB.me,short:d.short.trim(),cat:d.cat,region:d.region,price:d.price,unit:d.unit||"次",includes:d.includes,duration:d.duration,slots:d.slots||"可私信约时间",week:d.week,desc:"",images:[d.img||"aperture.png"],valid:addDays(d.validDays),confirmed:todayIso,published:true};
+  DB.services.unshift(s); save(); closeModal(); ui.ptab="services"; ui.asVisitor=false;
+  if(cur()!=="#/u/"+DB.me) go("#/u/"+DB.me); else render();
+  toast("已发布，服务页和你的主页都能看到");
+}
+
+/* =========================================================
+   COMMUNITY
+   ========================================================= */
+const typeLabel = t => ({topic:"兴趣专栏",campus:"学校专栏",city:"城市与社团"})[t]||"专栏";
+function vCommunity(colId){
+  const col=colId?C(colId):null;
+  if(colId&&!col) return notFound();
+  let list=DB.posts.filter(p=>!col||p.cols.includes(col.id));
+  if(ui.kind!=="全部") list=list.filter(p=>p.kind===ui.kind);
+  list=[...list].sort((a,b)=>b.date.localeCompare(a.date));
+  const topics=DB.columns.filter(c=>c.type==="topic"); const places=DB.columns.filter(c=>c.type!=="topic");
+  const cnt=c=>DB.posts.filter(p=>p.cols.includes(c.id)).length;
+  const colBtn=c=>`<button class="col-btn ${col&&col.id===c.id?"on":""}" onclick="go('#/community/${c.id}')"><span class="sym">${c.sym}</span>${esc(c.name)}<span class="n">${cnt(c)}</span></button>`;
+  return `<div class="wrap"><div class="split">
+    <aside class="rail">
+      <button class="col-btn ${!col?"on":""}" onclick="go('#/community')"><span class="sym">*</span>全部<span class="n">${DB.posts.length}</span></button>
+      <h4>兴趣</h4>${topics.map(colBtn).join("")}
+      <h4>学校与城市</h4>${places.map(colBtn).join("")}
+      <button class="link add" onclick="openNewColumn()">+ 创建专栏</button>
+    </aside>
+    <div>
+      <div class="m-filters"><div class="chips">
+        <button class="chip ${!col?"on":""}" onclick="go('#/community')">全部</button>
+        ${DB.columns.map(c=>`<button class="chip ${col&&col.id===c.id?"on":""}" onclick="go('#/community/${c.id}')">${c.sym} ${esc(c.name)}</button>`).join("")}
+        <button class="chip" onclick="openNewColumn()">+ 创建</button>
+      </div></div>
+      <header class="col-head">
+        <div>${col?`<div class="col-type">${typeLabel(col.type)}</div><h2><span class="sym">${col.sym}</span>${esc(col.name)}</h2><p>${esc(col.desc)}</p>`:`<h2>社区</h2><p>写方法，聊审美，约人一起做点什么。</p>`}</div>
+        <div class="col-act">${col&&col.region?`<button class="btn btn-o btn-s" onclick="ui.svc={cat:'全部',region:'${col.region}',budget:'all',week:false,sort:'new'};go('#/services')">附近的服务</button>`:""}<button class="btn btn-k btn-s" onclick="openCompose('${col?col.id:""}')">发帖</button></div>
+      </header>
+      <div class="chips kinds">${["全部","博客","讨论","共创"].map(k=>`<button class="chip ${ui.kind===k?"on":""}" onclick="ui.kind='${k}';render()">${k}</button>`).join("")}</div>
+      ${list.length?list.map(postRow).join(""):`<div class="empty"><p>这里还没有内容，来写第一篇。</p><button class="btn btn-k btn-s" onclick="openCompose('${col?col.id:""}')">发帖</button></div>`}
+    </div>
+  </div></div>`;
+}
+function postRow(p){
+  const a=P(p.by); const saves=p.saves+(DB.saved.includes(p.id)?1:0);
+  return `<article class="post ${p.img?"":"noimg"}" onclick="go('#/post/${p.id}')">
+    <div>
+      <div class="post-k"><span class="kind">${esc(p.kind)}</span>${p.cols.map(cid=>{const c=C(cid);return c?`<button class="tag" onclick="event.stopPropagation();go('#/community/${c.id}')">${c.sym}${esc(c.name)}</button>`:"";}).join("")}</div>
+      <h3 class="post-t">${esc(p.title)}</h3>
+      <p class="post-e">${esc(p.excerpt)}</p>
+      <div class="post-m"><span class="a">${av(p.by,"av-xs")}${esc(a.name)}</span><span>${relDate(p.date)}</span><span>${p.replies.length} 回复</span><span>${saves} 收藏</span></div>
+    </div>
+    ${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:""}
+  </article>`;
+}
+function vPost(id){
+  const p=PO(id); if(!p) return notFound();
+  const a=P(p.by); const saved=DB.saved.includes(p.id); const svcs=p.by!==DB.me?liveSvcOf(p.by):[];
+  return `<div class="wrap">
+    ${backBtn("#/community","社区")}
+    <article class="read">
+      <div class="post-k"><span class="kind">${esc(p.kind)}</span>${p.cols.map(cid=>{const c=C(cid);return c?`<button class="tag" onclick="go('#/community/${c.id}')">${c.sym}${esc(c.name)}</button>`:"";}).join("")}</div>
+      <h1>${esc(p.title)}</h1>
+      <div class="read-by">
+        <button class="who-row" onclick="go('#/u/${a.id}')">${av(a.id,"av-m")}<div><div class="who-n">${esc(a.name)}</div><div class="who-s">${relDate(p.date)}${p.version?" · "+esc(p.version):""}</div></div></button>
+        <button class="btn btn-o btn-s ${saved?"on":""}" onclick="toggleSave('${p.id}')">${saved?"已收藏":"收藏"}</button>
+      </div>
+      ${p.img?`<img class="read-hero" src="${src(p.img)}" alt="">`:""}
+      <div class="read-body">${p.body.map(t=>`<p>${esc(t)}</p>`).join("")}</div>
+      ${p.params?`<div class="params"><div class="params-h"><span>可复用参数${p.version?" · "+esc(p.version):""}</span><button class="link" onclick="copyText(PO('${p.id}').params)">复制</button></div><pre>${esc(p.params)}</pre></div>`:""}
+      ${svcs.length?`<div class="author-svc" onclick="go('#/s/${svcs[0].id}')"><img src="${src(svcs[0].images[0])}" alt=""><div><div class="who-s">也可以约 ${esc(a.name)}</div><div class="srow-t" style="font-size:16px">${esc(svcs[0].short)}</div></div>${priceHtml(svcs[0])}</div>`:""}
+      <section class="floors">
+        <div class="sec-h">${p.replies.length} 条回复</div>
+        ${p.replies.map((r,i)=>`<div class="floor">${av(r.by,"av-s")}<div><div class="floor-h"><b>${esc(P(r.by).name)}</b><span class="mono">#${i+1}</span>${r.t?`<span>${esc(r.t)}</span>`:""}</div><p>${esc(r.text)}</p></div></div>`).join("")}
+        <div class="reply-box">${av(DB.me,"av-s")}<textarea id="replyInput" class="inp" style="min-height:44px" rows="1" placeholder="写下你的回复"></textarea><button class="btn btn-k btn-s" onclick="sendReply('${p.id}')">回复</button></div>
+      </section>
+    </article>
+  </div>`;
+}
+function toggleSave(id){ const i=DB.saved.indexOf(id); if(i>=0) DB.saved.splice(i,1); else DB.saved.push(id); save(); render(); toast(i>=0?"已取消收藏":"已收藏，可在你的主页里找到"); }
+function sendReply(id){ const t=$("#replyInput").value.trim(); if(!t) return; PO(id).replies.push({by:DB.me,text:t,t:"刚刚"}); save(); const y=window.scrollY; render(); window.scrollTo(0,y); toast("已回复"); }
+
+function openCompose(colId){
+  const c=colId?C(colId):null;
+  const topics=DB.columns.filter(x=>x.type==="topic"); const places=DB.columns.filter(x=>x.type!=="topic");
+  const topicSel=c&&c.type==="topic"?c.id:topics[0].id; const placeSel=c&&c.type!=="topic"?c.id:"";
+  ui.composeKind="博客"; ui.composeImg=null;
+  modal(`<div class="modal-h"><h3>发帖</h3><button class="x" onclick="closeModal()">✕</button></div>
+    <div class="field"><div class="seg" id="ckSeg">${["博客","讨论","共创"].map(k=>`<button class="${k==="博客"?"on":""}" onclick="ui.composeKind='${k}';document.querySelectorAll('#ckSeg button').forEach(b=>b.classList.toggle('on',b.textContent==='${k}'));$('#cpParamsF').style.display='${k}'==='博客'?'block':'none'">${k}</button>`).join("")}</div></div>
+    <div class="field"><label>标题</label><input id="cpTitle" class="inp" placeholder="一句话说清楚"></div>
+    <div class="row2">
+      <div class="field"><label>发到</label><select id="cpTopic" class="inp">${topics.map(x=>`<option value="${x.id}" ${x.id===topicSel?"selected":""}>${x.sym} ${esc(x.name)}</option>`).join("")}</select></div>
+      <div class="field"><label>同时发到（可选）</label><select id="cpPlace" class="inp"><option value="">不选</option>${places.map(x=>`<option value="${x.id}" ${x.id===placeSel?"selected":""}>${x.sym} ${esc(x.name)}</option>`).join("")}</select></div>
+    </div>
+    <div class="field"><label>正文</label><textarea id="cpBody" class="inp" style="min-height:140px" placeholder="空一行分段"></textarea></div>
+    <div class="field" id="cpParamsF"><label>可复用参数（可选，每行一条）</label><textarea id="cpParams" class="inp mono" style="min-height:80px;font-size:13px" placeholder="光圈  f/2.8"></textarea></div>
+    <div class="field"><label>配图（可选）</label><input type="file" id="cpImg" accept="image/*" class="inp" style="padding-top:10px"></div>
+    <div class="modal-f"><button class="btn btn-o" onclick="closeModal()">取消</button><button class="btn btn-k" onclick="submitPost()">发布</button></div>`);
+}
+async function submitPost(){
+  const title=$("#cpTitle").value.trim(); const body=$("#cpBody").value.trim();
+  if(!title) return toast("写个标题吧"); if(!body) return toast("正文还空着");
+  let img="";
+  const f=$("#cpImg").files[0]; if(f){ try{ img=(await readImage(f,1400)).data; }catch(e){} }
+  const params=ui.composeKind==="博客"?$("#cpParams").value.trim():"";
+  const cols=[$("#cpTopic").value]; if($("#cpPlace").value) cols.push($("#cpPlace").value);
+  const paras=body.split(/\n\s*\n|\n/).map(s=>s.trim()).filter(Boolean);
+  const p={id:"p"+Date.now(),by:DB.me,kind:ui.composeKind,title,excerpt:trunc(paras[0],70),body:paras,params,version:params?"v1.0":"",cols,img,date:todayIso,saves:0,replies:[]};
+  DB.posts.unshift(p); save(); closeModal(); go("#/post/"+p.id); toast("已发布，也会出现在你的主页");
+}
+function openNewColumn(){
+  ui.colType="topic";
+  modal(`<div class="modal-h"><h3>创建专栏</h3><button class="x" onclick="closeModal()">✕</button></div>
+    <p class="hint">专栏像一个小组：可以围绕兴趣，也可以是一所学校或一座城市。</p>
+    <div class="field"><div class="seg" id="ctSeg">${[["topic","兴趣 #"],["campus","学校 @"],["city","城市 / 社团 @"]].map(([k,l])=>`<button class="${k==="topic"?"on":""}" data-k="${k}" onclick="ui.colType='${k}';document.querySelectorAll('#ctSeg button').forEach(b=>b.classList.toggle('on',b.dataset.k==='${k}'))">${l}</button>`).join("")}</div></div>
+    <div class="field"><label>名称</label><input id="ncName" class="inp" placeholder="例如：胶片暗房 / 西交利物浦大学"></div>
+    <div class="field"><label>一句话介绍</label><input id="ncDesc" class="inp" placeholder="这里聊什么"></div>
+    <div class="modal-f"><button class="btn btn-o" onclick="closeModal()">取消</button><button class="btn btn-k" onclick="submitColumn()">创建</button></div>`,"sm");
+}
+function submitColumn(){
+  const name=$("#ncName").value.trim().replace(/^[#@]\s*/,""); if(!name) return toast("给专栏起个名字");
+  if(DB.columns.some(c=>c.name===name)) return toast("已经有同名专栏了");
+  const t=ui.colType; const c={id:"c"+Date.now(),type:t,sym:t==="topic"?"#":"@",name,desc:$("#ncDesc").value.trim()||"新开的专栏，欢迎来写第一篇。"};
+  DB.columns.push(c); save(); closeModal(); go("#/community/"+c.id); toast("专栏已创建");
+}
+
+/* =========================================================
+   MESSAGES & CHAT
+   ========================================================= */
+function ensureThread(sid){ if(!DB.threads[sid]) DB.threads[sid]={sid,stage:"咨询中",unread:0,last:Date.now(),msgs:[]}; return DB.threads[sid]; }
+function updateBadge(){ const n=Object.values(DB.threads).reduce((a,t)=>a+(t.unread||0),0); $("#b1").textContent=n||""; $("#b2").textContent=n||""; }
+function lastPreview(m){ if(!m) return ""; if(m.type==="wx") return m.revoked?"撤回了微信号":"[微信号]"; if(m.img) return "[图片]"; return (m.from==="me"?"我：":"")+m.text; }
+function vMessages(sid){
+  const threads=Object.values(DB.threads).filter(t=>t.msgs.length&&S(t.sid)).sort((a,b)=>(b.last||0)-(a.last||0));
+  let active=sid&&DB.threads[sid]&&S(sid)?sid:null;
+  if(!active&&threads.length&&window.innerWidth>860) active=threads[0].sid;
+  ui.paneSid=active;
+  if(active){ DB.threads[active].unread=0; save(); }
+  return `<div class="msgs ${sid&&active?"has":""}">
+    <aside class="tlist">
+      <div class="tlist-h">消息</div>
+      ${threads.length?threads.map(t=>{ const s=S(t.sid), p=P(s.by); return `<button class="titem ${active===t.sid?"on":""}" onclick="go('#/messages/${t.sid}')">${av(p.id,"av-m")}<div style="min-width:0"><div class="ti-top"><b>${esc(p.name)}</b><span class="ti-svc">${esc(s.short)}</span></div><div class="ti-last">${esc(lastPreview(t.msgs[t.msgs.length-1]))}</div></div>${t.unread?`<span class="badge-dot">${t.unread}</span>`:""}</button>`; }).join("")
+        :`<div class="empty sm"><p>还没有对话。看到喜欢的服务，就去打个招呼。</p><button class="btn btn-o btn-s" onclick="go('#/services')">去看看服务</button></div>`}
+    </aside>
+    <section class="chat-pane" id="pane">${active?chatHtml(active,"pane"):`<div class="chat-empty"><p>选择一个对话</p></div>`}</section>
+  </div>`;
+}
+function chatHtml(sid, where){
+  const t=ensureThread(sid); const s=S(sid); const p=P(s.by);
+  const cl=where==="drawer"?"closeChat();":"";
+  return `<header class="chat-h">
+      ${where==="pane"?`<button class="x m-only" onclick="goBack('#/messages')" aria-label="返回">←</button>`:""}
+      ${av(p.id,"av-m")}
+      <div class="chat-who">
+        <button class="who-n" onclick="${cl}go('#/u/${p.id}')">${esc(p.name)}</button>
+        <button class="chat-svc" onclick="${cl}go('#/s/${s.id}')"><img src="${src(s.images[0])}" alt=""><span>${esc(s.short)} · ¥${s.price}/${esc(s.unit)}</span></button>
+      </div>
+      <div class="stage"><select title="标记进展" onchange="setStage('${sid}',this.value)">${["咨询中","已约定","已完成"].map(x=>`<option ${t.stage===x?"selected":""}>${x}</option>`).join("")}</select></div>
+      ${where==="drawer"?`<button class="x" onclick="closeChat()" aria-label="关闭">✕</button>`:""}
+    </header>
+    <div class="chat-body" id="cb-${where}">${t.msgs.length?t.msgs.map((m,i)=>msgHtml(m,i,t,where)).join(""):`<div class="chat-empty">${av(p.id,"av-l")}<b style="margin-top:10px">${esc(p.name)}</b><span style="font-size:13px">${esc(p.bio)}</span><div class="qchips">${QUICK.map((q,i)=>`<button class="chip" onclick="sendMsg('${sid}','${where}',QUICK[${i}])">${q}</button>`).join("")}</div></div>`}</div>
+    <footer class="composer">
+      <button class="icon-btn" title="发送图片" onclick="pickChatImg('${sid}','${where}')">图片</button>
+      <button class="icon-btn" title="把微信号发给对方" onclick="shareWx('${sid}','${where}')">微信</button>
+      <input id="ci-${where}" placeholder="说点什么…" autocomplete="off" onkeydown="if(event.key==='Enter'&&!event.isComposing)sendMsg('${sid}','${where}')">
+      <button class="send" onclick="sendMsg('${sid}','${where}')">发送</button>
+    </footer>`;
+}
+function msgHtml(m,i,t,where){
+  const prev=t.msgs[i-1];
+  const time=(m.t&&(!prev||prev.t!==m.t))?`<div class="sys">${esc(m.t)}</div>`:"";
+  if(m.type==="wx"){
+    if(m.revoked) return time+`<div class="sys">${m.from==="me"?"你":"对方"}撤回了微信号</div>`;
+    return time+`<div class="wx ${m.from}"><div class="wx-l">${m.from==="me"?"我的微信号 · 只发给了 TA":"TA 的微信号"}</div><div class="wx-id mono">${esc(m.id)}</div><div class="wx-a"><button class="link" onclick="copyText('${esc(m.id)}')">复制</button>${m.from==="me"?`<button class="link" onclick="revokeWx('${t.sid}',${i},'${where}')">撤回</button>`:""}</div></div>`;
+  }
+  if(m.img) return time+`<div class="bub ${m.from} img"><img src="${m.img}" alt="图片"></div>`;
+  return time+`<div class="bub ${m.from}">${esc(m.text)}</div>`;
+}
+function scrollChat(where){ const b=$("#cb-"+where); if(b) b.scrollTop=b.scrollHeight; }
+function refreshChat(sid, where){
+  if(where==="drawer"){ if(ui.chat!==sid) return; $("#drawer").innerHTML=chatHtml(sid,"drawer"); scrollChat("drawer"); if(window.innerWidth>860) $("#ci-drawer")?.focus(); }
+  else { render(); const i=$("#ci-pane"); if(i&&window.innerWidth>860) i.focus(); }
+}
+function openChat(sid){
+  const s=S(sid); if(!s) return;
+  if(s.by===DB.me) return toast("这是你自己的服务");
+  closeModal(); ensureThread(sid).unread=0; ui.chat=sid; save(); updateBadge();
+  const d=$("#drawer"); d.innerHTML=chatHtml(sid,"drawer"); d.classList.add("on"); $("#drawerBg").classList.add("on");
+  scrollChat("drawer"); if(window.innerWidth>860) setTimeout(()=>$("#ci-drawer")?.focus(),300);
+}
+function closeChat(){ $("#drawer").classList.remove("on"); $("#drawerBg").classList.remove("on"); ui.chat=null; }
+function whereOpen(sid){ if(ui.chat===sid) return "drawer"; if(parse(cur()).name==="messages"&&ui.paneSid===sid&&$("#cb-pane")) return "pane"; return null; }
+function pushMsg(sid, m, where){ const t=ensureThread(sid); t.msgs.push(m); t.last=Date.now(); save(); refreshChat(sid, where); }
+function sendMsg(sid, where, preset){
+  const inp=$("#ci-"+where); const text=(preset||(inp?inp.value:"")).trim(); if(!text) return;
+  pushMsg(sid,{from:"me",text,t:nowLabel()},where); autoReply(sid);
+}
+function autoReply(sid, text){
+  setTimeout(()=>{
+    const t=ensureThread(sid); const n=t.msgs.filter(m=>m.from==="them").length;
+    t.msgs.push({from:"them",text:text||REPLIES[n%REPLIES.length],t:nowLabel()}); t.last=Date.now();
+    const w=whereOpen(sid);
+    if(w){ t.unread=0; save(); refreshChat(sid,w); } else { t.unread=(t.unread||0)+1; save(); updateBadge(); toast(P(S(sid).by).name+" 回复了你"); }
+  },1300);
+}
+function pickChatImg(sid, where){ const f=$("#chatFile"); f.onchange=async()=>{ const file=f.files[0]; f.value=""; if(!file) return; try{ const r=await readImage(file,1000); pushMsg(sid,{from:"me",img:r.data,t:nowLabel()},where); autoReply(sid,"收到，这个感觉我可以做。"); }catch(e){ toast("图片读取失败"); } }; f.click(); }
+function shareWx(sid, where){
+  const wx=P(DB.me).wechat;
+  if(!wx){ closeChat(); openEditProfile(); return toast("先在资料里填一下微信号"); }
+  const t=ensureThread(sid);
+  if(t.msgs.some(m=>m.type==="wx"&&m.from==="me"&&!m.revoked)) return toast("已经发过微信号了");
+  pushMsg(sid,{from:"me",type:"wx",id:wx,t:nowLabel()},where); autoReply(sid,"好，我加你～");
+}
+function revokeWx(sid,i,where){ const m=ensureThread(sid).msgs[i]; if(m){ m.revoked=true; save(); refreshChat(sid,where); toast("已撤回"); } }
+function setStage(sid,v){ ensureThread(sid).stage=v; save(); toast("已标记为「"+v+"」"); }
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+function openSearch(){ $("#search").classList.add("on"); document.body.style.overflow="hidden"; renderSearch(); setTimeout(()=>$("#q").focus(),40); }
+function closeSearch(){ $("#search").classList.remove("on"); document.body.style.overflow=""; }
+function renderSearch(){
+  const q=$("#q").value.trim().toLowerCase(); const box=$("#sr");
+  if(!q){ box.innerHTML=`<div class="sr-g"><h5>试试搜</h5><div class="chips wrapc">${["人像","美甲","海报","石湖","胶片","排版","苏州大学"].map(k=>`<button class="chip" onclick="$('#q').value='${k}';renderSearch()">${k}</button>`).join("")}</div></div>`; return; }
+  const m=s=>s&&String(s).toLowerCase().includes(q);
+  const svcs=DB.services.filter(s=>isLive(s)&&(m(s.short)||m(s.cat)||m(s.region)||s.includes.some(m)||m(P(s.by).name)));
+  const ppl=Object.values(DB.people).filter(p=>m(p.name)||m(p.en)||m(p.bio)||p.skills.some(m)||m(p.region)||m(p.school));
+  const works=DB.works.filter(w=>m(w.title)||m(w.tag));
+  const posts=DB.posts.filter(p=>m(p.title)||m(p.excerpt)||m(p.params)||p.body.some(m)||p.cols.some(c=>C(c)&&m(C(c).name)));
+  const g=(t,items)=>items.length?`<div class="sr-g"><h5>${t}</h5>${items.join("")}</div>`:"";
+  const html=g("服务",svcs.map(s=>`<button class="sr-item" onclick="closeSearch();go('#/s/${s.id}')"><img src="${src(s.images[0])}" alt=""><div><div class="sr-t">${esc(s.short)}</div><div class="sr-s">${esc(P(s.by).name)} · ${esc(s.region)}</div></div>${priceHtml(s)}</button>`))
+    +g("人",ppl.map(p=>`<button class="sr-item" onclick="closeSearch();go('#/u/${p.id}')">${av(p.id,"av-m")}<div><div class="sr-t">${esc(p.name)}</div><div class="sr-s">${esc(p.skills.join(" / "))}</div></div></button>`))
+    +g("作品",works.slice(0,8).map(w=>`<button class="sr-item" onclick="closeSearch();openViewer('${w.id}','${w.by}')"><img src="${src(w.img)}" alt=""><div><div class="sr-t">${esc(w.title)}</div><div class="sr-s">${esc(P(w.by).name)} · ${esc(w.tag)}</div></div></button>`))
+    +g("帖子",posts.map(p=>`<button class="sr-item" onclick="closeSearch();go('#/post/${p.id}')"><div><div class="sr-t">${esc(p.title)}</div><div class="sr-s">${esc(P(p.by).name)} · ${esc(p.kind)}</div></div></button>`));
+  box.innerHTML=html||`<p class="sr-none">没有找到和「${esc(q)}」有关的内容。</p>`;
+}
+
+/* =========================================================
+   MODAL / QR / PHONE PREVIEW
+   ========================================================= */
+function modal(html, cls){ $("#modal").className="modal "+(cls||""); $("#modal").innerHTML=html; $("#modalBg").classList.add("on"); }
+function closeModal(){ $("#modalBg").classList.remove("on"); $("#modal").innerHTML=""; ui.sheet=false; }
+function closeAll(){ closeModal(); closeViewer(); closeSearch(); closeChat(); }
+const QR = ["11111110101100100010001111111","10000010000101010100101000001","10111010101010011101101011101","10111010111100010110001011101","10111010010001110011101011101","10000010101100111010101000001","11111110101010101010101111111","00000000110011100110100000000","11010011010100011100011101101","10101101110100111111000010011","01001111100111001101011110100","01100001100100100011000000111","10010011100010001011001101101","11101000111101000011100100011","01110111010000000000101001111","10000000111000011000110100111","01011110010011101101010110001","10000001011100111111010100111","00011111100010000110100100001","00110101001110011110100101101","00110011110011101110111111011","00000000000011110000100010100","11111110100100000101101011011","10000010001100101111100010101","10111010011100011011111111000","10111010100010001100111101011","10111010001011100111110010100","10000010101001111100011000011","11111110110101100000010110100"];
+function qrSvg(){ const m=3, n=QR.length, T=n+m*2; let d=""; QR.forEach((r,y)=>{ for(let x=0;x<r.length;x++) if(r[x]==="1") d+=`M${x+m},${y+m}h1v1h-1z`; }); return `<svg viewBox="0 0 ${T} ${T}" shape-rendering="crispEdges" role="img" aria-label="扫码二维码"><rect width="${T}" height="${T}" fill="#fff"/><path d="${d}" fill="#000"/></svg>`; }
+function openQr(){ modal(`<div class="modal-h"><h3>用手机打开</h3><button class="x" onclick="closeModal()">✕</button></div><div class="qr-box">${qrSvg()}</div><div class="qr-url mono">${LIVE_URL}</div><div class="qr-acts"><button class="btn btn-o" onclick="copyText(LIVE_URL)">复制链接</button><button class="btn btn-k" onclick="openPhone()">电脑上预览</button></div>`,"sm"); }
+function openPhone(){ modal(`<div class="phone"><iframe src="${location.href.split("#")[0]}#/" title="手机预览"></iframe></div><button class="btn btn-k" onclick="closeModal()">关闭预览</button>`,"phone-m"); }
+
+/* =========================================================
+   GLOBAL EVENTS & INIT
+   ========================================================= */
+window.addEventListener("scroll",()=>{ $("#hdr").classList.toggle("scrolled", window.scrollY>4); scrollMem[cur()]=window.scrollY; },{passive:true});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){ if($("#viewer").classList.contains("on")) closeViewer(); else if($("#modalBg").classList.contains("on")) closeModal(); else if($("#search").classList.contains("on")) closeSearch(); else closeChat(); }
+  if(ui.viewer&&$("#viewer").classList.contains("on")){ if(e.key==="ArrowRight") stepViewer(1); if(e.key==="ArrowLeft") stepViewer(-1); }
+  if((e.key==="/"||(e.key==="k"&&(e.metaKey||e.ctrlKey)))&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){ e.preventDefault(); openSearch(); }
+});
+window.addEventListener("storage",e=>{ if(e.key===KEY){ DB=load(); render(); } });
+stack.push(cur());
+render();
+</script>
+</body>
+</html>
