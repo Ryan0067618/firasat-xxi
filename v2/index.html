@@ -522,10 +522,10 @@ body[data-view="messages"] .foot{display:none}
 /* =========================================================
    DATA
    ========================================================= */
-const KEY = "firasat_v2_state";
+const KEY = "firasat_v3_state";
 const LIVE_URL = "https://ryan0067618.github.io/firasat-xxi/";
 const ASSET = "../assets/";
-const AR = {"portrait.jpg":.75,"lakeside.png":1.78,"design.jpg":.75,"nails.png":1,"nails_2.jpg":.75,"makeup.jpg":.75,"portrait_2.jpg":.75,"cinema_still.jpg":.75,"langen_dusk.jpg":1.5,"kanazawa_snow.jpg":1.78,"arch_concrete.jpg":.75,"prada_corridor.jpg":1.5,"concrete_stairs.jpg":1.5,"spiral_stairs.jpg":1.5,"film_camera.jpg":1.4,"contax_film.jpg":1.5,"hasselblad.jpg":1.17,"swiss-poster-01.svg":.75,"swiss-zine-02.svg":.75,"type-specimen-03.svg":.75,"swiss_poster_1957.jpg":.71};
+const AR = {"arch_concrete.jpg":.75,"cinema_still.jpg":.67,"cinema_still_2.jpg":1.5,"concrete_stairs.jpg":1.5,"contax_film.jpg":1.5,"design.jpg":.67,"design_2.jpg":1.51,"design_3.jpg":1.5,"film_camera.jpg":1.4,"hasselblad.jpg":1.17,"kanazawa_snow.jpg":1.78,"lakeside.jpg":1.5,"langen_dusk.jpg":1.5,"makeup.jpg":.67,"makeup_2.jpg":.67,"makeup_3.jpg":.8,"nails.jpg":.67,"nails_2.jpg":.75,"nails_3.jpg":.67,"portrait.jpg":1.37,"portrait_2.jpg":.75,"portrait_3.jpg":1.47,"portrait_4.jpg":.75,"prada_corridor.jpg":1.5,"spiral_stairs.jpg":1.5,"swiss_poster_1957.jpg":.71};
 
 const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
@@ -544,46 +544,49 @@ const REPLIES = ["好呀，你大概想约哪天？","可以的，有参考图�
 function seed(){
   const w = (id,by,img,title,tag,year)=>({id,by,img,title,tag,year,ar:AR[img]||1});
   return {
-    v:2, me:"zhouke",
+    v:3, me:"zhouke",
     people:{
-      zhouke:{id:"zhouke",name:"周可",en:"Zhou Ke",tone:"#111111",bio:"拍人，也做海报。偏爱阴天、冷色，和不太笑的人像。",skills:["人像摄影","视觉设计","调色"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:"zhouke_film"},
+      zhouke:{id:"zhouke",name:"周可",en:"Zhou Ke",tone:"#111111",bio:"拍人，也做刊物排版。偏爱自然光、有情绪的色彩和松弛的人像。",skills:["人像摄影","视觉设计","调色"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:"zhouke_film"},
       linyou:{id:"linyou",name:"林柚",en:"Lin You",tone:"#6d5a4e",bio:"手绘穿戴甲，一副一副慢慢画。",skills:["穿戴甲","手绘"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
       chenxi:{id:"chenxi",name:"陈汐",en:"Chen Xi",tone:"#3c4650",bio:"给要拍照的人化妆，偶尔也给自己拍。",skills:["拍照妆","活动妆造"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
-      azhe:{id:"azhe",name:"阿哲",en:"A Zhe",tone:"#2a2a2e",bio:"拍很短的片子。喜欢蓝调时刻和不剪断的长镜头。",skills:["短片拍摄","剪辑","调色"],school:"苏州大学",region:"苏州 · 市区",wechat:""},
+      azhe:{id:"azhe",name:"阿哲",en:"A Zhe",tone:"#2a2a2e",bio:"拍很短的片子。喜欢雨夜、蓝调时刻和不剪断的长镜头。",skills:["短片拍摄","剪辑","调色"],school:"苏州大学",region:"苏州 · 市区",wechat:""},
       shenyu:{id:"shenyu",name:"沈屿",en:"Shen Yu",tone:"#55504a",bio:"建筑学在读，用相机记线条和光。",skills:["建筑摄影","空间拍摄"],school:"苏州科技大学",region:"苏州 · 市区",wechat:""},
       luyu:{id:"luyu",name:"陆屿",en:"Lu Yu",tone:"#7a746c",bio:"胶片新手，收了三台老相机，正在学会等光。",skills:["胶片","扫街"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
       xuning:{id:"xuning",name:"许宁",en:"Xu Ning",tone:"#1f2a33",bio:"不是设计专业，但很在意字和字之间的距离。",skills:["中文排版","字体"],school:"苏州大学",region:"线上",wechat:""}
     },
     works:[
-      w("w1","zhouke","portrait.jpg","灰色午后","影像","2026"),
+      w("w1","zhouke","portrait.jpg","逆光午后","影像","2026"),
+      w("w4","linyou","nails.jpg","琥珀玳瑁 · 短款","美甲","2026"),
+      w("w8","azhe","cinema_still.jpg","雨夜路口 · 35mm","影像","2026"),
+      w("w22","zhouke","portrait_3.jpg","红与钴蓝","影像","2026"),
       w("w11","shenyu","arch_concrete.jpg","光的十字","空间","2026"),
-      w("w4","linyou","nails.png","冷银 · 短方","美甲","2026"),
-      w("w8","azhe","cinema_still.jpg","雨后庭院 · 短片静帧","影像","2026"),
-      w("w21","xuning","swiss_poster_1957.jpg","临摹 · 1957","设计","2026"),
-      w("w6","chenxi","makeup.jpg","银灰眼妆","妆造","2026"),
-      w("w2","zhouke","lakeside.png","湖边，十一月","影像","2026"),
-      w("w13","shenyu","concrete_stairs.jpg","黑钢楼梯","空间","2026"),
+      w("w6","chenxi","makeup.jpg","清透雀斑妆","妆造","2026"),
+      w("w18","xuning","design_2.jpg","橙面印刷排版","设计","2026"),
+      w("w2","zhouke","portrait_2.jpg","暖黄底 · 肖像","影像","2026"),
+      w("w5","linyou","nails_2.jpg","极简法式粉","美甲","2026"),
+      w("w7","chenxi","makeup_2.jpg","上妆瞬间","妆造","2026"),
+      w("w3","zhouke","design.jpg","独立杂志内页","设计","2026"),
+      w("w23","chenxi","portrait_4.jpg","绯红光影妆造","妆造","2026"),
       w("w15","luyu","film_camera.jpg","第一台旁轴","胶片","2026"),
-      w("w5","linyou","nails_2.jpg","洞石色穿戴甲","美甲","2026"),
-      w("w9","azhe","langen_dusk.jpg","暮色水面","影像","2025"),
-      w("w3","zhouke","design.jpg","展览海报 · 石与纸","设计","2026"),
-      w("w12","shenyu","prada_corridor.jpg","镜面走廊","空间","2025"),
-      w("w7","chenxi","portrait_2.jpg","黑大衣","妆造","2026"),
-      w("w18","xuning","swiss-poster-01.svg","网格练习 01","设计","2026"),
-      w("w10","azhe","kanazawa_snow.jpg","雪后玻璃","影像","2025"),
+      w("w24","linyou","nails_3.jpg","立体贝壳珍珠甲","美甲","2026"),
+      w("w21","xuning","swiss_poster_1957.jpg","临摹 · 1957","设计","2026"),
+      w("w9","azhe","cinema_still_2.jpg","雨巷透明伞","影像","2026"),
+      w("w25","zhouke","lakeside.jpg","雾湖，十一月","影像","2026"),
+      w("w13","shenyu","concrete_stairs.jpg","黑钢楼梯","空间","2026"),
+      w("w26","chenxi","makeup_3.jpg","红唇与眼线","妆造","2026"),
+      w("w19","xuning","design_3.jpg","建筑画册摊开","设计","2026"),
+      w("w10","azhe","langen_dusk.jpg","暮色水面","影像","2025"),
       w("w16","luyu","contax_film.jpg","Contax · 50mm","胶片","2026"),
-      w("w14","shenyu","spiral_stairs.jpg","旋转","空间","2025"),
-      w("w19","xuning","swiss-zine-02.svg","小志排版","设计","2026"),
-      w("w17","luyu","hasselblad.jpg","方画幅","胶片","2026"),
-      w("w20","xuning","type-specimen-03.svg","字体样张","设计","2026")
+      w("w12","shenyu","prada_corridor.jpg","镜面走廊","空间","2025"),
+      w("w17","luyu","hasselblad.jpg","方画幅","胶片","2026")
     ],
     services:[
-      {id:"s1",by:"zhouke",short:"冷调人像 · 一小时",cat:"摄影",region:"苏州 · 石湖",price:90,unit:"次",includes:["1 小时拍摄","精修 3 张","全部原片"],duration:"约 1 小时",slots:"本周六、周日下午",week:true,desc:"自然光为主，不用摆复杂姿势。适合第一组像样的个人照。",images:["portrait.jpg","lakeside.png"],valid:addDays(10),confirmed:addDays(-1),published:true},
-      {id:"s3",by:"linyou",short:"手绘穿戴甲",cat:"美甲",region:"苏州 · 石湖",price:68,unit:"副",includes:["按甲型定制尺寸","手绘 1 款","附胶片与锉条"],duration:"3 天制作",slots:"本周还能接 2 单",week:true,desc:"先量尺寸再画，偏冷色和低饱和。",images:["nails.png","nails_2.jpg"],valid:addDays(9),confirmed:addDays(-2),published:true},
-      {id:"s4",by:"chenxi",short:"拍照妆 / 活动妆",cat:"妆造",region:"苏州 · 石湖",price:80,unit:"次",includes:["底妆与眼妆","简单整理发型","自带全部工具"],duration:"约 50 分钟",slots:"本周五晚、周六上午",week:true,desc:"上镜比日常妆更需要结构感，会按你的拍摄风格调整。",images:["makeup.jpg","portrait_2.jpg"],valid:addDays(12),confirmed:addDays(-3),published:true},
-      {id:"s6",by:"shenyu",short:"空间与小店拍摄",cat:"摄影",region:"苏州 · 市区",price:120,unit:"次",includes:["2 小时拍摄","精修 8 张"],duration:"约 2 小时",slots:"本周日",week:true,desc:"适合工作室、小店和展陈空间，偏干净的线条构图。",images:["arch_concrete.jpg","prada_corridor.jpg"],valid:addDays(8),confirmed:addDays(-4),published:true},
-      {id:"s2",by:"zhouke",short:"活动海报设计",cat:"设计",region:"线上",price:150,unit:"套",includes:["1 张主海报","2 轮修改","印刷 PDF"],duration:"3–5 天交付",slots:"下周可排",week:false,desc:"网格清楚、信息有主次的海报。",images:["design.jpg"],valid:addDays(12),confirmed:addDays(-5),published:true},
-      {id:"s5",by:"azhe",short:"3 分钟短片拍摄与剪辑",cat:"影像",region:"苏州 · 市区",price:260,unit:"条",includes:["半天拍摄","剪辑与调色","1 轮修改"],duration:"7 天交付",slots:"下周起",week:false,desc:"毕业纪念、社团介绍或个人短片都可以。",images:["cinema_still.jpg","langen_dusk.jpg","kanazawa_snow.jpg"],valid:addDays(14),confirmed:addDays(-6),published:true}
+      {id:"s1",by:"zhouke",short:"自然光人像约拍",cat:"摄影",region:"苏州 · 石湖",price:90,unit:"次",includes:["1 小时拍摄","精修 3 张","全部原片"],duration:"约 1 小时",slots:"本周六、周日下午",week:true,desc:"自然光为主，不用摆复杂姿势。适合第一组像样的个人照。",images:["portrait.jpg","portrait_3.jpg","portrait_2.jpg"],valid:addDays(10),confirmed:addDays(-1),published:true},
+      {id:"s3",by:"linyou",short:"手绘穿戴甲",cat:"美甲",region:"苏州 · 石湖",price:68,unit:"副",includes:["按甲型定制尺寸","手绘 1 款","附胶片与锉条"],duration:"3 天制作",slots:"本周还能接 2 单",week:true,desc:"先量尺寸再画，支持清透法式、玳瑁与贝壳立体款。",images:["nails.jpg","nails_2.jpg","nails_3.jpg"],valid:addDays(9),confirmed:addDays(-2),published:true},
+      {id:"s4",by:"chenxi",short:"拍照妆 / 活动妆",cat:"妆造",region:"苏州 · 石湖",price:80,unit:"次",includes:["底妆与眼妆","简单整理发型","自带全部工具"],duration:"约 50 分钟",slots:"本周五晚、周六上午",week:true,desc:"上镜比日常妆更需要结构感，保留自然皮肤质感。",images:["makeup.jpg","makeup_2.jpg","makeup_3.jpg"],valid:addDays(12),confirmed:addDays(-3),published:true},
+      {id:"s6",by:"shenyu",short:"空间与小店拍摄",cat:"摄影",region:"苏州 · 市区",price:120,unit:"次",includes:["2 小时拍摄","精修 8 张"],duration:"约 2 小时",slots:"本周日",week:true,desc:"适合工作室、小店和展陈空间，偏干净的线条构图。",images:["arch_concrete.jpg","prada_corridor.jpg","concrete_stairs.jpg"],valid:addDays(8),confirmed:addDays(-4),published:true},
+      {id:"s2",by:"zhouke",short:"活动海报与刊物排版",cat:"设计",region:"线上",price:150,unit:"套",includes:["1 张主海报","2 轮修改","印刷 PDF"],duration:"3–5 天交付",slots:"下周可排",week:false,desc:"网格清楚、信息有主次的平面与印刷设计。",images:["design.jpg","design_3.jpg"],valid:addDays(12),confirmed:addDays(-5),published:true},
+      {id:"s5",by:"azhe",short:"3 分钟短片拍摄与剪辑",cat:"影像",region:"苏州 · 市区",price:260,unit:"条",includes:["半天拍摄","剪辑与调色","1 轮修改"],duration:"7 天交付",slots:"下周起",week:false,desc:"毕业纪念、社团介绍或个人短片都可以。",images:["cinema_still.jpg","cinema_still_2.jpg","langen_dusk.jpg"],valid:addDays(14),confirmed:addDays(-6),published:true}
     ],
     columns:[
       {id:"light",type:"topic",sym:"#",name:"影像与光影",desc:"拍照、调色、布光，把方法写下来。"},
@@ -595,13 +598,13 @@ function seed(){
       {id:"sz",type:"city",sym:"@",name:"苏州同城",desc:"在苏州的人，不分学校。",region:"苏州 · 市区"}
     ],
     posts:[
-      {id:"p1",by:"zhouke",kind:"博客",title:"阴天拍人像：我常用的三组参数",excerpt:"阴天不是坏天气，它是一块免费的柔光箱。这是我在石湖拍了二十多组之后留下来的设置。",body:["阴天不是坏天气，它是一块免费的柔光箱。这是我在石湖拍了二十多组之后留下来的设置。","最容易出错的是白平衡。相机自动白平衡在阴天会偏暖，皮肤发黄。我固定在 5200K，后期再整体压冷一点。","姿势上不用设计太多。让对方走、停、回头，比站定摆拍自然得多。"],params:"光圈    f/2.0 – f/2.8\n快门    1/250 以上\n白平衡  5200K，后期压冷 200K\n曲线    暗部抬 6%，高光压 4%",version:"v1.2",cols:["light","usts"],img:"lakeside.png",date:addDays(-2),saves:18,replies:[{by:"luyu",text:"白平衡那条太有用了，之前一直拍得发黄。",t:"昨天"},{by:"chenxi",text:"下次一起拍，我来化妆～",t:"今天"}]},
+      {id:"p1",by:"zhouke",kind:"博客",title:"阴天和逆光拍人像：我常用的三组参数",excerpt:"阴天是一块免费的柔光箱，逆光则最容易出氛围。这是我在石湖拍了二十多组之后留下来的设置。",body:["阴天是一块免费的柔光箱，逆光则最容易出氛围。这是我在石湖拍了二十多组之后留下来的设置。","最容易出错的是白平衡。相机自动白平衡在阴天容易发灰发黄，我习惯手动锁在 5200K–5600K，后期再微调肤色。","姿势上不用设计太多。让对方走、停、回头，比站定摆拍自然得多。"],params:"光圈    f/2.0 – f/2.8\n快门    1/250 以上\n白平衡  5200K – 5600K 手动锁定\n曲线    暗部抬 6%，高光压 4%",version:"v1.2",cols:["light","usts"],img:"lakeside.jpg",date:addDays(-2),saves:18,replies:[{by:"luyu",text:"白平衡那条太有用了，之前一直拍得发黄。",t:"昨天"},{by:"chenxi",text:"下次一起拍，我来化妆～",t:"今天"}]},
       {id:"p3",by:"luyu",kind:"共创",title:"周六下午石湖扫街互拍，还差两个人",excerpt:"胶片数码都可以，不收费，拍完互相交换原图。下午三点图书馆门口集合。",body:["胶片数码都可以，不收费，拍完互相交换原图。","下午三点图书馆门口集合，沿着湖边走到傍晚。新手也欢迎，我也是新手。"],params:"",version:"",cols:["co","usts"],img:"film_camera.jpg",date:addDays(-1),saves:6,replies:[{by:"shenyu",text:"我来，带一台数码。",t:"今天"}]},
-      {id:"p2",by:"xuning",kind:"讨论",title:"中文海报里，标题到底该多大？",excerpt:"看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。",body:["看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。","我自己的感觉是：标题越大，越像在喊。但太小又没人看。你们怎么判断？"],params:"",version:"",cols:["type"],img:"swiss-poster-01.svg",date:addDays(-3),saves:11,replies:[{by:"zhouke",text:"我的经验：主标题和其他信息的字号差至少 2.4 倍，画面才有主次。",t:"2 天前"}]},
+      {id:"p2",by:"xuning",kind:"讨论",title:"中文海报里，标题到底该多大？",excerpt:"看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。",body:["看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。","我自己的感觉是：标题越大，越像在喊。但太小又没人看。你们怎么判断？"],params:"",version:"",cols:["type"],img:"design_2.jpg",date:addDays(-3),saves:11,replies:[{by:"zhouke",text:"我的经验：主标题和其他信息的字号差至少 2.4 倍，画面才有主次。",t:"2 天前"}]},
       {id:"p4",by:"linyou",kind:"博客",title:"穿戴甲尺寸怎么量，才不翘边",excerpt:"十个手指一个个量，一次量对，比做好了再改省事得多。",body:["十个手指一个个量，一次量对，比做好了再改省事得多。","最常见的问题是选大了。甲片比甲面宽，边缘就会翘起来。"],params:"测量  透明胶贴甲面，描边后量最宽处\n记录  拇指 → 小指，单位毫米\n选码  宁小 0.5mm，不要大",version:"v1.0",cols:["look"],img:"nails_2.jpg",date:addDays(-4),saves:23,replies:[]},
       {id:"p5",by:"shenyu",kind:"博客",title:"苏州五个适合拍建筑线条的地方",excerpt:"不用去很远。这五个地方我都去过不止一次，附上我觉得光线最好的时间。",body:["不用去很远。这五个地方我都去过不止一次，附上我觉得光线最好的时间。","拍线条最重要的是等人少。工作日早上基本可以拍到空场。"],params:"苏州博物馆    上午 9–10 点，侧光\n诚品书店      阴天，中庭顶光\n金鸡湖步道    日落前 30 分钟\n平江路        清晨，人最少\n校园图书馆    雨后，地面有反光",version:"v1.1",cols:["light","sz"],img:"concrete_stairs.jpg",date:addDays(-5),saves:31,replies:[]},
-      {id:"p6",by:"chenxi",kind:"讨论",title:"拍照妆和日常妆，差别到底在哪？",excerpt:"经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。",body:["经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。","简单说：镜头会吃掉轮廓。日常妆在照片里会变平。"],params:"",version:"",cols:["look","usts"],img:"",date:addDays(-6),saves:9,replies:[{by:"zhouke",text:"从拍的角度看，眉眼的结构最关键，其他可以淡。",t:"5 天前"}]},
-      {id:"p7",by:"azhe",kind:"共创",title:"毕业短片招一位演员，3 分钟，不需要经验",excerpt:"拍一个关于离开的小故事。一个下午，在独墅湖附近。",body:["拍一个关于离开的小故事。一个下午，在独墅湖附近。","不需要表演经验，只需要愿意在镜头前安静地待一会儿。"],params:"",version:"",cols:["co","suda"],img:"cinema_still.jpg",date:addDays(-7),saves:4,replies:[]}
+      {id:"p6",by:"chenxi",kind:"讨论",title:"拍照妆和日常妆，差别到底在哪？",excerpt:"经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。",body:["经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。","简单说：镜头会吃掉轮廓。日常妆在照片里会变平。"],params:"",version:"",cols:["look","usts"],img:"makeup_2.jpg",date:addDays(-6),saves:9,replies:[{by:"zhouke",text:"从拍的角度看，眉眼的结构最关键，其他可以淡。",t:"5 天前"}]},
+      {id:"p7",by:"azhe",kind:"共创",title:"毕业短片招一位演员，3 分钟，不需要经验",excerpt:"拍一个关于离开的小故事。一个下午，在独墅湖附近。",body:["拍一个关于离开的小故事。一个下午，在独墅湖附近。","不需要表演经验，只需要愿意在镜头前安静地待一会儿。"],params:"",version:"",cols:["co","suda"],img:"cinema_still_2.jpg",date:addDays(-7),saves:4,replies:[]}
     ],
     threads:{
       s3:{sid:"s3",stage:"咨询中",unread:1,last:Date.now()-3600e3,msgs:[{from:"me",text:"你好，想做一副短款的，偏冷一点的颜色",t:"昨天 21:14"},{from:"them",text:"可以呀～平时指甲大概多长？有参考图可以直接发我",t:"昨天 21:20"}]}
@@ -611,7 +614,7 @@ function seed(){
 }
 
 let DB = load();
-function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.v===2) return s; }catch(e){} return seed(); }
+function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.v===3) return s; }catch(e){} return seed(); }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(DB)); }catch(e){ toast("本地存储已满，部分图片未保存"); } }
 function resetDemo(){ if(!confirm("恢复到初始演示数据？你添加的内容会被清除。")) return; localStorage.removeItem(KEY); DB=seed(); ui=initUi(); closeAll(); if(cur()!=="#/") go("#/"); else render(); toast("已恢复初始数据"); }
 
@@ -1049,7 +1052,7 @@ function runAi(){
   $("#modal").innerHTML=`<div class="modal-h"><h3>发布服务</h3><button class="x" onclick="closeModal()">✕</button></div><div class="loading"><span class="spin"></span>正在整理…</div>`;
   setTimeout(()=>{ const d=parseAi(raw); const mine=worksOf(DB.me); d.img=(mine.find(w=>({摄影:"影像",设计:"设计"})[d.cat]===w.tag)||mine[0]||{}).img||null; ui.draft=d; $("#modal").innerHTML=publishStep2(); },650);
 }
-function draftAsService(){ const d=ui.draft; return {id:"preview",by:DB.me,short:d.short,cat:d.cat,region:d.region,price:d.price||0,unit:d.unit,includes:d.includes,duration:d.duration,slots:d.slots,week:d.week,images:[d.img||"aperture.png"]}; }
+function draftAsService(){ const d=ui.draft; return {id:"preview",by:DB.me,short:d.short,cat:d.cat,region:d.region,price:d.price||0,unit:d.unit,includes:d.includes,duration:d.duration,slots:d.slots,week:d.week,images:[d.img||"portrait.jpg"]}; }
 function publishStep2(){
   const d=ui.draft; const mine=worksOf(DB.me);
   const filled=[d.short,d.price,d.unit,d.includes.length,d.slots,d.duration,d.region].filter(Boolean).length;
@@ -1087,7 +1090,7 @@ function publishDraft(){
   const d=ui.draft;
   if(!d.short.trim()) return toast("给服务起个名字");
   if(!d.price) return toast("填一下价格");
-  const s={id:"s"+Date.now(),by:DB.me,short:d.short.trim(),cat:d.cat,region:d.region,price:d.price,unit:d.unit||"次",includes:d.includes,duration:d.duration,slots:d.slots||"可私信约时间",week:d.week,desc:"",images:[d.img||"aperture.png"],valid:addDays(d.validDays),confirmed:todayIso,published:true};
+  const s={id:"s"+Date.now(),by:DB.me,short:d.short.trim(),cat:d.cat,region:d.region,price:d.price,unit:d.unit||"次",includes:d.includes,duration:d.duration,slots:d.slots||"可私信约时间",week:d.week,desc:"",images:[d.img||"portrait.jpg"],valid:addDays(d.validDays),confirmed:todayIso,published:true};
   DB.services.unshift(s); save(); closeModal(); ui.ptab="services"; ui.asVisitor=false;
   if(cur()!=="#/u/"+DB.me) go("#/u/"+DB.me); else render();
   toast("已发布，服务页和你的主页都能看到");
