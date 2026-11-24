@@ -89,30 +89,63 @@ ul{list-style:none}
 .empty.sm{padding:40px 20px}
 .price{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);font-size:14px;white-space:nowrap}
 .price small{color:var(--faint);font-size:.85em}
-.who-row{display:flex;align-items:center;gap:12px;text-align:left}
+.who-row{display:flex;align-items:center;gap:12px;text-align:left;min-width:0}
+.who-bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .who-n{font-size:15px;font-weight:600}
 .who-s{font-size:12px;color:var(--mute)}
+.flw{height:30px;padding:0 14px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--ink);color:var(--ink);background:#fff;transition:all .15s;flex:none;white-space:nowrap}
+.flw:hover{background:var(--ink);color:#fff}
+.flw.on{border-color:var(--line2);background:var(--surface);color:var(--mute);font-weight:500}
+.flw.on:hover{border-color:var(--ink);color:var(--ink);background:#fff}
 
 /* ---------- explore ---------- */
-.hero{padding:64px 0 32px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end}
-.hero h1{font-size:clamp(40px,6.4vw,96px);line-height:1;font-weight:700;letter-spacing:-.03em}
+.hero{padding:56px 0 28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end}
+.hero h1{font-size:clamp(40px,6.2vw,88px);line-height:1.02;font-weight:700;letter-spacing:-.03em}
+.hero-sub{font-size:15px;color:var(--mute);margin-top:16px;max-width:620px;line-height:1.75}
 .hero-side{font-size:13px;color:var(--mute);text-align:right;line-height:2}
 .hero-side b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:15px}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0 22px;position:sticky;top:var(--hdr);background:rgba(255,255,255,.96);z-index:5}
-.masonry{column-count:4;column-gap:14px}
+.feed-row{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.feed-tabs{display:flex;gap:26px}
+.feed-tabs button{padding:10px 0 12px;font-size:15px;color:var(--mute);position:relative;transition:color .15s}
+.feed-tabs button:hover{color:var(--ink)}
+.feed-tabs button.on{color:var(--ink);font-weight:600}
+.feed-tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+.feed-tabs .n{font-family:var(--mono);font-size:12px;color:var(--faint);margin-left:5px;font-weight:400}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0 22px;position:sticky;top:var(--hdr);background:rgba(255,255,255,.96);z-index:5}
+.masonry{column-count:4;column-gap:16px}
 .masonry.m3{column-count:3}
-.tile{break-inside:avoid;margin-bottom:24px;cursor:zoom-in;display:block;width:100%}
+.tile{break-inside:avoid;margin-bottom:28px;cursor:pointer;display:block;width:100%}
 .tile-img{overflow:hidden;background:var(--surface);position:relative}
 .tile-img img{width:100%;height:auto;transition:transform .7s var(--ease)}
 .tile:hover .tile-img img{transform:scale(1.03)}
-.tile-cap{display:flex;justify-content:space-between;align-items:center;padding-top:10px;font-size:13px;gap:8px}
-.tile-cap .who{display:flex;align-items:center;gap:8px;color:var(--ink2);cursor:pointer}
+.tile-badge{position:absolute;left:10px;top:10px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;backdrop-filter:blur(6px)}
+.tile-t{font-size:14px;font-weight:600;color:var(--ink);margin-top:10px;line-height:1.45}
+.tile-note{font-size:12.5px;color:var(--mute);margin-top:4px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tile-cap{display:flex;justify-content:space-between;align-items:center;padding-top:7px;font-size:12.5px;gap:8px;color:var(--mute)}
+.tile-cap .who{display:flex;align-items:center;gap:7px;color:var(--ink2);cursor:pointer;min-width:0}
 .tile-cap .who:hover{color:var(--ink)}
-.tile-cap .yr{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.tile-cap .yr{font-family:var(--mono);font-size:11.5px;color:var(--faint);white-space:nowrap}
+.tile-tag{font-size:11.5px;color:var(--faint);white-space:nowrap}
+.tile-tag:hover{color:var(--ink)}
+.tile-textcard{background:var(--surface);border:1px solid var(--line);padding:22px 20px;transition:border-color .15s}
+.tile:hover .tile-textcard{border-color:var(--ink)}
+.tile-textcard .k{font-size:11.5px;color:var(--mute);font-weight:600;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.tile-textcard h4{font-size:17px;font-weight:700;line-height:1.4;color:var(--ink);letter-spacing:-.01em}
+.tile-textcard p{font-size:13px;color:var(--mute);margin-top:10px;line-height:1.7;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .tile-del{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.92);font-size:13px;opacity:0;transition:opacity .15s}
 .tile:hover .tile-del{opacity:1}
 .tile-add{break-inside:avoid;width:100%;border:1px dashed var(--line2);aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;color:var(--mute);font-size:14px;cursor:pointer;margin-bottom:24px;transition:all .15s}
 .tile-add:hover{border-color:var(--ink);color:var(--ink)}
+.pf-stats{display:flex;gap:20px;margin-top:12px;font-size:13px;color:var(--mute)}
+.pf-stats b{color:var(--ink);font-family:var(--mono);font-weight:600;margin-right:4px}
+.pf-stats button:hover{color:var(--ink)}
+.pf-subbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:-10px 0 24px;flex-wrap:wrap}
+.pf-subbar .chip{height:30px;font-size:12.5px;padding:0 14px}
+.topic-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.topic-hint{font-size:12.5px;color:var(--mute);margin-top:18px;padding-top:16px;border-top:1px solid var(--line);line-height:1.7}
+.flw-list{display:flex;flex-direction:column}
+.flw-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.flw-row:last-child{border-bottom:0}
 
 .people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 22px}
 .pcard{cursor:pointer}
@@ -407,7 +440,10 @@ body[data-view="messages"] .foot{display:none}
   .hero{grid-template-columns:1fr;padding:32px 0 18px;gap:14px}
   .hero-side{text-align:left;line-height:1.8}
   .bar{padding:10px 0 16px;gap:10px}
-  .bar .chips{flex:1;min-width:0;padding-right:18px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent)}
+  .bar .chips{flex:1;min-width:0;padding-right:12px}
+  .hero-sub{font-size:14px;margin-top:12px}
+  .tile-t{font-size:13px;margin-top:8px}
+  .tile-note{font-size:12px}
   .masonry,.masonry.m3{column-count:2;column-gap:10px}
   .tile{margin-bottom:18px}
   .tile-cap{font-size:12px;padding-top:7px}
@@ -522,7 +558,7 @@ body[data-view="messages"] .foot{display:none}
 /* =========================================================
    DATA
    ========================================================= */
-const KEY = "firasat_v3_state";
+const KEY = "firasat_v4_state";
 const LIVE_URL = "https://ryan0067618.github.io/firasat-xxi/";
 const ASSET = "../assets/";
 const AR = {"arch_concrete.jpg":.75,"cinema_still.jpg":.67,"cinema_still_2.jpg":1.5,"concrete_stairs.jpg":1.5,"contax_film.jpg":1.5,"design.jpg":.67,"design_2.jpg":1.51,"design_3.jpg":1.5,"film_camera.jpg":1.4,"hasselblad.jpg":1.17,"kanazawa_snow.jpg":1.78,"lakeside.jpg":1.5,"langen_dusk.jpg":1.5,"makeup.jpg":.67,"makeup_2.jpg":.67,"makeup_3.jpg":.8,"nails.jpg":.67,"nails_2.jpg":.75,"nails_3.jpg":.67,"portrait.jpg":1.37,"portrait_2.jpg":.75,"portrait_3.jpg":1.47,"portrait_4.jpg":.75,"prada_corridor.jpg":1.5,"spiral_stairs.jpg":1.5,"swiss_poster_1957.jpg":.71};
@@ -534,59 +570,62 @@ const todayIso = iso(TODAY);
 function md(s){ const p=s.split("-"); return (+p[1])+"."+(+p[2]); }
 function relDate(s){ if(s===todayIso) return "今天"; if(s===addDays(-1)) return "昨天"; return md(s); }
 
-const CATS = ["全部","摄影","妆造","美甲","设计","影像"];
+const BASE_CATS = ["摄影","妆造","美甲","设计","影像"];
 const REGIONS = ["全部区域","苏州 · 石湖","苏州 · 市区","线上"];
 const BUDGETS = [["all","不限"],["100","¥100 以内"],["200","¥200 以内"]];
-const TAGS = ["全部","影像","空间","妆造","美甲","设计","胶片"];
+const BASE_TAGS = ["人像","美甲","妆造","视觉设计","短片","空间建筑","胶片","自然风光","方法笔记"];
+const OPEN_TOPICS = ["插画","编曲","手作","独立开发","外语陪练","咖啡","穿搭","剪辑"];
 const QUICK = ["你好，想先了解一下～","这周末还有空档吗？","可以多看几张样片吗？"];
 const REPLIES = ["好呀，你大概想约哪天？","可以的，有参考图的话直接发我看看～","这周六下午和周日上午都还空着。","收到，我先整理几张类似风格的样片给你。","没问题，细节我们到时候再对一下。"];
 
 function seed(){
-  const w = (id,by,img,title,tag,year)=>({id,by,img,title,tag,year,ar:AR[img]||1});
+  const w = (id,by,img,title,tag,year,note)=>({id,by,img,title,tag,year,note:note||"",ar:AR[img]||1});
   return {
-    v:3, me:"zhouke",
+    v:4, me:"zhouke",
+    following:["linyou","shenyu"],
+    customTags:[],
     people:{
-      zhouke:{id:"zhouke",name:"周可",en:"Zhou Ke",tone:"#111111",bio:"拍人，也做刊物排版。偏爱自然光、有情绪的色彩和松弛的人像。",skills:["人像摄影","视觉设计","调色"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:"zhouke_film"},
-      linyou:{id:"linyou",name:"林柚",en:"Lin You",tone:"#6d5a4e",bio:"手绘穿戴甲，一副一副慢慢画。",skills:["穿戴甲","手绘"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
-      chenxi:{id:"chenxi",name:"陈汐",en:"Chen Xi",tone:"#3c4650",bio:"给要拍照的人化妆，偶尔也给自己拍。",skills:["拍照妆","活动妆造"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
-      azhe:{id:"azhe",name:"阿哲",en:"A Zhe",tone:"#2a2a2e",bio:"拍很短的片子。喜欢雨夜、蓝调时刻和不剪断的长镜头。",skills:["短片拍摄","剪辑","调色"],school:"苏州大学",region:"苏州 · 市区",wechat:""},
-      shenyu:{id:"shenyu",name:"沈屿",en:"Shen Yu",tone:"#55504a",bio:"建筑学在读，用相机记线条和光。",skills:["建筑摄影","空间拍摄"],school:"苏州科技大学",region:"苏州 · 市区",wechat:""},
-      luyu:{id:"luyu",name:"陆屿",en:"Lu Yu",tone:"#7a746c",bio:"胶片新手，收了三台老相机，正在学会等光。",skills:["胶片","扫街"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
-      xuning:{id:"xuning",name:"许宁",en:"Xu Ning",tone:"#1f2a33",bio:"不是设计专业，但很在意字和字之间的距离。",skills:["中文排版","字体"],school:"苏州大学",region:"线上",wechat:""}
+      zhouke:{id:"zhouke",name:"周可",en:"Zhou Ke",tone:"#111111",fans:42,bio:"拍人，也做刊物排版。偏爱自然光、有情绪的色彩和松弛的人像。",skills:["人像摄影","视觉设计","调色"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:"zhouke_film"},
+      linyou:{id:"linyou",name:"林柚",en:"Lin You",tone:"#6d5a4e",fans:31,bio:"手绘穿戴甲，一副一副慢慢画。",skills:["穿戴甲","手绘"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
+      chenxi:{id:"chenxi",name:"陈汐",en:"Chen Xi",tone:"#3c4650",fans:27,bio:"给要拍照的人化妆，偶尔也给自己拍。",skills:["拍照妆","活动妆造"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
+      azhe:{id:"azhe",name:"阿哲",en:"A Zhe",tone:"#2a2a2e",fans:35,bio:"拍很短的片子。喜欢雨夜、蓝调时刻和不剪断的长镜头。",skills:["短片拍摄","剪辑","调色"],school:"苏州大学",region:"苏州 · 市区",wechat:""},
+      shenyu:{id:"shenyu",name:"沈屿",en:"Shen Yu",tone:"#55504a",fans:48,bio:"建筑学在读，用相机记线条和光。",skills:["建筑摄影","空间拍摄"],school:"苏州科技大学",region:"苏州 · 市区",wechat:""},
+      luyu:{id:"luyu",name:"陆屿",en:"Lu Yu",tone:"#7a746c",fans:14,bio:"胶片新手，收了三台老相机，正在学会等光。",skills:["胶片","扫街"],school:"苏州科技大学",region:"苏州 · 石湖",wechat:""},
+      xuning:{id:"xuning",name:"许宁",en:"Xu Ning",tone:"#1f2a33",fans:19,bio:"不是设计专业，但很在意字和字之间的距离。",skills:["中文排版","字体"],school:"苏州大学",region:"线上",wechat:""}
     },
     works:[
-      w("w1","zhouke","portrait.jpg","逆光午后","影像","2026"),
-      w("w4","linyou","nails.jpg","琥珀玳瑁 · 短款","美甲","2026"),
-      w("w8","azhe","cinema_still.jpg","雨夜路口 · 35mm","影像","2026"),
-      w("w22","zhouke","portrait_3.jpg","红与钴蓝","影像","2026"),
-      w("w11","shenyu","arch_concrete.jpg","光的十字","空间","2026"),
-      w("w6","chenxi","makeup.jpg","清透雀斑妆","妆造","2026"),
-      w("w18","xuning","design_2.jpg","橙面印刷排版","设计","2026"),
-      w("w2","zhouke","portrait_2.jpg","暖黄底 · 肖像","影像","2026"),
-      w("w5","linyou","nails_2.jpg","极简法式粉","美甲","2026"),
-      w("w7","chenxi","makeup_2.jpg","上妆瞬间","妆造","2026"),
-      w("w3","zhouke","design.jpg","独立杂志内页","设计","2026"),
-      w("w23","chenxi","portrait_4.jpg","绯红光影妆造","妆造","2026"),
-      w("w15","luyu","film_camera.jpg","第一台旁轴","胶片","2026"),
-      w("w24","linyou","nails_3.jpg","立体贝壳珍珠甲","美甲","2026"),
-      w("w21","xuning","swiss_poster_1957.jpg","临摹 · 1957","设计","2026"),
-      w("w9","azhe","cinema_still_2.jpg","雨巷透明伞","影像","2026"),
-      w("w25","zhouke","lakeside.jpg","雾湖，十一月","影像","2026"),
-      w("w13","shenyu","concrete_stairs.jpg","黑钢楼梯","空间","2026"),
-      w("w26","chenxi","makeup_3.jpg","红唇与眼线","妆造","2026"),
-      w("w19","xuning","design_3.jpg","建筑画册摊开","设计","2026"),
-      w("w10","azhe","langen_dusk.jpg","暮色水面","影像","2025"),
-      w("w16","luyu","contax_film.jpg","Contax · 50mm","胶片","2026"),
-      w("w12","shenyu","prada_corridor.jpg","镜面走廊","空间","2025"),
-      w("w17","luyu","hasselblad.jpg","方画幅","胶片","2026")
+      w("w1","zhouke","portrait.jpg","逆光午后","人像","2026","下午四点半的树影，完全没用反光板。"),
+      w("w4","linyou","nails.jpg","琥珀玳瑁 · 短款","美甲","2026","透黑叠琥珀晕染，秋冬配毛衣很耐看。"),
+      w("w8","azhe","cinema_still.jpg","雨夜路口 · 35mm","短片","2026","下完雨的沥青地比白天多一倍颜色。"),
+      w("w22","zhouke","portrait_3.jpg","红与钴蓝","人像","2026","低机位仰拍，只留两种饱和色。"),
+      w("w11","shenyu","arch_concrete.jpg","光的十字","空间建筑","2026","清水混凝土与正午垂直切光。"),
+      w("w6","chenxi","makeup.jpg","清透雀斑妆","妆造","2026","保留原生皮肤纹理，只提眉眼轮廓。"),
+      w("w18","xuning","design_2.jpg","橙面印刷排版","视觉设计","2026","高对比色块与无衬线留白实验。"),
+      w("w2","zhouke","portrait_2.jpg","暖黄底 · 肖像","人像","2026","棚内单灯柔光箱，直出未磨皮。"),
+      w("w5","linyou","nails_2.jpg","极简法式粉","美甲","2026","透粉打底，短甲也能显手长。"),
+      w("w7","chenxi","makeup_2.jpg","上妆瞬间","妆造","2026","后台开拍前十分钟的眼影晕染。"),
+      w("w3","zhouke","design.jpg","独立杂志内页","视觉设计","2026","自然光斜照下的铜版纸版式。"),
+      w("w23","chenxi","portrait_4.jpg","绯红光影妆造","妆造","2026","红光硬影，主打眼妆光泽与湿发。"),
+      w("w15","luyu","film_camera.jpg","第一台旁轴","胶片","2026","攒了半年收到的 M6，刚拍完第一卷。"),
+      w("w24","linyou","nails_3.jpg","立体贝壳珍珠甲","美甲","2026","珠光贝壳纹加极细金珠点缀。"),
+      w("w21","xuning","swiss_poster_1957.jpg","临摹 · 1957","视觉设计","2026","拆解经典瑞士网格的比例节奏。"),
+      w("w9","azhe","cinema_still_2.jpg","雨巷透明伞","短片","2026","手持慢门跟拍，测试低照度宽容度。"),
+      w("w25","zhouke","lakeside.jpg","雾湖，十一月","自然风光","2026","早上六点半的薄雾，只持续了二十分钟。"),
+      w("w13","shenyu","concrete_stairs.jpg","黑钢楼梯","空间建筑","2026","阴天散射光里的几何折线。"),
+      w("w26","chenxi","makeup_3.jpg","红唇与眼线","妆造","2026","复古哑光红唇配利落上挑眼线。"),
+      w("w19","xuning","design_3.jpg","建筑画册摊开","视觉设计","2026","黑白摄影跨页的装订与留白。"),
+      w("w10","azhe","langen_dusk.jpg","暮色水面","短片","2025","日落后二十分钟的蓝调空镜。"),
+      w("w16","luyu","contax_film.jpg","Contax · 50mm","胶片","2026","蔡司定焦的锐度很迷人。"),
+      w("w12","shenyu","prada_corridor.jpg","镜面走廊","空间建筑","2025","冷调空间对称构图。"),
+      w("w17","luyu","hasselblad.jpg","方画幅","胶片","2026","低头看腰平取景器，节奏一下子慢了。")
     ],
     services:[
-      {id:"s1",by:"zhouke",short:"自然光人像约拍",cat:"摄影",region:"苏州 · 石湖",price:90,unit:"次",includes:["1 小时拍摄","精修 3 张","全部原片"],duration:"约 1 小时",slots:"本周六、周日下午",week:true,desc:"自然光为主，不用摆复杂姿势。适合第一组像样的个人照。",images:["portrait.jpg","portrait_3.jpg","portrait_2.jpg"],valid:addDays(10),confirmed:addDays(-1),published:true},
-      {id:"s3",by:"linyou",short:"手绘穿戴甲",cat:"美甲",region:"苏州 · 石湖",price:68,unit:"副",includes:["按甲型定制尺寸","手绘 1 款","附胶片与锉条"],duration:"3 天制作",slots:"本周还能接 2 单",week:true,desc:"先量尺寸再画，支持清透法式、玳瑁与贝壳立体款。",images:["nails.jpg","nails_2.jpg","nails_3.jpg"],valid:addDays(9),confirmed:addDays(-2),published:true},
-      {id:"s4",by:"chenxi",short:"拍照妆 / 活动妆",cat:"妆造",region:"苏州 · 石湖",price:80,unit:"次",includes:["底妆与眼妆","简单整理发型","自带全部工具"],duration:"约 50 分钟",slots:"本周五晚、周六上午",week:true,desc:"上镜比日常妆更需要结构感，保留自然皮肤质感。",images:["makeup.jpg","makeup_2.jpg","makeup_3.jpg"],valid:addDays(12),confirmed:addDays(-3),published:true},
-      {id:"s6",by:"shenyu",short:"空间与小店拍摄",cat:"摄影",region:"苏州 · 市区",price:120,unit:"次",includes:["2 小时拍摄","精修 8 张"],duration:"约 2 小时",slots:"本周日",week:true,desc:"适合工作室、小店和展陈空间，偏干净的线条构图。",images:["arch_concrete.jpg","prada_corridor.jpg","concrete_stairs.jpg"],valid:addDays(8),confirmed:addDays(-4),published:true},
-      {id:"s2",by:"zhouke",short:"活动海报与刊物排版",cat:"设计",region:"线上",price:150,unit:"套",includes:["1 张主海报","2 轮修改","印刷 PDF"],duration:"3–5 天交付",slots:"下周可排",week:false,desc:"网格清楚、信息有主次的平面与印刷设计。",images:["design.jpg","design_3.jpg"],valid:addDays(12),confirmed:addDays(-5),published:true},
-      {id:"s5",by:"azhe",short:"3 分钟短片拍摄与剪辑",cat:"影像",region:"苏州 · 市区",price:260,unit:"条",includes:["半天拍摄","剪辑与调色","1 轮修改"],duration:"7 天交付",slots:"下周起",week:false,desc:"毕业纪念、社团介绍或个人短片都可以。",images:["cinema_still.jpg","cinema_still_2.jpg","langen_dusk.jpg"],valid:addDays(14),confirmed:addDays(-6),published:true}
+      {id:"s1",by:"zhouke",short:"自然光人像约拍",cat:"摄影",region:"苏州 · 石湖",price:90,unit:"次",includes:["1 小时拍摄","精修 3 张","全部原片"],duration:"约 1 小时",slots:"本周六、周日下午",week:true,desc:"自然光为主，不用摆复杂姿势。适合第一组像样的个人照。",images:["portrait.jpg","portrait_3.jpg","portrait_2.jpg"],updated:addDays(-1),published:true},
+      {id:"s3",by:"linyou",short:"手绘穿戴甲",cat:"美甲",region:"苏州 · 石湖",price:68,unit:"副",includes:["按甲型定制尺寸","手绘 1 款","附胶片与锉条"],duration:"3 天制作",slots:"本周还能接 2 单",week:true,desc:"先量尺寸再画，支持清透法式、玳瑁与贝壳立体款。",images:["nails.jpg","nails_2.jpg","nails_3.jpg"],updated:addDays(-2),published:true},
+      {id:"s4",by:"chenxi",short:"拍照妆 / 活动妆",cat:"妆造",region:"苏州 · 石湖",price:80,unit:"次",includes:["底妆与眼妆","简单整理发型","自带全部工具"],duration:"约 50 分钟",slots:"本周五晚、周六上午",week:true,desc:"上镜比日常妆更需要结构感，保留自然皮肤质感。",images:["makeup.jpg","makeup_2.jpg","makeup_3.jpg"],updated:addDays(-3),published:true},
+      {id:"s6",by:"shenyu",short:"空间与小店拍摄",cat:"摄影",region:"苏州 · 市区",price:120,unit:"次",includes:["2 小时拍摄","精修 8 张"],duration:"约 2 小时",slots:"本周日",week:true,desc:"适合工作室、小店和展陈空间，偏干净的线条构图。",images:["arch_concrete.jpg","prada_corridor.jpg","concrete_stairs.jpg"],updated:addDays(-4),published:true},
+      {id:"s2",by:"zhouke",short:"活动海报与刊物排版",cat:"设计",region:"线上",price:150,unit:"套",includes:["1 张主海报","2 轮修改","印刷 PDF"],duration:"3–5 天交付",slots:"下周可排",week:false,desc:"网格清楚、信息有主次的平面与印刷设计。",images:["design.jpg","design_3.jpg"],updated:addDays(-5),published:true},
+      {id:"s5",by:"azhe",short:"3 分钟短片拍摄与剪辑",cat:"影像",region:"苏州 · 市区",price:260,unit:"条",includes:["半天拍摄","剪辑与调色","1 轮修改"],duration:"7 天交付",slots:"下周起",week:false,desc:"毕业纪念、社团介绍或个人短片都可以。",images:["cinema_still.jpg","cinema_still_2.jpg","langen_dusk.jpg"],updated:addDays(-6),published:true}
     ],
     columns:[
       {id:"light",type:"topic",sym:"#",name:"影像与光影",desc:"拍照、调色、布光，把方法写下来。"},
@@ -598,13 +637,13 @@ function seed(){
       {id:"sz",type:"city",sym:"@",name:"苏州同城",desc:"在苏州的人，不分学校。",region:"苏州 · 市区"}
     ],
     posts:[
-      {id:"p1",by:"zhouke",kind:"博客",title:"阴天和逆光拍人像：我常用的三组参数",excerpt:"阴天是一块免费的柔光箱，逆光则最容易出氛围。这是我在石湖拍了二十多组之后留下来的设置。",body:["阴天是一块免费的柔光箱，逆光则最容易出氛围。这是我在石湖拍了二十多组之后留下来的设置。","最容易出错的是白平衡。相机自动白平衡在阴天容易发灰发黄，我习惯手动锁在 5200K–5600K，后期再微调肤色。","姿势上不用设计太多。让对方走、停、回头，比站定摆拍自然得多。"],params:"光圈    f/2.0 – f/2.8\n快门    1/250 以上\n白平衡  5200K – 5600K 手动锁定\n曲线    暗部抬 6%，高光压 4%",version:"v1.2",cols:["light","usts"],img:"lakeside.jpg",date:addDays(-2),saves:18,replies:[{by:"luyu",text:"白平衡那条太有用了，之前一直拍得发黄。",t:"昨天"},{by:"chenxi",text:"下次一起拍，我来化妆～",t:"今天"}]},
-      {id:"p3",by:"luyu",kind:"共创",title:"周六下午石湖扫街互拍，还差两个人",excerpt:"胶片数码都可以，不收费，拍完互相交换原图。下午三点图书馆门口集合。",body:["胶片数码都可以，不收费，拍完互相交换原图。","下午三点图书馆门口集合，沿着湖边走到傍晚。新手也欢迎，我也是新手。"],params:"",version:"",cols:["co","usts"],img:"film_camera.jpg",date:addDays(-1),saves:6,replies:[{by:"shenyu",text:"我来，带一台数码。",t:"今天"}]},
-      {id:"p2",by:"xuning",kind:"讨论",title:"中文海报里，标题到底该多大？",excerpt:"看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。",body:["看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。","我自己的感觉是：标题越大，越像在喊。但太小又没人看。你们怎么判断？"],params:"",version:"",cols:["type"],img:"design_2.jpg",date:addDays(-3),saves:11,replies:[{by:"zhouke",text:"我的经验：主标题和其他信息的字号差至少 2.4 倍，画面才有主次。",t:"2 天前"}]},
-      {id:"p4",by:"linyou",kind:"博客",title:"穿戴甲尺寸怎么量，才不翘边",excerpt:"十个手指一个个量，一次量对，比做好了再改省事得多。",body:["十个手指一个个量，一次量对，比做好了再改省事得多。","最常见的问题是选大了。甲片比甲面宽，边缘就会翘起来。"],params:"测量  透明胶贴甲面，描边后量最宽处\n记录  拇指 → 小指，单位毫米\n选码  宁小 0.5mm，不要大",version:"v1.0",cols:["look"],img:"nails_2.jpg",date:addDays(-4),saves:23,replies:[]},
-      {id:"p5",by:"shenyu",kind:"博客",title:"苏州五个适合拍建筑线条的地方",excerpt:"不用去很远。这五个地方我都去过不止一次，附上我觉得光线最好的时间。",body:["不用去很远。这五个地方我都去过不止一次，附上我觉得光线最好的时间。","拍线条最重要的是等人少。工作日早上基本可以拍到空场。"],params:"苏州博物馆    上午 9–10 点，侧光\n诚品书店      阴天，中庭顶光\n金鸡湖步道    日落前 30 分钟\n平江路        清晨，人最少\n校园图书馆    雨后，地面有反光",version:"v1.1",cols:["light","sz"],img:"concrete_stairs.jpg",date:addDays(-5),saves:31,replies:[]},
-      {id:"p6",by:"chenxi",kind:"讨论",title:"拍照妆和日常妆，差别到底在哪？",excerpt:"经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。",body:["经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。","简单说：镜头会吃掉轮廓。日常妆在照片里会变平。"],params:"",version:"",cols:["look","usts"],img:"makeup_2.jpg",date:addDays(-6),saves:9,replies:[{by:"zhouke",text:"从拍的角度看，眉眼的结构最关键，其他可以淡。",t:"5 天前"}]},
-      {id:"p7",by:"azhe",kind:"共创",title:"毕业短片招一位演员，3 分钟，不需要经验",excerpt:"拍一个关于离开的小故事。一个下午，在独墅湖附近。",body:["拍一个关于离开的小故事。一个下午，在独墅湖附近。","不需要表演经验，只需要愿意在镜头前安静地待一会儿。"],params:"",version:"",cols:["co","suda"],img:"cinema_still_2.jpg",date:addDays(-7),saves:4,replies:[]}
+      {id:"p1",by:"zhouke",kind:"博客",tag:"人像",title:"阴天和逆光拍人像：我常用的三组参数",excerpt:"阴天是一块免费的柔光箱，逆光则最容易出氛围。这是我在石湖拍了二十多组之后留下来的设置。",body:["阴天是一块免费的柔光箱，逆光则最容易出氛围。这是我在石湖拍了二十多组之后留下来的设置。","最容易出错的是白平衡。相机自动白平衡在阴天容易发灰发黄，我习惯手动锁在 5200K–5600K，后期再微调肤色。","姿势上不用设计太多。让对方走、停、回头，比站定摆拍自然得多。"],params:"光圈    f/2.0 – f/2.8\n快门    1/250 以上\n白平衡  5200K – 5600K 手动锁定\n曲线    暗部抬 6%，高光压 4%",version:"v1.2",cols:["light","usts"],img:"lakeside.jpg",date:addDays(-2),saves:18,replies:[{by:"luyu",text:"白平衡那条太有用了，之前一直拍得发黄。",t:"昨天"},{by:"chenxi",text:"下次一起拍，我来化妆～",t:"今天"}]},
+      {id:"p3",by:"luyu",kind:"共创",tag:"胶片",title:"周六下午石湖扫街互拍，还差两个人",excerpt:"胶片数码都可以，不收费，拍完互相交换原图。下午三点图书馆门口集合。",body:["胶片数码都可以，不收费，拍完互相交换原图。","下午三点图书馆门口集合，沿着湖边走到傍晚。新手也欢迎，我也是新手。"],params:"",version:"",cols:["co","usts"],img:"film_camera.jpg",date:addDays(-1),saves:6,replies:[{by:"shenyu",text:"我来，带一台数码。",t:"今天"}]},
+      {id:"p2",by:"xuning",kind:"讨论",tag:"视觉设计",title:"中文海报里，标题到底该多大？",excerpt:"看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。",body:["看了一圈校园活动海报，标题几乎都占满半张。我做了几版对比，想听听大家的感觉。","我自己的感觉是：标题越大，越像在喊。但太小又没人看。你们怎么判断？"],params:"",version:"",cols:["type"],img:"design_2.jpg",date:addDays(-3),saves:11,replies:[{by:"zhouke",text:"我的经验：主标题和其他信息的字号差至少 2.4 倍，画面才有主次。",t:"2 天前"}]},
+      {id:"p4",by:"linyou",kind:"博客",tag:"美甲",title:"穿戴甲尺寸怎么量，才不翘边",excerpt:"十个手指一个个量，一次量对，比做好了再改省事得多。",body:["十个手指一个个量，一次量对，比做好了再改省事得多。","最常见的问题是选大了。甲片比甲面宽，边缘就会翘起来。"],params:"测量  透明胶贴甲面，描边后量最宽处\n记录  拇指 → 小指，单位毫米\n选码  宁小 0.5mm，不要大",version:"v1.0",cols:["look"],img:"nails_2.jpg",date:addDays(-4),saves:23,replies:[]},
+      {id:"p5",by:"shenyu",kind:"博客",tag:"空间建筑",title:"苏州五个适合拍建筑线条的地方",excerpt:"不用去很远。这五个地方我都去过不止一次，附上我觉得光线最好的时间。",body:["不用去很远。这五个地方我都去过不止一次，附上我觉得光线最好的时间。","拍线条最重要的是等人少。工作日早上基本可以拍到空场。"],params:"苏州博物馆    上午 9–10 点，侧光\n诚品书店      阴天，中庭顶光\n金鸡湖步道    日落前 30 分钟\n平江路        清晨，人最少\n校园图书馆    雨后，地面有反光",version:"v1.1",cols:["light","sz"],img:"concrete_stairs.jpg",date:addDays(-5),saves:31,replies:[]},
+      {id:"p6",by:"chenxi",kind:"讨论",tag:"妆造",title:"拍照妆和日常妆，差别到底在哪？",excerpt:"经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。",body:["经常有人问为什么拍照要化浓一点。我试着讲清楚，也想听听拍照的人怎么看。","简单说：镜头会吃掉轮廓。日常妆在照片里会变平。"],params:"",version:"",cols:["look","usts"],img:"",date:addDays(-6),saves:9,replies:[{by:"zhouke",text:"从拍的角度看，眉眼的结构最关键，其他可以淡。",t:"5 天前"}]},
+      {id:"p7",by:"azhe",kind:"共创",tag:"短片",title:"毕业短片招一位演员，3 分钟，不需要经验",excerpt:"拍一个关于离开的小故事。一个下午，在独墅湖附近。",body:["拍一个关于离开的小故事。一个下午，在独墅湖附近。","不需要表演经验，只需要愿意在镜头前安静地待一会儿。"],params:"",version:"",cols:["co","suda"],img:"cinema_still_2.jpg",date:addDays(-7),saves:4,replies:[]}
     ],
     threads:{
       s3:{sid:"s3",stage:"咨询中",unread:1,last:Date.now()-3600e3,msgs:[{from:"me",text:"你好，想做一副短款的，偏冷一点的颜色",t:"昨天 21:14"},{from:"them",text:"可以呀～平时指甲大概多长？有参考图可以直接发我",t:"昨天 21:20"}]}
@@ -614,11 +653,11 @@ function seed(){
 }
 
 let DB = load();
-function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.v===3) return s; }catch(e){} return seed(); }
+function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s&&s.v===4) return s; }catch(e){} return seed(); }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(DB)); }catch(e){ toast("本地存储已满，部分图片未保存"); } }
 function resetDemo(){ if(!confirm("恢复到初始演示数据？你添加的内容会被清除。")) return; localStorage.removeItem(KEY); DB=seed(); ui=initUi(); closeAll(); if(cur()!=="#/") go("#/"); else render(); toast("已恢复初始数据"); }
 
-function initUi(){ return { exTag:"全部", exMode:"works", svc:{cat:"全部",region:"全部区域",budget:"all",week:false,sort:"new"}, kind:"全部", ptab:"works", asVisitor:false, chat:null, viewer:null, draft:null, sheet:false }; }
+function initUi(){ return { exFeed:"rec", exTag:"全部", exMode:"works", svc:{cat:"全部",region:"全部区域",budget:"all",week:false,sort:"new"}, kind:"全部", ptab:"stream", pfilter:"all", asVisitor:false, chat:null, viewer:null, draft:null, sheet:false }; }
 let ui = initUi();
 
 /* =========================================================
@@ -632,10 +671,47 @@ const W = id => DB.works.find(w=>w.id===id);
 const S = id => DB.services.find(s=>s.id===id);
 const C = id => DB.columns.find(c=>c.id===id);
 const PO = id => DB.posts.find(p=>p.id===id);
-const isLive = s => s.published && s.valid >= todayIso;
+const isLive = s => !!s.published;
 const liveSvcOf = pid => DB.services.filter(s=>s.by===pid && isLive(s));
 const worksOf = pid => DB.works.filter(w=>w.by===pid);
 const postsOf = pid => DB.posts.filter(p=>p.by===pid);
+const isFollowing = pid => (DB.following||[]).includes(pid);
+const fansCount = pid => { const p=P(pid); return (p&&p.fans||0) + (isFollowing(pid)?1:0); };
+function allTags(){
+  const set=new Set(["全部",...BASE_TAGS]);
+  DB.works.forEach(w=>{ if(w.tag) set.add(w.tag); });
+  DB.posts.forEach(p=>{ if(p.tag) set.add(p.tag); });
+  (DB.customTags||[]).forEach(t=>{ if(t) set.add(t); });
+  return [...set];
+}
+function allCats(){
+  const set=new Set(["全部",...BASE_CATS]);
+  DB.services.filter(isLive).forEach(s=>{ if(s.cat) set.add(s.cat); });
+  return [...set];
+}
+function toggleFollow(pid){
+  if(pid===DB.me) return;
+  if(!DB.following) DB.following=[];
+  const i=DB.following.indexOf(pid);
+  if(i>=0){ DB.following.splice(i,1); toast("已取消关注 "+P(pid).name); }
+  else { DB.following.push(pid); toast("已关注 "+P(pid).name); }
+  save(); render();
+  if(ui.viewer&&$("#viewer").classList.contains("on")) renderViewer();
+  if(ui.flwModal&&$("#modalBg").classList.contains("on")) openFollowingModal();
+}
+function followBtn(pid, big){
+  if(!pid||pid===DB.me) return "";
+  const on=isFollowing(pid);
+  if(big) return `<button class="btn ${on?"btn-o":"btn-k"}" onclick="event.stopPropagation();toggleFollow('${pid}')">${on?"已关注":"+ 关注"}</button>`;
+  return `<button class="flw ${on?"on":""}" onclick="event.stopPropagation();toggleFollow('${pid}')">${on?"已关注":"+ 关注"}</button>`;
+}
+function openFollowingModal(){
+  ui.flwModal=true;
+  const list=(DB.following||[]).map(P).filter(Boolean);
+  modal(`<div class="modal-h"><h3>正在关注 (${list.length})</h3><button class="x" onclick="closeModal()">✕</button></div>
+    ${list.length?`<div class="flw-list">${list.map(p=>`<div class="flw-row"><button class="who-row" onclick="closeModal();go('#/u/${p.id}')">${av(p.id,"av-m")}<div><div class="who-n">${esc(p.name)}</div><div class="who-s">${esc(p.skills.join(" / "))}</div></div></button>${followBtn(p.id)}</div>`).join("")}</div>`
+      :`<div class="empty sm"><p>还没有关注任何人，去探索里看看吧。</p><button class="btn btn-o btn-s" onclick="closeModal();go('#/')">去探索</button></div>`}`,"sm");
+}
 const regionShort = r => r.replace("苏州 · ","");
 function av(pid, cls){ const p=P(pid); if(!p) return ""; return `<span class="av ${cls||""}" style="background:${p.tone}">${esc(p.name[0])}</span>`; }
 function priceHtml(s){ return `<span class="price">¥${s.price}<small> / ${esc(s.unit)}</small></span>`; }
@@ -712,52 +788,152 @@ function render(){
   if(r.name==="messages") scrollChat("pane");
 }
 function notFound(){ return `<div class="wrap"><div class="empty"><p>内容不存在或已被移除。</p><button class="btn btn-o btn-s" onclick="go('#/')">回到探索</button></div></div>`; }
-function openMe(){ ui.ptab="works"; ui.asVisitor=false; go("#/u/"+DB.me); }
+function openMe(){ ui.ptab="stream"; ui.pfilter="all"; ui.asVisitor=false; go("#/u/"+DB.me); }
 
 /* =========================================================
    EXPLORE
    ========================================================= */
-function exploreList(){ return DB.works.filter(w=>ui.exTag==="全部"||w.tag===ui.exTag); }
+function exploreWorks(){
+  let list=DB.works;
+  if(ui.exFeed==="follow") list=list.filter(w=>isFollowing(w.by));
+  if(ui.exTag==="方法笔记") return [];
+  if(ui.exTag!=="全部") list=list.filter(w=>w.tag===ui.exTag);
+  return list;
+}
+function explorePosts(){
+  let list=DB.posts;
+  if(ui.exFeed==="follow") list=list.filter(p=>isFollowing(p.by));
+  if(ui.exTag!=="全部" && ui.exTag!=="方法笔记") list=list.filter(p=>p.tag===ui.exTag);
+  return list;
+}
+function exploreStream(){
+  const ws=exploreWorks().map(w=>({kind:"work",data:w}));
+  const ps=explorePosts().map(p=>({kind:"post",data:p}));
+  if(ui.exTag==="方法笔记") return ps;
+  // Interleave notes naturally among works so the wall has both visual punch and reading voice
+  const out=[];
+  let pi=0;
+  ws.forEach((item,idx)=>{
+    out.push(item);
+    if(pi<ps.length && (idx===2 || idx===7 || idx===13 || idx===19)){ out.push(ps[pi++]); }
+  });
+  while(pi<ps.length) out.push(ps[pi++]);
+  return out;
+}
+function selectExploreTag(t){ ui.exTag=t; render(); }
+function openTopicsModal(){
+  const active=allTags().filter(t=>t!=="全部");
+  const open=OPEN_TOPICS.filter(t=>!active.includes(t));
+  const cnt=t=>t==="方法笔记"?DB.posts.length:(DB.works.filter(w=>w.tag===t).length + DB.posts.filter(p=>p.tag===t).length);
+  modal(`<div class="modal-h"><h3>全部话题与分类</h3><button class="x" onclick="closeModal()">✕</button></div>
+    <div class="sec-h">当前活跃</div>
+    <div class="topic-grid">
+      <button class="chip ${ui.exTag==="全部"?"on":""}" onclick="closeModal();selectExploreTag('全部')">全部</button>
+      ${active.map(t=>`<button class="chip ${ui.exTag===t?"on":""}" onclick="closeModal();selectExploreTag('${esc(t)}')">#${esc(t)}${cnt(t)?` · ${cnt(t)}`:""}</button>`).join("")}
+    </div>
+    <div class="sec-h" style="margin-top:22px">更多开放方向</div>
+    <div class="topic-grid">${open.map(t=>`<button class="chip" onclick="activateTopic('${esc(t)}')">+ #${esc(t)}</button>`).join("")}</div>
+    <div class="field" style="margin-top:22px;margin-bottom:0"><label>没有你想要的？自定义一个新话题</label><div style="display:flex;gap:8px"><input id="newTopicInp" class="inp" placeholder="例如：手冲咖啡 / 法语 / 胶片暗房" onkeydown="if(event.key==='Enter')addCustomTopic()"><button class="btn btn-k btn-s" style="height:44px" onclick="addCustomTopic()">添加</button></div></div>
+    <p class="topic-hint">分类不由平台写死——上传作品、写笔记或发布服务时输入任意标签，都会自动进入发现流。</p>`,"sm");
+}
+function activateTopic(t){
+  if(!DB.customTags) DB.customTags=[];
+  if(!DB.customTags.includes(t)) DB.customTags.push(t);
+  save(); closeModal(); selectExploreTag(t); toast("已加入话题 #"+t);
+}
+function addCustomTopic(){
+  const v=($("#newTopicInp").value||"").trim().replace(/^#/,"");
+  if(!v) return toast("输入一个话题名称");
+  activateTopic(v);
+}
 function vExplore(){
   const people=Object.values(DB.people);
-  const live=DB.services.filter(isLive).length;
+  const flwCnt=(DB.following||[]).length;
+  const tags=allTags();
   let body;
   if(ui.exMode==="works"){
-    const list=exploreList();
-    body = list.length ? `<div class="masonry">${list.map(tileHtml).join("")}</div>` : `<div class="empty"><p>这个分类还没有作品。</p></div>`;
+    const list=exploreStream();
+    if(list.length){
+      body=`<div class="masonry">${list.map(x=>x.kind==="work"?tileHtml(x.data):noteTileHtml(x.data,true)).join("")}</div>`;
+    } else if(ui.exFeed==="follow" && !flwCnt){
+      body=`<div class="empty"><p>还没有关注任何人，先去推荐里发现有意思的创作者吧。</p><button class="btn btn-k btn-s" onclick="ui.exFeed='rec';render()">看推荐</button></div>`;
+    } else {
+      body=`<div class="empty"><p>「#${esc(ui.exTag)}」下还没有内容，来做第一个发作品的人。</p><div style="display:flex;gap:10px"><button class="btn btn-o btn-s" onclick="selectExploreTag('全部')">看全部</button><button class="btn btn-k btn-s" onclick="openUploadWork('${ui.exTag!=="全部"?esc(ui.exTag):""}')">+ 添加作品</button></div></div>`;
+    }
   } else {
-    const list=people.filter(p=>ui.exTag==="全部"||worksOf(p.id).some(w=>w.tag===ui.exTag));
-    body = `<div class="people">${list.map(personCard).join("")}</div>`;
+    let list=people;
+    if(ui.exFeed==="follow") list=list.filter(p=>isFollowing(p.id));
+    if(ui.exTag!=="全部" && ui.exTag!=="方法笔记") list=list.filter(p=>worksOf(p.id).some(w=>w.tag===ui.exTag)||postsOf(p.id).some(po=>po.tag===ui.exTag));
+    body = list.length ? `<div class="people">${list.map(personCard).join("")}</div>` : `<div class="empty"><p>这里还没有符合条件的人。</p><button class="btn btn-o btn-s" onclick="ui.exFeed='rec';ui.exTag='全部';render()">看全部人</button></div>`;
   }
   return `<div class="wrap">
     <section class="hero">
-      <h1>一个人，<br>不止一种可能。</h1>
-      <div class="hero-side"><b>${people.length}</b> 个人 · <b>${DB.works.length}</b> 件作品<br><b>${live}</b> 项服务现在可约</div>
+      <div>
+        <h1>一个人，<br>不止一种可能。</h1>
+        <p class="hero-sub">把作品、方法与经验留在同一个人身上；逛到同频的人，顺手关注或开启合作。</p>
+      </div>
+      <div class="hero-side"><b>${people.length}</b> 个人 · <b>${DB.works.length}</b> 件作品<br><b>${DB.posts.length}</b> 篇方法与讨论</div>
     </section>
-    <div class="bar">
-      <div class="chips">${TAGS.map(t=>`<button class="chip ${ui.exTag===t?"on":""}" onclick="ui.exTag='${t}';render()">${t}</button>`).join("")}</div>
+    <div class="feed-row">
+      <div class="feed-tabs">
+        <button class="${ui.exFeed==="rec"?"on":""}" onclick="ui.exFeed='rec';render()">推荐</button>
+        <button class="${ui.exFeed==="follow"?"on":""}" onclick="ui.exFeed='follow';render()">关注<span class="n">${flwCnt}</span></button>
+      </div>
       <div class="seg"><button class="${ui.exMode==="works"?"on":""}" onclick="ui.exMode='works';render()">作品</button><button class="${ui.exMode==="people"?"on":""}" onclick="ui.exMode='people';render()">人</button></div>
+    </div>
+    <div class="bar">
+      <div class="chips">
+        ${tags.map(t=>`<button class="chip ${ui.exTag===t?"on":""}" onclick="selectExploreTag('${esc(t)}')">${esc(t)}</button>`).join("")}
+        <button class="chip" onclick="openTopicsModal()">+ 更多话题</button>
+      </div>
     </div>
     ${body}
   </div>`;
 }
 function tileHtml(w){
-  const p=P(w.by); const live=liveSvcOf(w.by).length>0;
+  const p=P(w.by);
   return `<figure class="tile" onclick="openViewer('${w.id}','all')">
     <div class="tile-img"><img src="${src(w.img)}" alt="${esc(w.title)}" style="aspect-ratio:${w.ar}" loading="lazy"></div>
-    <figcaption class="tile-cap"><span class="who" onclick="event.stopPropagation();go('#/u/${w.by}')">${av(w.by,"av-xs")}${esc(p.name)}</span>${live?`<span class="live">可约</span>`:""}</figcaption>
+    <div class="tile-t">${esc(w.title)}</div>
+    ${w.note?`<div class="tile-note">${esc(w.note)}</div>`:""}
+    <figcaption class="tile-cap"><span class="who" onclick="event.stopPropagation();go('#/u/${w.by}')">${av(w.by,"av-xs")}${esc(p.name)}</span><button class="tile-tag" onclick="event.stopPropagation();selectExploreTag('${esc(w.tag)}')">#${esc(w.tag)}</button></figcaption>
   </figure>`;
 }
+function noteTileHtml(p, showAuthor){
+  const a=P(p.by);
+  const foot=showAuthor
+    ? `<span class="who" onclick="event.stopPropagation();go('#/u/${p.by}')">${av(p.by,"av-xs")}${esc(a.name)}</span><span class="yr">${p.replies.length} 回复</span>`
+    : `<span class="tile-tag">笔记 · ${esc(p.kind)}</span><span class="yr">${relDate(p.date)}</span>`;
+  if(p.img){
+    return `<article class="tile" onclick="go('#/post/${p.id}')">
+      <div class="tile-img"><img src="${src(p.img)}" alt="${esc(p.title)}" style="aspect-ratio:${AR[p.img]||1.35}" loading="lazy"><span class="tile-badge">笔记 · ${esc(p.kind)}</span></div>
+      <div class="tile-t">${esc(p.title)}</div>
+      <div class="tile-note">${esc(p.excerpt)}</div>
+      <div class="tile-cap">${foot}</div>
+    </article>`;
+  }
+  return `<article class="tile" onclick="go('#/post/${p.id}')">
+    <div class="tile-textcard">
+      <div class="k"><span>笔记 · ${esc(p.kind)}</span>${p.tag?`<span style="color:var(--faint);font-weight:400">#${esc(p.tag)}</span>`:""}</div>
+      <h4>${esc(p.title)}</h4>
+      <p>${esc(p.excerpt)}</p>
+      <div class="tile-cap" style="padding-top:14px">${foot}</div>
+    </div>
+  </article>`;
+}
 function personCard(p){
-  const ws=worksOf(p.id).slice(0,3); const n=ws.length; const live=liveSvcOf(p.id).length;
+  const ws=worksOf(p.id).slice(0,3); const n=ws.length; const svcCnt=liveSvcOf(p.id).length;
   return `<article class="pcard" onclick="go('#/u/${p.id}')">
     <div class="pmosaic n${Math.max(1,Math.min(n,3))}">${ws.map(w=>`<img src="${src(w.img)}" alt="" loading="lazy">`).join("")}</div>
-    <div class="pcard-b"><div><div class="pname">${esc(p.name)}</div><div class="pskills">${esc(p.skills.join(" / "))}</div></div>${live?`<span class="live">${live} 项可约</span>`:`<span class="pskills">同好</span>`}</div>
+    <div class="pcard-b">
+      <div><div class="pname">${esc(p.name)}</div><div class="pskills">${esc(p.skills.join(" / "))}${svcCnt?` · ${svcCnt} 项服务`:""}</div></div>
+      ${followBtn(p.id)}
+    </div>
   </article>`;
 }
 
 /* ---------- work viewer ---------- */
-function viewerList(){ const sc=ui.viewer.scope; return sc==="all" ? exploreList() : worksOf(sc); }
+function viewerList(){ const sc=ui.viewer.scope; return sc==="all" ? exploreWorks() : worksOf(sc); }
 function openViewer(wid, scope){ ui.viewer={wid, scope:scope||"all"}; renderViewer(); $("#viewer").classList.add("on"); document.body.style.overflow="hidden"; }
 function closeViewer(){ $("#viewer").classList.remove("on"); document.body.style.overflow=""; ui.viewer=null; }
 function stepViewer(d){ const l=viewerList(); if(!l.length) return; const i=l.findIndex(x=>x.id===ui.viewer.wid); ui.viewer.wid=l[(i+d+l.length)%l.length].id; renderViewer(); }
@@ -773,9 +949,16 @@ function renderViewer(){
       ${many?`<button class="v-nav next" onclick="stepViewer(1)" aria-label="下一张">→</button>`:""}
     </div>
     <aside class="v-side">
-      <button class="who-row" onclick="closeViewer();go('#/u/${p.id}')">${av(p.id,"av-m")}<div><div class="who-n">${esc(p.name)}</div><div class="who-s">${esc(p.skills.join(" / "))}</div></div></button>
-      <div><div class="v-title">${esc(w.title)}</div><div class="v-meta mono">${esc(w.tag)} · ${esc(w.year)}</div></div>
-      ${svcs.length&&p.id!==DB.me?`<div><div class="sec-h">可以约 ${esc(p.name)}</div>${svcs.map(s=>`<button class="mini-svc" onclick="closeViewer();go('#/s/${s.id}')"><span>${esc(s.short)}</span>${priceHtml(s)}</button>`).join("")}</div>`:""}
+      <div class="who-bar">
+        <button class="who-row" onclick="closeViewer();go('#/u/${p.id}')">${av(p.id,"av-m")}<div><div class="who-n">${esc(p.name)}</div><div class="who-s">${esc(p.skills.join(" / "))}</div></div></button>
+        ${followBtn(p.id)}
+      </div>
+      <div>
+        <div class="v-title">${esc(w.title)}</div>
+        ${w.note?`<p style="font-size:14px;color:var(--ink2);margin-top:8px;line-height:1.7">${esc(w.note)}</p>`:""}
+        <div class="v-meta mono">#${esc(w.tag)} · ${esc(w.year)}</div>
+      </div>
+      ${svcs.length&&p.id!==DB.me?`<div><div class="sec-h">${esc(p.name)} 提供的服务</div>${svcs.map(s=>`<button class="mini-svc" onclick="closeViewer();go('#/s/${s.id}')"><span>${esc(s.short)}</span>${priceHtml(s)}</button>`).join("")}</div>`:""}
       ${more.length?`<div><div class="sec-h">更多作品</div><div class="v-more">${more.map(x=>`<img src="${src(x.img)}" alt="" onclick="ui.viewer.wid='${x.id}';renderViewer()">`).join("")}</div></div>`:""}
       <button class="btn btn-o btn-w" onclick="closeViewer();go('#/u/${p.id}')">去 ${esc(p.name)} 的主页</button>
     </aside>`;
@@ -792,23 +975,24 @@ function svcFiltered(){
   if(f.week) l=l.filter(s=>s.week);
   if(f.sort==="low") l=[...l].sort((a,b)=>a.price-b.price);
   else if(f.sort==="high") l=[...l].sort((a,b)=>b.price-a.price);
-  else l=[...l].sort((a,b)=>b.confirmed.localeCompare(a.confirmed));
+  else l=[...l].sort((a,b)=>(b.updated||"").localeCompare(a.updated||""));
   return l;
 }
 function setSvc(k,v){ ui.svc[k]=v; render(); if(ui.sheet) $("#modal").innerHTML=sheetHtml(); }
 function toggleWeek(){ setSvc("week", !ui.svc.week); }
 function railHtml(){
-  const f=ui.svc; const live=DB.services.filter(isLive);
-  const g=(title,key,opts)=>`<h4>${title}</h4>${opts.map(([v,l,n])=>`<button class="opt ${String(f[key])===String(v)?"on":""}" onclick="setSvc('${key}','${v}')"><span>${l}</span>${n!=null?`<span class="n">${n}</span>`:""}</button>`).join("")}`;
-  return g("分类","cat",CATS.map(c=>[c,c,c==="全部"?live.length:live.filter(s=>s.cat===c).length]))
+  const f=ui.svc; const live=DB.services.filter(isLive); const cats=allCats();
+  const g=(title,key,opts)=>`<h4>${title}</h4>${opts.map(([v,l,n])=>`<button class="opt ${String(f[key])===String(v)?"on":""}" onclick="setSvc('${key}','${esc(v)}')"><span>${esc(l)}</span>${n!=null?`<span class="n">${n}</span>`:""}</button>`).join("")}`;
+  return g("分类","cat",cats.map(c=>[c,c,c==="全部"?live.length:live.filter(s=>s.cat===c).length]))
     + g("地点","region",REGIONS.map(r=>[r,r,null]))
     + g("预算","budget",BUDGETS.map(b=>[b[0],b[1],null]))
-    + `<div class="toggle-row" onclick="toggleWeek()"><span>只看本周可约</span><span class="sw ${f.week?"on":""}"></span></div>`;
+    + `<div class="toggle-row" onclick="toggleWeek()"><span>只看本周有空</span><span class="sw ${f.week?"on":""}"></span></div>`
+    + `<button class="link add" onclick="openPublish()">+ 发布新技能服务</button>`;
 }
 function sheetHtml(){ return `<div class="modal-h"><h3>筛选</h3><button class="x" onclick="closeModal()">✕</button></div><div class="rail-sheet">${railHtml()}</div><div class="modal-f"><button class="btn btn-o" onclick="ui.svc={cat:'全部',region:'全部区域',budget:'all',week:false,sort:ui.svc.sort};render();$('#modal').innerHTML=sheetHtml()">清除</button><button class="btn btn-k" onclick="closeModal()">看 ${svcFiltered().length} 项结果</button></div>`; }
 function openSheet(){ ui.sheet=true; modal(sheetHtml(),"sm"); }
 function vServices(){
-  const f=ui.svc; const l=svcFiltered();
+  const f=ui.svc; const l=svcFiltered(); const cats=allCats();
   const pristine=f.cat==="全部"&&f.region==="全部区域"&&f.budget==="all"&&!f.week&&f.sort==="new";
   let feat=null, rest=l;
   if(pristine){ feat=l.find(s=>s.week)||null; rest=l.filter(s=>s!==feat); }
@@ -817,8 +1001,8 @@ function vServices(){
     <aside class="rail">${railHtml()}</aside>
     <div>
       <div class="m-filters">
-        <div class="chips">${CATS.map(c=>`<button class="chip ${f.cat===c?"on":""}" onclick="setSvc('cat','${c}')">${c}</button>`).join("")}</div>
-        <div class="chips"><button class="chip ${f.week?"on":""}" onclick="toggleWeek()">本周可约</button><button class="chip ${extra?"on":""}" onclick="openSheet()">地点与预算${extra?" · "+extra:""}</button></div>
+        <div class="chips">${cats.map(c=>`<button class="chip ${f.cat===c?"on":""}" onclick="setSvc('cat','${esc(c)}')">${esc(c)}</button>`).join("")}</div>
+        <div class="chips"><button class="chip ${f.week?"on":""}" onclick="toggleWeek()">本周有空</button><button class="chip ${extra?"on":""}" onclick="openSheet()">地点与预算${extra?" · "+extra:""}</button></div>
       </div>
       <div class="list-head">
         <h2>${f.cat==="全部"?"全部服务":esc(f.cat)}<small>${l.length}</small></h2>
@@ -832,7 +1016,7 @@ function vServices(){
 function cardHtml(s, preview){
   const p=P(s.by);
   return `<article class="card" ${preview?"":`onclick="go('#/s/${s.id}')"`}>
-    <div class="card-img"><img src="${src(s.images[0])}" alt="${esc(s.short)}" loading="lazy">${s.week?`<span class="flag"><i class="dot"></i>本周可约</span>`:""}</div>
+    <div class="card-img"><img src="${src(s.images[0])}" alt="${esc(s.short)}" loading="lazy">${s.week?`<span class="flag"><i class="dot"></i>本周有空</span>`:""}</div>
     <div class="card-t">${esc(s.short||"未命名服务")}</div>
     <div class="card-m"><span>${esc(p.name)} · ${esc(regionShort(s.region))}</span>${priceHtml(s)}</div>
   </article>`;
@@ -842,7 +1026,7 @@ function featHtml(s){
   return `<article class="feat" onclick="go('#/s/${s.id}')">
     <div class="feat-img"><img src="${src(s.images[0])}" alt="${esc(s.short)}"></div>
     <div>
-      <div class="feat-k"><i class="dot"></i>本周可约</div>
+      <div class="feat-k"><i class="dot"></i>本周有空</div>
       <h3 class="feat-t">${esc(s.short)}</h3>
       <div class="feat-who">${av(p.id,"av-s")}${esc(p.name)} · ${esc(s.region)}</div>
       <div class="feat-inc">${s.includes.map(esc).join(" · ")}</div>
@@ -862,16 +1046,19 @@ function vService(id){
     <div class="pdp">
       <div class="pdp-imgs">${s.images.map(i=>`<img src="${src(i)}" alt="">`).join("")}</div>
       <aside class="pdp-side">
-        <button class="who-row" onclick="go('#/u/${p.id}')">${av(p.id,"av-m")}<div><div class="who-n">${esc(p.name)}</div><div class="who-s">${esc(p.school)} · ${esc(p.region)}</div></div></button>
+        <div class="who-bar">
+          <button class="who-row" onclick="go('#/u/${p.id}')">${av(p.id,"av-m")}<div><div class="who-n">${esc(p.name)}</div><div class="who-s">${esc(p.school)} · ${esc(p.region)}</div></div></button>
+          ${followBtn(p.id)}
+        </div>
         <h1>${esc(s.short)}</h1>
         <div class="pdp-price">${priceHtml(s)}</div>
         <div class="avail">${s.week?`<i class="dot"></i>`:""}${esc(s.slots)}</div>
         ${s.desc?`<p class="pdp-desc">${esc(s.desc)}</p>`:""}
         <ul class="incl">${s.includes.map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
-        <dl class="kv"><dt>时长</dt><dd>${esc(s.duration||"—")}</dd><dt>地点</dt><dd>${esc(s.region)}</dd><dt>信息有效</dt><dd class="mono">至 ${md(s.valid)}</dd></dl>
+        <dl class="kv"><dt>时长</dt><dd>${esc(s.duration||"—")}</dd><dt>地点</dt><dd>${esc(s.region)}</dd><dt>状态</dt><dd>${s.published?"正常接单":"暂不接单"}</dd></dl>
         ${mine
           ? `<button class="btn btn-o btn-w" onclick="ui.ptab='services';ui.asVisitor=false;go('#/u/${DB.me}')">在我的主页管理</button>`
-          : `<button class="btn btn-k btn-w" onclick="openChat('${s.id}')">发消息</button><p class="fine">先聊需求，价格和时间以你们双方确认为准</p>`}
+          : `<button class="btn btn-k btn-w" onclick="openChat('${s.id}')">发消息</button><p class="fine">先聊需求，时间与细节以双方确认为准</p>`}
       </aside>
     </div>
     ${others.length?`<section class="more"><div class="sec-h">${esc(p.name)} 的其他服务</div><div class="grid">${others.map(x=>cardHtml(x)).join("")}</div></section>`:""}
@@ -882,6 +1069,7 @@ function vService(id){
    PROFILE
    ========================================================= */
 function setPTab(k){ ui.ptab=k; render(); }
+function setPFilter(k){ ui.pfilter=k; render(); }
 function vUser(id){
   const p=P(id); if(!p) return notFound();
   const isMe=id===DB.me; const own=isMe&&!ui.asVisitor;
@@ -890,23 +1078,46 @@ function vUser(id){
   const svcs=own?svcAll:svcAll.filter(isLive);
   const posts=postsOf(id);
   const saved=own?DB.posts.filter(x=>DB.saved.includes(x.id)):[];
-  const tabs=[["works","作品",works.length]];
+  const streamCount=works.length+posts.length;
+
+  const tabs=[["stream","作品与笔记",streamCount]];
   if(own||svcs.length) tabs.push(["services","服务",svcs.length]);
-  tabs.push(["posts","笔记",posts.length]);
   if(own) tabs.push(["saved","收藏",saved.length]);
-  if(!tabs.some(t=>t[0]===ui.ptab)) ui.ptab="works";
+  if(!tabs.some(t=>t[0]===ui.ptab)) ui.ptab="stream";
 
   let content="";
-  if(ui.ptab==="works"){
-    content = (works.length||own) ? `<div class="masonry m3">
-      ${own?`<button class="tile-add" onclick="openUploadWork()">+ 添加作品</button>`:""}
-      ${works.map(w=>`<figure class="tile" onclick="openViewer('${w.id}','${id}')"><div class="tile-img"><img src="${src(w.img)}" alt="${esc(w.title)}" style="aspect-ratio:${w.ar}" loading="lazy">${own?`<button class="tile-del" title="删除" onclick="event.stopPropagation();delWork('${w.id}')">✕</button>`:""}</div><figcaption class="tile-cap"><span>${esc(w.title)}</span><span class="yr">${esc(w.year)}</span></figcaption></figure>`).join("")}
-    </div>` : `<div class="empty"><p>还没有作品。</p></div>`;
+  if(ui.ptab==="stream"){
+    const subbar=`<div class="pf-subbar">
+      <div class="chips">
+        <button class="chip ${ui.pfilter==="all"?"on":""}" onclick="setPFilter('all')">全部 · ${streamCount}</button>
+        <button class="chip ${ui.pfilter==="works"?"on":""}" onclick="setPFilter('works')">作品 · ${works.length}</button>
+        <button class="chip ${ui.pfilter==="posts"?"on":""}" onclick="setPFilter('posts')">笔记 · ${posts.length}</button>
+      </div>
+      ${own?`<div style="display:flex;gap:14px"><button class="link" onclick="openUploadWork()">+ 传作品</button><button class="link" onclick="openCompose()">+ 写笔记</button></div>`:""}
+    </div>`;
+
+    if(ui.pfilter==="posts"){
+      content = subbar + (posts.length ? posts.map(postRow).join("") : `<div class="empty"><p>还没有写过笔记。</p>${own?`<button class="btn btn-k btn-s" onclick="openCompose()">写第一篇</button>`:""}</div>`);
+    } else if(ui.pfilter==="works"){
+      content = subbar + (works.length ? `<div class="masonry m3">
+        ${works.map(w=>profileWorkTile(w,id,own)).join("")}
+      </div>` : `<div class="empty"><p>还没有作品。</p>${own?`<button class="btn btn-k btn-s" onclick="openUploadWork()">+ 添加作品</button>`:""}</div>`);
+    } else {
+      // Unified stream: interleave works & notes naturally in the same visual masonry
+      const mixed=[];
+      let pi=0;
+      works.forEach((w,idx)=>{
+        mixed.push({kind:"work",data:w});
+        if(pi<posts.length && (idx===1 || idx===3 || idx===6)) mixed.push({kind:"post",data:posts[pi++]});
+      });
+      while(pi<posts.length) mixed.push({kind:"post",data:posts[pi++]});
+      content = subbar + (mixed.length ? `<div class="masonry m3">
+        ${mixed.map(item=>item.kind==="work"?profileWorkTile(item.data,id,own):noteTileHtml(item.data,false)).join("")}
+      </div>` : `<div class="empty"><p>还没有发布内容。</p>${own?`<button class="btn btn-k btn-s" onclick="openCreate()">+ 新建</button>`:""}</div>`);
+    }
   } else if(ui.ptab==="services"){
     content = svcs.length ? `<div>${svcs.map(s=>srowHtml(s,own)).join("")}</div>`
       : `<div class="empty"><p>还没有开放的服务。</p>${own?`<button class="btn btn-k" onclick="openPublish()">发布第一项服务</button>`:""}</div>`;
-  } else if(ui.ptab==="posts"){
-    content = posts.length ? posts.map(postRow).join("") : `<div class="empty"><p>还没有写过笔记。</p>${own?`<button class="btn btn-k" onclick="openCompose()">写第一篇</button>`:""}</div>`;
   } else {
     content = saved.length ? saved.map(postRow).join("") : `<div class="empty"><p>在社区里收藏的内容会出现在这里。</p><button class="btn btn-o btn-s" onclick="go('#/community')">去社区看看</button></div>`;
   }
@@ -914,7 +1125,9 @@ function vUser(id){
   const cover=works.slice(0,3);
   let actions="";
   if(own) actions=`<button class="btn btn-o" onclick="openEditProfile()">编辑资料</button><button class="btn btn-k" onclick="openCreate()">+ 新建</button>`;
-  else if(!isMe && svcs.length) actions=`<button class="btn btn-k" onclick="contactPerson('${id}')">发消息</button>`;
+  else if(!isMe) actions=`${followBtn(id,true)}${svcs.length?`<button class="btn btn-o" onclick="contactPerson('${id}')">发消息</button>`:""}`;
+
+  const followingCount = isMe ? (DB.following||[]).length : (p.id==="linyou"?9:p.id==="chenxi"?12:7);
 
   return `<div class="wrap">
     <div class="pf-bar">
@@ -929,6 +1142,10 @@ function vUser(id){
           <h1 class="pf-name">${esc(p.name)}<small>${esc(p.en||"")}</small></h1>
           <p class="pf-bio">${esc(p.bio)}</p>
           <div class="pf-meta"><span>${esc(p.skills.join(" / "))}</span><span>${esc(p.school)} · ${esc(p.region)}</span></div>
+          <div class="pf-stats">
+            ${own?`<button onclick="openFollowingModal()"><b>${followingCount}</b>关注</button>`:`<span><b>${followingCount}</b>关注</span>`}
+            <span><b>${fansCount(id)}</b>粉丝</span>
+          </div>
         </div>
         ${actions?`<div class="pf-act">${actions}</div>`:""}
       </div>
@@ -937,16 +1154,24 @@ function vUser(id){
     ${content}
   </div>`;
 }
+function profileWorkTile(w, uid, own){
+  return `<figure class="tile" onclick="openViewer('${w.id}','${uid}')">
+    <div class="tile-img"><img src="${src(w.img)}" alt="${esc(w.title)}" style="aspect-ratio:${w.ar}" loading="lazy">${own?`<button class="tile-del" title="删除" onclick="event.stopPropagation();delWork('${w.id}')">✕</button>`:""}</div>
+    <div class="tile-t">${esc(w.title)}</div>
+    ${w.note?`<div class="tile-note">${esc(w.note)}</div>`:""}
+    <figcaption class="tile-cap"><span class="tile-tag">#${esc(w.tag)}</span><span class="yr">${esc(w.year)}</span></figcaption>
+  </figure>`;
+}
 function srowHtml(s, own){
-  const live=isLive(s); const expired=s.valid<todayIso;
-  let status;
-  if(own) status = !s.published ? "已暂停，访客看不到" : expired ? "信息已过期，确认后重新展示" : `<span class="mono">有效至 ${md(s.valid)}</span>`;
-  else status = s.week ? `<span class="live">本周可约</span>` : esc(s.slots);
+  const live=isLive(s);
+  const status = own
+    ? (s.published ? (s.week ? `<span class="live">接单中 · 本周有空</span>` : "接单中") : "已暂停，访客暂时看不到")
+    : (s.week ? `<span class="live">本周有空</span>` : esc(s.slots));
   return `<div class="srow ${live?"":"dim"}" onclick="go('#/s/${s.id}')">
     <img src="${src(s.images[0])}" alt="">
     <div><div class="srow-t">${esc(s.short)}</div><div class="srow-d">${esc(s.includes.join(" · "))}</div><div class="srow-s">${status}</div></div>
     <div class="srow-r">${priceHtml(s)}<div class="srow-a" onclick="event.stopPropagation()">${own
-      ? `<button class="link" onclick="renewSvc('${s.id}')">确认仍可约</button><button class="link" onclick="togglePub('${s.id}')">${s.published?"暂停":"恢复"}</button>`
+      ? `<button class="link" onclick="togglePub('${s.id}')">${s.published?"暂停接单":"恢复接单"}</button>`
       : `<button class="btn btn-k btn-s" onclick="openChat('${s.id}')">发消息</button>`}</div></div>
   </div>`;
 }
@@ -956,33 +1181,36 @@ function contactPerson(pid){
   modal(`<div class="modal-h"><h3>想咨询哪一项？</h3><button class="x" onclick="closeModal()">✕</button></div>
     ${svcs.map(s=>`<button class="mini-svc" onclick="closeModal();openChat('${s.id}')"><span>${esc(s.short)}</span>${priceHtml(s)}</button>`).join("")}`,"sm");
 }
-function renewSvc(id){ const s=S(id); s.valid=addDays(14); s.confirmed=todayIso; save(); render(); toast("已确认，展示到 "+md(s.valid)); }
-function togglePub(id){ const s=S(id); s.published=!s.published; save(); render(); toast(s.published?"已恢复展示":"已暂停，访客暂时看不到"); }
+function togglePub(id){ const s=S(id); s.published=!s.published; s.updated=todayIso; save(); render(); toast(s.published?"已恢复接单":"已暂停接单，访客暂时看不到"); }
 function delWork(id){ if(!confirm("删除这件作品？")) return; DB.works=DB.works.filter(w=>w.id!==id); save(); render(); }
 
 /* ---------- create / upload / edit ---------- */
 function openCreate(){
   modal(`<div class="modal-h"><h3>新建</h3><button class="x" onclick="closeModal()">✕</button></div>
   <div class="create-opts">
-    <button onclick="openUploadWork()"><b>作品</b><span>上传图片，放进作品集</span></button>
+    <button onclick="openUploadWork()"><b>作品</b><span>上传图片，放进个人主页与发现流</span></button>
     <button onclick="openPublish()"><b>服务</b><span>写一段话，AI 帮你整理成服务卡</span></button>
     <button onclick="openCompose()"><b>笔记 / 帖子</b><span>写方法、发起讨论，或约人一起做点什么</span></button>
   </div>`,"sm");
 }
-function openUploadWork(){
+function openUploadWork(defaultTag){
+  const tags=allTags().filter(t=>t!=="全部"&&t!=="方法笔记");
   modal(`<div class="modal-h"><h3>添加作品</h3><button class="x" onclick="closeModal()">✕</button></div>
     <div class="field"><label>选择图片（可多选）</label><input type="file" id="wkFile" accept="image/*" multiple class="inp" style="padding-top:10px"></div>
     <div class="field"><label>标题（多张时自动编号）</label><input id="wkTitle" class="inp" placeholder="例如：雨后的图书馆"></div>
-    <div class="field"><label>分类</label><select id="wkTag" class="inp">${TAGS.slice(1).map(t=>`<option>${t}</option>`).join("")}</select></div>
+    <div class="field"><label>一句话说明（可选）</label><input id="wkNote" class="inp" placeholder="拍的时候的想法、器材或光线"></div>
+    <div class="field"><label>标签（可选现有，或直接输入新标签）</label><input id="wkTag" class="inp" list="wkTagList" value="${esc(defaultTag||tags[0])}" placeholder="输入任意分类标签"><datalist id="wkTagList">${tags.concat(OPEN_TOPICS).map(t=>`<option value="${esc(t)}">`).join("")}</datalist></div>
     <div class="modal-f"><button class="btn btn-o" onclick="closeModal()">取消</button><button class="btn btn-k" id="wkBtn" onclick="submitWork()">添加</button></div>`,"sm");
 }
 async function submitWork(){
   const files=[...$("#wkFile").files]; if(!files.length) return toast("先选择图片");
   $("#wkBtn").textContent="处理中…";
-  const title=$("#wkTitle").value.trim()||"未命名作品"; const tag=$("#wkTag").value;
+  const title=$("#wkTitle").value.trim()||"未命名作品";
+  const note=$("#wkNote").value.trim();
+  const tag=($("#wkTag").value||"").trim().replace(/^#/,"")||"日常";
   const added=[];
-  for(let i=0;i<files.length;i++){ try{ const r=await readImage(files[i],1400); added.push({id:"w"+Date.now()+i,by:DB.me,img:r.data,ar:r.ar,title:files.length>1?`${title} ${String(i+1).padStart(2,"0")}`:title,tag,year:String(TODAY.getFullYear())}); }catch(e){} }
-  DB.works.unshift(...added); save(); closeModal(); ui.ptab="works"; ui.asVisitor=false;
+  for(let i=0;i<files.length;i++){ try{ const r=await readImage(files[i],1400); added.push({id:"w"+Date.now()+i,by:DB.me,img:r.data,ar:r.ar,title:files.length>1?`${title} ${String(i+1).padStart(2,"0")}`:title,note,tag,year:String(TODAY.getFullYear())}); }catch(e){} }
+  DB.works.unshift(...added); save(); closeModal(); ui.ptab="stream"; ui.pfilter="all"; ui.asVisitor=false;
   if(cur()!=="#/u/"+DB.me) go("#/u/"+DB.me); else render();
   toast(`已添加 ${added.length} 件作品`);
 }
@@ -1050,11 +1278,12 @@ function runAi(){
   const raw=$("#aiRaw").value.trim(); if(!raw) return toast("先写一段描述");
   ui.raw=raw;
   $("#modal").innerHTML=`<div class="modal-h"><h3>发布服务</h3><button class="x" onclick="closeModal()">✕</button></div><div class="loading"><span class="spin"></span>正在整理…</div>`;
-  setTimeout(()=>{ const d=parseAi(raw); const mine=worksOf(DB.me); d.img=(mine.find(w=>({摄影:"影像",设计:"设计"})[d.cat]===w.tag)||mine[0]||{}).img||null; ui.draft=d; $("#modal").innerHTML=publishStep2(); },650);
+  setTimeout(()=>{ const d=parseAi(raw); const mine=worksOf(DB.me); d.img=(mine.find(w=>({摄影:"人像",设计:"视觉设计",美甲:"美甲",妆造:"妆造",影像:"短片"})[d.cat]===w.tag)||mine[0]||{}).img||null; ui.draft=d; $("#modal").innerHTML=publishStep2(); },650);
 }
 function draftAsService(){ const d=ui.draft; return {id:"preview",by:DB.me,short:d.short,cat:d.cat,region:d.region,price:d.price||0,unit:d.unit,includes:d.includes,duration:d.duration,slots:d.slots,week:d.week,images:[d.img||"portrait.jpg"]}; }
 function publishStep2(){
   const d=ui.draft; const mine=worksOf(DB.me);
+  const cats=allCats().filter(c=>c!=="全部");
   const filled=[d.short,d.price,d.unit,d.includes.length,d.slots,d.duration,d.region].filter(Boolean).length;
   return `<div class="modal-h"><h3>核对服务卡</h3><button class="x" onclick="closeModal()">✕</button></div>
   <div class="ai-tip"><i class="dot"></i>AI 已填好 ${filled} 项，改哪里右边会同步。</div>
@@ -1062,7 +1291,7 @@ function publishStep2(){
     <div>
       <div class="field"><label>名称</label><input class="inp" value="${esc(d.short)}" oninput="ui.draft.short=this.value;updPrev()"></div>
       <div class="row2">
-        <div class="field"><label>分类</label><select class="inp" onchange="ui.draft.cat=this.value;updPrev()">${CATS.slice(1).map(c=>`<option ${c===d.cat?"selected":""}>${c}</option>`).join("")}</select></div>
+        <div class="field"><label>分类（可选或自定义）</label><input class="inp" list="svcCatList" value="${esc(d.cat)}" oninput="ui.draft.cat=this.value.trim()||'其他';updPrev()" placeholder="例如：摄影 / 插画 / 陪练"><datalist id="svcCatList">${cats.concat(["插画","编曲","语言陪练","手作","独立开发"]).map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div>
         <div class="field"><label>地点</label><select class="inp" onchange="ui.draft.region=this.value;updPrev()">${REGIONS.slice(1).map(r=>`<option ${r===d.region?"selected":""}>${r}</option>`).join("")}</select></div>
       </div>
       <div class="row2">
@@ -1074,10 +1303,7 @@ function publishStep2(){
         <div class="field"><label>什么时候有空</label><input class="inp" value="${esc(d.slots)}" oninput="ui.draft.slots=this.value"></div>
         <div class="field"><label>大概多久</label><input class="inp" value="${esc(d.duration)}" oninput="ui.draft.duration=this.value"></div>
       </div>
-      <div class="row2">
-        <div class="field"><label>展示多久后需要你再确认</label><select class="inp" onchange="ui.draft.validDays=+this.value">${[7,14,30].map(n=>`<option value="${n}" ${n===d.validDays?"selected":""}>${n} 天</option>`).join("")}</select></div>
-        <div class="field"><label>&nbsp;</label><div class="toggle-row" style="margin:0;padding:12px 0 0;border:0" onclick="ui.draft.week=!ui.draft.week;this.querySelector('.sw').classList.toggle('on',ui.draft.week);updPrev()"><span>本周可约</span><span class="sw ${d.week?"on":""}"></span></div></div>
-      </div>
+      <div class="field"><div class="toggle-row" style="margin:0;padding:8px 0;border:0" onclick="ui.draft.week=!ui.draft.week;this.querySelector('.sw').classList.toggle('on',ui.draft.week);updPrev()"><span>本周有空（可随时在主页暂停）</span><span class="sw ${d.week?"on":""}"></span></div></div>
       <div class="field"><label>封面</label><div class="covers">${mine.slice(0,7).map(w=>`<button class="${d.img===w.img?"on":""}" onclick="ui.draft.img=W('${w.id}').img;document.querySelectorAll('.covers button').forEach(b=>b.classList.remove('on'));this.classList.add('on');updPrev()"><img src="${src(w.img)}" alt=""></button>`).join("")}<button class="up" onclick="$('#coverFile').click()">+</button></div></div>
     </div>
     <div class="ai-prev"><div class="sec-h" style="text-align:center">在服务页里会这样展示</div><div id="aiPrev">${cardHtml(draftAsService(),true)}</div></div>
@@ -1090,7 +1316,7 @@ function publishDraft(){
   const d=ui.draft;
   if(!d.short.trim()) return toast("给服务起个名字");
   if(!d.price) return toast("填一下价格");
-  const s={id:"s"+Date.now(),by:DB.me,short:d.short.trim(),cat:d.cat,region:d.region,price:d.price,unit:d.unit||"次",includes:d.includes,duration:d.duration,slots:d.slots||"可私信约时间",week:d.week,desc:"",images:[d.img||"portrait.jpg"],valid:addDays(d.validDays),confirmed:todayIso,published:true};
+  const s={id:"s"+Date.now(),by:DB.me,short:d.short.trim(),cat:(d.cat||"其他").trim(),region:d.region,price:d.price,unit:d.unit||"次",includes:d.includes,duration:d.duration,slots:d.slots||"可私信约时间",week:d.week,desc:"",images:[d.img||"portrait.jpg"],updated:todayIso,published:true};
   DB.services.unshift(s); save(); closeModal(); ui.ptab="services"; ui.asVisitor=false;
   if(cur()!=="#/u/"+DB.me) go("#/u/"+DB.me); else render();
   toast("已发布，服务页和你的主页都能看到");
@@ -1153,12 +1379,12 @@ function vPost(id){
       <h1>${esc(p.title)}</h1>
       <div class="read-by">
         <button class="who-row" onclick="go('#/u/${a.id}')">${av(a.id,"av-m")}<div><div class="who-n">${esc(a.name)}</div><div class="who-s">${relDate(p.date)}${p.version?" · "+esc(p.version):""}</div></div></button>
-        <button class="btn btn-o btn-s ${saved?"on":""}" onclick="toggleSave('${p.id}')">${saved?"已收藏":"收藏"}</button>
+        <div style="display:flex;gap:8px;align-items:center">${followBtn(a.id)}<button class="btn btn-o btn-s ${saved?"on":""}" onclick="toggleSave('${p.id}')">${saved?"已收藏":"收藏"}</button></div>
       </div>
       ${p.img?`<img class="read-hero" src="${src(p.img)}" alt="">`:""}
       <div class="read-body">${p.body.map(t=>`<p>${esc(t)}</p>`).join("")}</div>
       ${p.params?`<div class="params"><div class="params-h"><span>可复用参数${p.version?" · "+esc(p.version):""}</span><button class="link" onclick="copyText(PO('${p.id}').params)">复制</button></div><pre>${esc(p.params)}</pre></div>`:""}
-      ${svcs.length?`<div class="author-svc" onclick="go('#/s/${svcs[0].id}')"><img src="${src(svcs[0].images[0])}" alt=""><div><div class="who-s">也可以约 ${esc(a.name)}</div><div class="srow-t" style="font-size:16px">${esc(svcs[0].short)}</div></div>${priceHtml(svcs[0])}</div>`:""}
+      ${svcs.length?`<div class="author-svc" onclick="go('#/s/${svcs[0].id}')"><img src="${src(svcs[0].images[0])}" alt=""><div><div class="who-s">${esc(a.name)} 提供的服务</div><div class="srow-t" style="font-size:16px">${esc(svcs[0].short)}</div></div>${priceHtml(svcs[0])}</div>`:""}
       <section class="floors">
         <div class="sec-h">${p.replies.length} 条回复</div>
         ${p.replies.map((r,i)=>`<div class="floor">${av(r.by,"av-s")}<div><div class="floor-h"><b>${esc(P(r.by).name)}</b><span class="mono">#${i+1}</span>${r.t?`<span>${esc(r.t)}</span>`:""}</div><p>${esc(r.text)}</p></div></div>`).join("")}
@@ -1195,7 +1421,9 @@ async function submitPost(){
   const params=ui.composeKind==="博客"?$("#cpParams").value.trim():"";
   const cols=[$("#cpTopic").value]; if($("#cpPlace").value) cols.push($("#cpPlace").value);
   const paras=body.split(/\n\s*\n|\n/).map(s=>s.trim()).filter(Boolean);
-  const p={id:"p"+Date.now(),by:DB.me,kind:ui.composeKind,title,excerpt:trunc(paras[0],70),body:paras,params,version:params?"v1.0":"",cols,img,date:todayIso,saves:0,replies:[]};
+  const colMap={light:"人像",type:"视觉设计",look:"妆造",co:"胶片"};
+  const tag=colMap[cols[0]]||(C(cols[0])?C(cols[0]).name:"方法笔记");
+  const p={id:"p"+Date.now(),by:DB.me,kind:ui.composeKind,tag,title,excerpt:trunc(paras[0],70),body:paras,params,version:params?"v1.0":"",cols,img,date:todayIso,saves:0,replies:[]};
   DB.posts.unshift(p); save(); closeModal(); go("#/post/"+p.id); toast("已发布，也会出现在你的主页");
 }
 function openNewColumn(){
@@ -1329,7 +1557,7 @@ function renderSearch(){
    MODAL / QR / PHONE PREVIEW
    ========================================================= */
 function modal(html, cls){ $("#modal").className="modal "+(cls||""); $("#modal").innerHTML=html; $("#modalBg").classList.add("on"); }
-function closeModal(){ $("#modalBg").classList.remove("on"); $("#modal").innerHTML=""; ui.sheet=false; }
+function closeModal(){ $("#modalBg").classList.remove("on"); $("#modal").innerHTML=""; ui.sheet=false; ui.flwModal=false; }
 function closeAll(){ closeModal(); closeViewer(); closeSearch(); closeChat(); }
 const QR = ["11111110101100100010001111111","10000010000101010100101000001","10111010101010011101101011101","10111010111100010110001011101","10111010010001110011101011101","10000010101100111010101000001","11111110101010101010101111111","00000000110011100110100000000","11010011010100011100011101101","10101101110100111111000010011","01001111100111001101011110100","01100001100100100011000000111","10010011100010001011001101101","11101000111101000011100100011","01110111010000000000101001111","10000000111000011000110100111","01011110010011101101010110001","10000001011100111111010100111","00011111100010000110100100001","00110101001110011110100101101","00110011110011101110111111011","00000000000011110000100010100","11111110100100000101101011011","10000010001100101111100010101","10111010011100011011111111000","10111010100010001100111101011","10111010001011100111110010100","10000010101001111100011000011","11111110110101100000010110100"];
 function qrSvg(){ const m=3, n=QR.length, T=n+m*2; let d=""; QR.forEach((r,y)=>{ for(let x=0;x<r.length;x++) if(r[x]==="1") d+=`M${x+m},${y+m}h1v1h-1z`; }); return `<svg viewBox="0 0 ${T} ${T}" shape-rendering="crispEdges" role="img" aria-label="扫码二维码"><rect width="${T}" height="${T}" fill="#fff"/><path d="${d}" fill="#000"/></svg>`; }
